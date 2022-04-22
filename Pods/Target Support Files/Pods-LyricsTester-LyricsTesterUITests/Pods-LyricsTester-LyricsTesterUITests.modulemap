@@ -1,6 +1,0 @@
-framework module Pods_LyricsTester_LyricsTesterUITests {
-  umbrella header "Pods-LyricsTester-LyricsTesterUITests-umbrella.h"
-
-  export *
-  module * { export * }
-}

@@ -1,6 +1,0 @@
-framework module MarqueeLabel_ObjC {
-  umbrella header "MarqueeLabel-ObjC-umbrella.h"
-
-  export *
-  module * { export * }
-}
