@@ -5,14 +5,14 @@
 //  Created by Brandon Yao on 1/9/22.
 //
 
-#import "LTViewController.h"
+#import "LTLyricsViewController.h"
 #import "Utils.h"
 
-@interface LTViewController ()
+@interface LTLyricsViewController ()
 
 @end
 
-@implementation LTViewController
+@implementation LTLyricsViewController
 @synthesize tableViewController;
 @synthesize songLabel;
 @synthesize containerView;
@@ -53,16 +53,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    [self test];
-//    NSDictionary *info = getSongInfo();
-//    NSString *songName = [info objectForKey:@"songName"];
-//    NSString *songArtist = [info objectForKey:@"songArtist"];
-//    NSData *artworkImageData = [info objectForKey:@"songArtwork"];
-//    NSArray *lyricsArray = [info objectForKey:@"lyricsArray"];
-//    self.tableViewController = [[LTTableViewController alloc] initWithLyrics:lyricsArray];
     self.tableViewController = [[LTTableViewController alloc] init];
-//    UIImage *image = [UIImage imageWithData:artworkImageData];
-//    self.backgroundImageView = [[UIImageView alloc] initWithImage:image];
     self.backgroundImageView = [[UIImageView alloc] init];
     self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -74,21 +65,17 @@
     self.containerView.backgroundColor = UIColor.clearColor;
     self.containerView.translatesAutoresizingMaskIntoConstraints = NO;
     self.songLabel = [[MarqueeLabel alloc] init];
-//    self.songLabel.text = songName;
     self.songLabel.marqueeType = MLLeftRight;
     self.songLabel.animationCurve = UIViewAnimationOptionCurveLinear;
     self.songLabel.font = [UIFont systemFontOfSize:40 weight:UIFontWeightHeavy];
     self.songLabel.textColor = UIColor.whiteColor;
     self.songLabel.translatesAutoresizingMaskIntoConstraints = NO;
-//    [self.songLabel sizeToFit];
     self.artistLabel = [[MarqueeLabel alloc] init];
-//    self.artistLabel.text = songArtist;
     self.artistLabel.marqueeType = MLLeftRight;
     self.artistLabel.animationCurve = UIViewAnimationOptionCurveLinear;
     self.artistLabel.font = [UIFont systemFontOfSize:30 weight:UIFontWeightHeavy];
     self.artistLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.5];
     self.artistLabel.translatesAutoresizingMaskIntoConstraints = NO;
-//    [self.artistLabel sizeToFit];
     [self.view addSubview:self.backgroundImageView];
     [self.view addSubview:self.containerView];
     [self.view addSubview:self.songLabel];
@@ -110,8 +97,6 @@
     ]];
     [self displayContentController:self.tableViewController];
     [self updateView];
-//    MRMediaRemoteRegisterForNowPlayingNotifications(dispatch_get_main_queue());
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateView) name:@"updateView" object:nil];
 }
 
 - (void)displayContentController:(UIViewController *)content;

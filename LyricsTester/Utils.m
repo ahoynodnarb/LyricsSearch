@@ -8,9 +8,9 @@
 #import "Utils.h"
 
 @implementation Utils
-+ (NSData *)dataForURL:(NSURL *)URL headers:(NSDictionary *)headers {
++ (NSData *)dataForURL:(NSURL *)URL headers:(NSDictionary *)headers method:(NSString *)method {
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:URL];
-    [request setHTTPMethod:@"GET"];
+    [request setHTTPMethod:method];
     for(NSString *header in headers) {
         [request setValue:[headers valueForKey:header] forHTTPHeaderField:header];
     }
@@ -26,7 +26,11 @@
     return responseData;
 }
 
++ (NSData *)dataForURL:(NSURL *)URL headers:(NSDictionary *)headers {
+    return [self dataForURL:URL headers:headers method:@"GET"];
+}
+
 + (NSData *)dataForURL:(NSURL *)URL {
-    return [self dataForURL:URL headers:nil];
+    return [self dataForURL:URL headers:nil method:@"GET"];
 }
 @end

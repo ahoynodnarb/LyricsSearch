@@ -1,5 +1,5 @@
 //
-//  LTViewController.h
+//  LTLyricsViewController.h
 //  LyricsTester
 //
 //  Created by Brandon Yao on 4/20/22.
@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LTViewController : UIViewController
+@interface LTLyricsViewController : UIViewController
 @property (nonatomic, strong) LTTableViewController *tableViewController;
 @property (nonatomic, strong) MarqueeLabel *songLabel;
 @property (nonatomic, strong) MarqueeLabel *artistLabel;

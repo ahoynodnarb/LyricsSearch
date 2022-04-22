@@ -6,9 +6,9 @@
 
 
 #import <UIKit/UIKit.h>
-#import "LTViewController.h"
+#import "LTLyricsViewController.h"
 
 @interface ViewController : UIViewController
-@property (nonatomic, strong) LTViewController *lyricsViewController;
+@property (nonatomic, strong) LTLyricsViewController *lyricsViewController;
 @end
 

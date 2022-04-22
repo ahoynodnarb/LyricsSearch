@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		088917952810A9A2003E620A /* LTViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 088917942810A9A2003E620A /* LTViewController.m */; };
+		088917952810A9A2003E620A /* LTLyricsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 088917942810A9A2003E620A /* LTLyricsViewController.m */; };
 		08891798281249B7003E620A /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 08891797281249B7003E620A /* Utils.m */; };
 		08892339278BE3B600BBBA41 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 08892338278BE3B600BBBA41 /* AppDelegate.m */; };
 		0889233C278BE3B600BBBA41 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0889233B278BE3B600BBBA41 /* SceneDelegate.m */; };
@@ -43,8 +43,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		088917932810A9A2003E620A /* LTViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTViewController.h; sourceTree = "<group>"; };
-		088917942810A9A2003E620A /* LTViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LTViewController.m; sourceTree = "<group>"; };
+		088917932810A9A2003E620A /* LTLyricsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTLyricsViewController.h; sourceTree = "<group>"; };
+		088917942810A9A2003E620A /* LTLyricsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LTLyricsViewController.m; sourceTree = "<group>"; };
 		08891796281249B7003E620A /* Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
 		08891797281249B7003E620A /* Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
 		08892334278BE3B600BBBA41 /* LyricsTester.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LyricsTester.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -138,8 +138,8 @@
 				0889233E278BE3B600BBBA41 /* ViewController.m */,
 				08891796281249B7003E620A /* Utils.h */,
 				08891797281249B7003E620A /* Utils.m */,
-				088917932810A9A2003E620A /* LTViewController.h */,
-				088917942810A9A2003E620A /* LTViewController.m */,
+				088917932810A9A2003E620A /* LTLyricsViewController.h */,
+				088917942810A9A2003E620A /* LTLyricsViewController.m */,
 				0889236F278BEDD200BBBA41 /* LTTableViewController.h */,
 				08892370278BEDD200BBBA41 /* LTTableViewController.m */,
 				08892340278BE3B600BBBA41 /* Main.storyboard */,
@@ -431,7 +431,7 @@
 			files = (
 				08892371278BEDD200BBBA41 /* LTTableViewController.m in Sources */,
 				0889233F278BE3B600BBBA41 /* ViewController.m in Sources */,
-				088917952810A9A2003E620A /* LTViewController.m in Sources */,
+				088917952810A9A2003E620A /* LTLyricsViewController.m in Sources */,
 				08892339278BE3B600BBBA41 /* AppDelegate.m in Sources */,
 				0889234A278BE3B700BBBA41 /* main.m in Sources */,
 				08891798281249B7003E620A /* Utils.m in Sources */,

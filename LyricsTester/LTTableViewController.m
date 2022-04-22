@@ -49,7 +49,6 @@
     self.tableView.showsHorizontalScrollIndicator = NO;
     self.tableView.backgroundColor = UIColor.clearColor;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateElapsedTime:) name:@"updateElapsedTime" object:nil];
 }
 
 - (void)tableView:(UITableView *)tableView selectCellAtIndexPath:(NSIndexPath *)indexPath {
