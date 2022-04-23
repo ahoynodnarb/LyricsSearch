@@ -1,4 +1,4 @@
-
+//
 //  ViewController.m
 //  LyricsTester
 //
@@ -7,9 +7,7 @@
 
 #import "LTLyricsTableViewController.h"
 
-@interface LTLyricsTableViewController () {
-    NSArray *_lyricsArray;
-}
+@interface LTLyricsTableViewController ()
 @property (nonatomic, strong) NSIndexPath *previouslySelectedPath;
 + (UIColor *)deselectedCellColor;
 + (UIColor *)selectedCellColor;
@@ -18,21 +16,12 @@
 
 @implementation LTLyricsTableViewController
 
-
 + (UIColor *)selectedCellColor {
     return [UIColor whiteColor];
 }
 
 + (UIColor *)deselectedCellColor {
     return [UIColor colorWithWhite:1.0 alpha:0.5];
-}
-
-- (void)setLyricsArray:(NSArray *)lyrics {
-    _lyricsArray = lyrics;
-}
-
-- (NSArray *)lyricsArray {
-    return _lyricsArray;
 }
 
 - (instancetype)initWithLyrics:(NSArray *)lyrics {

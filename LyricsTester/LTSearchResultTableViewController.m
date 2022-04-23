@@ -7,13 +7,14 @@
 
 #import "LTSearchResultTableViewController.h"
 #import "LTSearchResultTableViewCell.h"
+#import "LTLyricsViewController.h"
+#import "LTDataManager.h"
 
 @interface LTSearchResultTableViewController ()
 
 @end
 
 @implementation LTSearchResultTableViewController
-@synthesize searchResults;
 
 - (instancetype)initWithSearchResults:(NSArray *)searchResults {
     if(self = [super init]) {
@@ -25,13 +26,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.backgroundColor = [UIColor clearColor];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView registerClass:[LTSearchResultTableViewCell class] forCellReuseIdentifier:@"Cell"];
 }
 
-#pragma mark - Table view data source
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [searchResults count];
+    return [self.searchResults count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -45,7 +45,18 @@
     cell.artImageView.image = [UIImage imageWithData:artData];
     cell.titleLabel.text = [result objectForKey:@"songName"];
     cell.authorLabel.text = [result objectForKey:@"artistName"];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    LTSearchResultTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    NSString *song = cell.titleLabel.text;
+    NSString *artist = cell.authorLabel.text;
+    NSArray *lyrics = [LTDataManager lyricsForSong:song artist:artist];
+    UIImage *backgroundImage = cell.artImageView.image;
+    LTLyricsViewController *lyricsViewController = [[LTLyricsViewController alloc] initWithLyrics:lyrics song:song artist:artist image:backgroundImage];
+    [self presentViewController:lyricsViewController animated:YES completion:nil];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -13,94 +13,65 @@
 @end
 
 @implementation LTLyricsViewController
-@synthesize tableViewController;
-@synthesize songLabel;
-@synthesize containerView;
-@synthesize backgroundImageView;
 
-- (NSDictionary *)getSongInfo {
-    NSString *songArtist = @"Khalid";
-    NSString *songName = @"Better";
-    NSURL *imageURL = [NSURL URLWithString:@"https://i.scdn.co/image/ab67616d0000b27360624c0781fd787c9aa4699c"];
-    NSData *data = [NSData dataWithContentsOfURL:imageURL];
-    NSMutableDictionary *songInfo = [[NSMutableDictionary alloc] initWithObjects:@[songArtist, songName, data] forKeys:@[@"songArtist", @"songName", @"songArtwork"]];
-    NSString *URLString = [NSString stringWithFormat:@"https://api.textyl.co/api/lyrics?q=%@ %@", songName, songArtist];
-    URLString = [URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    NSURL *URL = [NSURL URLWithString:URLString];
-    NSData *responseData = [LTDataManager dataForURL:URL];
-    if(responseData) {
-        NSArray *lyricsArray = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:nil];
-        [songInfo setObject:lyricsArray forKey:@"lyricsArray"];
+- (instancetype)initWithLyrics:(NSArray *)lyrics song:(NSString *)song artist:(NSString *)artist image:(UIImage *)image {
+    if(self = [super init]) {
+        self.lyrics = lyrics;
+        self.song = song;
+        self.artist = artist;
+        self.backgroundImage = image;
     }
-    return songInfo;
-}
-
-- (void)updateView {
-    NSDictionary *info = [self getSongInfo];
-    NSString *songName = [info objectForKey:@"songName"];
-    NSString *songArtist = [info objectForKey:@"songArtist"];
-    NSData *artworkImageData = [info objectForKey:@"songArtwork"];
-    NSArray *lyricsArray = [info objectForKey:@"lyricsArray"];
-    self.tableViewController.lyricsArray = lyricsArray;
-    self.backgroundImageView.image = [UIImage imageWithData:artworkImageData];
-    self.songLabel.text = songName;
-    [self.songLabel sizeToFit];
-    self.artistLabel.text = songArtist;
-    [self.artistLabel sizeToFit];
-    [self.tableViewController.tableView reloadData];
-    [self.tableViewController.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.tableViewController = [[LTLyricsTableViewController alloc] init];
-    self.backgroundImageView = [[UIImageView alloc] init];
-    self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
-    self.backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    self.backgroundImageView.translatesAutoresizingMaskIntoConstraints = NO;
-    UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular]];
+    self.tableViewController = [[LTLyricsTableViewController alloc] initWithLyrics:self.lyrics];
+    UIImageView *backgroundImageView = [[UIImageView alloc] initWithImage:self.backgroundImage];
+    backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+    backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    backgroundImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
     blurEffectView.frame = self.view.bounds;
-    [self.backgroundImageView insertSubview:blurEffectView atIndex:0];
+    [backgroundImageView insertSubview:blurEffectView atIndex:0];
+    [self.view addSubview:backgroundImageView];
     self.containerView = [[UIView alloc] init];
     self.containerView.backgroundColor = UIColor.clearColor;
     self.containerView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.songLabel = [[MarqueeLabel alloc] init];
-    self.songLabel.marqueeType = MLLeftRight;
-    self.songLabel.animationCurve = UIViewAnimationOptionCurveLinear;
-    self.songLabel.font = [UIFont systemFontOfSize:40 weight:UIFontWeightHeavy];
-    self.songLabel.textColor = UIColor.whiteColor;
-    self.songLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    self.artistLabel = [[MarqueeLabel alloc] init];
-    self.artistLabel.marqueeType = MLLeftRight;
-    self.artistLabel.animationCurve = UIViewAnimationOptionCurveLinear;
-    self.artistLabel.font = [UIFont systemFontOfSize:30 weight:UIFontWeightHeavy];
-    self.artistLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.5];
-    self.artistLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:self.backgroundImageView];
     [self.view addSubview:self.containerView];
-    [self.view addSubview:self.songLabel];
-    [self.view addSubview:self.artistLabel];
+    MarqueeLabel *songLabel = [[MarqueeLabel alloc] init];
+    songLabel.marqueeType = MLLeftRight;
+    songLabel.font = [UIFont systemFontOfSize:40 weight:UIFontWeightHeavy];
+    songLabel.textColor = UIColor.whiteColor;
+    songLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    songLabel.text = self.song;
+    [self.view addSubview:songLabel];
+    MarqueeLabel *artistLabel = [[MarqueeLabel alloc] init];
+    artistLabel.marqueeType = MLLeftRight;
+    artistLabel.font = [UIFont systemFontOfSize:30 weight:UIFontWeightHeavy];
+    artistLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.5];
+    artistLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    artistLabel.text = self.artist;
+    [self.view addSubview:artistLabel];
     [NSLayoutConstraint activateConstraints:@[
-        [self.backgroundImageView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
-        [self.backgroundImageView.widthAnchor constraintEqualToConstant:self.view.bounds.size.width],
-        [self.backgroundImageView.heightAnchor constraintEqualToAnchor:self.view.heightAnchor],
+        [backgroundImageView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+        [backgroundImageView.widthAnchor constraintEqualToConstant:self.view.bounds.size.width],
+        [backgroundImageView.heightAnchor constraintEqualToAnchor:self.view.heightAnchor],
         [self.containerView.topAnchor constraintEqualToAnchor:self.view.topAnchor constant:150],
         [self.containerView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
         [self.containerView.widthAnchor constraintEqualToConstant:self.view.bounds.size.width-50],
         [self.containerView.heightAnchor constraintEqualToAnchor:self.view.heightAnchor constant:-150],
-        [self.songLabel.topAnchor constraintEqualToAnchor:self.view.topAnchor constant:50],
-        [self.songLabel.leftAnchor constraintEqualToAnchor:self.view.leftAnchor constant:45],
-        [self.songLabel.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
-        [self.artistLabel.topAnchor constraintEqualToAnchor:self.view.topAnchor constant:100],
-        [self.artistLabel.leftAnchor constraintEqualToAnchor:self.view.leftAnchor constant:45],
-        [self.artistLabel.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor]
+        [songLabel.topAnchor constraintEqualToAnchor:self.view.topAnchor constant:50],
+        [songLabel.leftAnchor constraintEqualToAnchor:self.view.leftAnchor constant:45],
+        [songLabel.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
+        [artistLabel.topAnchor constraintEqualToAnchor:self.view.topAnchor constant:100],
+        [artistLabel.leftAnchor constraintEqualToAnchor:self.view.leftAnchor constant:45],
+        [artistLabel.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor]
     ]];
     [self displayContentController:self.tableViewController];
-    [self updateView];
 }
 
-- (void)displayContentController:(UIViewController *)content;
-{
+- (void)displayContentController:(UIViewController *)content {
     [self addChildViewController:content];
     [self.containerView addSubview:content.view];
     content.view.frame = self.containerView.bounds;

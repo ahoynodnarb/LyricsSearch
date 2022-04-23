@@ -25,7 +25,7 @@
         self.authorLabel = [[UILabel alloc] init];
         self.authorLabel.translatesAutoresizingMaskIntoConstraints = NO;
         self.authorLabel.font = [UIFont fontWithName:@"Helvetica" size:14];
-        self.authorLabel.textColor = [UIColor darkGrayColor];
+        self.authorLabel.textColor = [UIColor grayColor];
         [self.contentView addSubview:self.authorLabel];
         [NSLayoutConstraint activateConstraints:@[
             [self.artImageView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor constant:10],
@@ -41,16 +41,6 @@
         ]];
     }
     return self;
-}
-
-- (void)awakeFromNib {
-    [super awakeFromNib];
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 
 @end

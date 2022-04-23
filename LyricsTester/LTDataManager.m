@@ -8,36 +8,12 @@
 #import "LTDataManager.h"
 
 @implementation LTDataManager
-+ (NSData *)dataForURL:(NSURL *)URL headers:(NSDictionary *)headers method:(NSString *)method {
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:URL];
-    [request setHTTPMethod:method];
-    for(NSString *header in headers) {
-        [request setValue:[headers valueForKey:header] forHTTPHeaderField:header];
-    }
-    NSData *__block responseData = nil;
-    BOOL __block fetchComplete = NO;
-    NSURLSessionDataTask *dataTask = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-        if(httpResponse.statusCode == 200) responseData = data;
-        fetchComplete = YES;
-    }];
-    [dataTask resume];
-    while(!fetchComplete) {}
-    return responseData;
-}
 
-+ (NSData *)dataForURL:(NSURL *)URL headers:(NSDictionary *)headers {
-    return [self dataForURL:URL headers:headers method:@"GET"];
-}
-
-+ (NSData *)dataForURL:(NSURL *)URL {
-    return [self dataForURL:URL headers:nil method:@"GET"];
-}
 + (NSArray *)infoForTrack:(NSString *)name {
-    NSString *access_token = @"14fqESqdMGlW4THQXt6HJnQZfk9O_6J9nFsX4OYJiTxaXJJAVGH0o4JCERehO3gg";
-    name = [name stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    NSString *searchTerm = [NSString stringWithFormat:@"https://api.genius.com/search?per_page=12&q=%@&access_token=%@", name, access_token];
-    NSData *data = [LTDataManager dataForURL:[NSURL URLWithString:searchTerm]];
+    NSString *searchTerm = [name stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSString *accessToken = [[[NSProcessInfo processInfo] environment] objectForKey:@"ACCESS_TOKEN"];
+    NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"https://api.genius.com/search?per_page=12&q=%@&access_token=%@", searchTerm, accessToken]];
+    NSData *data = [NSData dataWithContentsOfURL:URL];
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
     NSDictionary *response = [dict objectForKey:@"response"];
     NSMutableArray *info = [[NSMutableArray alloc] init];
@@ -52,4 +28,17 @@
     }
     return info;
 }
+
++ (NSArray *)lyricsForSong:(NSString *)song artist:(NSString *)artist {
+    NSString *URLString = [NSString stringWithFormat:@"https://api.textyl.co/api/lyrics?q=%@ %@", song, artist];
+    URLString = [URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSURL *URL = [NSURL URLWithString:URLString];
+    NSData *responseData = [NSData dataWithContentsOfURL:URL];
+    if(responseData) {
+        NSArray *lyricsArray = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:nil];
+        return lyricsArray;
+    }
+    return nil;
+}
+
 @end

@@ -1,4 +1,7 @@
-// @TODO: Asynchronous/background downloading
+// TODO: Asynchronous/background downloading
+// TODO: Refactor cell selection
+// TODO: Add message in case no lyrics found (find better API?)
+// TODO: Optimize downloading and maybe persistent cache
 
 //
 //  ViewController.m
@@ -15,10 +18,6 @@
 @end
 
 @implementation ViewController
-@synthesize lyricsViewController;
-@synthesize promptContainerView;
-@synthesize promptTextField;
-@synthesize searchResultTableViewController;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -30,11 +29,11 @@
     self.promptTextField = [[UITextField alloc] init];
     self.promptTextField.placeholder = @"Song Name";
     self.promptTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.promptTextField.textColor = [UIColor blackColor];
     self.promptTextField.backgroundColor = [UIColor whiteColor];
     self.promptTextField.layer.cornerRadius = 18;
     self.promptTextField.layer.masksToBounds = YES;
     self.promptTextField.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.promptContainerView addSubview:self.promptTextField];
     UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 18, 20)];
     self.promptTextField.leftView = paddingView;
     self.promptTextField.leftViewMode = UITextFieldViewModeAlways;
@@ -46,6 +45,7 @@
     [searchButton setImage:searchIconImage forState:UIControlStateNormal];
     searchButton.translatesAutoresizingMaskIntoConstraints = NO;
     [searchContainerView addSubview:searchButton];
+    [self.promptContainerView addSubview:self.promptTextField];
     self.songSelectionContainerView = [[UIView alloc] init];
     self.songSelectionContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.songSelectionContainerView];
@@ -60,8 +60,8 @@
         [self.songSelectionContainerView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
         [self.promptTextField.widthAnchor constraintEqualToConstant:300],
         [self.promptTextField.heightAnchor constraintEqualToConstant:40],
+        [self.promptTextField.bottomAnchor constraintEqualToAnchor:self.promptContainerView.bottomAnchor constant:-10],
         [self.promptTextField.centerXAnchor constraintEqualToAnchor:self.promptContainerView.centerXAnchor],
-        [self.promptTextField.centerYAnchor constraintEqualToAnchor:self.promptContainerView.centerYAnchor],
         [searchButton.topAnchor constraintEqualToAnchor:searchContainerView.topAnchor],
         [searchButton.leftAnchor constraintEqualToAnchor:searchContainerView.leftAnchor],
         [searchButton.bottomAnchor constraintEqualToAnchor:searchContainerView.bottomAnchor],
