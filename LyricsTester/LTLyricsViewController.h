@@ -7,12 +7,12 @@
 
 @import MarqueeLabel_ObjC;
 #import <UIKit/UIKit.h>
-#import "LTTableViewController.h"
+#import "LTLyricsTableViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LTLyricsViewController : UIViewController
-@property (nonatomic, strong) LTTableViewController *tableViewController;
+@property (nonatomic, strong) LTLyricsTableViewController *tableViewController;
 @property (nonatomic, strong) MarqueeLabel *songLabel;
 @property (nonatomic, strong) MarqueeLabel *artistLabel;
 @property (nonatomic, strong) UIView *containerView;

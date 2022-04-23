@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LTTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
+@interface LTLyricsTableViewController : UITableViewController
 @property (nonatomic, strong) NSArray *lyricsArray;
 - (instancetype)initWithLyrics:(NSArray *)lyrics;
 @end

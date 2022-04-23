@@ -6,7 +6,7 @@
 //
 
 #import "LTLyricsViewController.h"
-#import "Utils.h"
+#import "LTDataManager.h"
 
 @interface LTLyricsViewController ()
 
@@ -27,7 +27,7 @@
     NSString *URLString = [NSString stringWithFormat:@"https://api.textyl.co/api/lyrics?q=%@ %@", songName, songArtist];
     URLString = [URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSURL *URL = [NSURL URLWithString:URLString];
-    NSData *responseData = [Utils dataForURL:URL];
+    NSData *responseData = [LTDataManager dataForURL:URL];
     if(responseData) {
         NSArray *lyricsArray = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:nil];
         [songInfo setObject:lyricsArray forKey:@"lyricsArray"];
@@ -53,7 +53,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.tableViewController = [[LTTableViewController alloc] init];
+    self.tableViewController = [[LTLyricsTableViewController alloc] init];
     self.backgroundImageView = [[UIImageView alloc] init];
     self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;

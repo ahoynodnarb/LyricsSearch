@@ -1,3 +1,5 @@
+// @TODO: Asynchronous/background downloading
+
 //
 //  ViewController.m
 //  LyricsTester
@@ -6,7 +8,7 @@
 //
 
 #import "ViewController.h"
-#import "Utils.h"
+#import "LTDataManager.h"
 
 @interface ViewController ()
 
@@ -14,36 +16,72 @@
 
 @implementation ViewController
 @synthesize lyricsViewController;
-
-- (NSArray *)tracksForName:(NSString *)name {
-    NSString *access_token = @"14fqESqdMGlW4THQXt6HJnQZfk9O_6J9nFsX4OYJiTxaXJJAVGH0o4JCERehO3gg";
-    name = [name stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    NSString *searchTerm = [NSString stringWithFormat:@"https://api.genius.com/search?q=%@&access_token=%@", name, access_token];
-    NSData *data = [Utils dataForURL:[NSURL URLWithString:searchTerm]];
-    NSLog(@"%@", data);
-    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-    NSDictionary *response = [dict objectForKey:@"response"];
-    NSMutableArray *info = [[NSMutableArray alloc] init];
-    for(NSDictionary *hit in [response objectForKey:@"hits"]) {
-        NSDictionary *result = [hit objectForKey:@"result"];
-        NSString *artistNames = [result objectForKey:@"artist_names"];
-        NSString *songName = [result objectForKey:@"title"];
-        NSString *coverArtURL = [result objectForKey:@"song_art_image_url"];
-        NSDictionary *dict = @{@"artistName":artistNames, @"songName":songName, @"coverArtURL":coverArtURL};
-        [info addObject:dict];
-    }
-    return info;
-}
+@synthesize promptContainerView;
+@synthesize promptTextField;
+@synthesize searchResultTableViewController;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"%@", [self tracksForName:@"Better Now"]);
-    self.lyricsViewController = [[LTLyricsViewController alloc] init];
+    self.view.backgroundColor = [UIColor blackColor];
+    UIImage *searchIconImage = [UIImage imageNamed:@"SearchIcon"];
+    self.promptContainerView = [[UIView alloc] init];
+    self.promptContainerView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.promptContainerView];
+    self.promptTextField = [[UITextField alloc] init];
+    self.promptTextField.placeholder = @"Song Name";
+    self.promptTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.promptTextField.backgroundColor = [UIColor whiteColor];
+    self.promptTextField.layer.cornerRadius = 18;
+    self.promptTextField.layer.masksToBounds = YES;
+    self.promptTextField.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.promptContainerView addSubview:self.promptTextField];
+    UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 18, 20)];
+    self.promptTextField.leftView = paddingView;
+    self.promptTextField.leftViewMode = UITextFieldViewModeAlways;
+    UIView *searchContainerView = [[UIView alloc] initWithFrame:CGRectMake(0,0,searchIconImage.size.width+15,searchIconImage.size.height)];
+    self.promptTextField.rightView = searchContainerView;
+    self.promptTextField.rightViewMode = UITextFieldViewModeAlways;
+    UIButton *searchButton = [[UIButton alloc] initWithFrame:CGRectMake(0,0,searchIconImage.size.width,searchIconImage.size.height)];
+    [searchButton addTarget:self action:@selector(presentSearchResults) forControlEvents:UIControlEventTouchUpInside];
+    [searchButton setImage:searchIconImage forState:UIControlStateNormal];
+    searchButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [searchContainerView addSubview:searchButton];
+    self.songSelectionContainerView = [[UIView alloc] init];
+    self.songSelectionContainerView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.songSelectionContainerView];
+    [NSLayoutConstraint activateConstraints:@[
+        [self.promptContainerView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+        [self.promptContainerView.bottomAnchor constraintEqualToAnchor:self.view.topAnchor constant:150],
+        [self.promptContainerView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+        [self.promptContainerView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+        [self.songSelectionContainerView.topAnchor constraintEqualToAnchor:self.promptContainerView.bottomAnchor],
+        [self.songSelectionContainerView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
+        [self.songSelectionContainerView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+        [self.songSelectionContainerView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+        [self.promptTextField.widthAnchor constraintEqualToConstant:300],
+        [self.promptTextField.heightAnchor constraintEqualToConstant:40],
+        [self.promptTextField.centerXAnchor constraintEqualToAnchor:self.promptContainerView.centerXAnchor],
+        [self.promptTextField.centerYAnchor constraintEqualToAnchor:self.promptContainerView.centerYAnchor],
+        [searchButton.topAnchor constraintEqualToAnchor:searchContainerView.topAnchor],
+        [searchButton.leftAnchor constraintEqualToAnchor:searchContainerView.leftAnchor],
+        [searchButton.bottomAnchor constraintEqualToAnchor:searchContainerView.bottomAnchor],
+        [searchButton.rightAnchor constraintEqualToAnchor:searchContainerView.rightAnchor constant:-15],
+    ]];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    [self presentViewController:self.lyricsViewController animated:YES completion:nil];
+- (void)presentSearchResults {
+    NSString *search = self.promptTextField.text;
+    NSArray *results = [LTDataManager infoForTrack:search];
+    if(self.searchResultTableViewController) {
+        self.searchResultTableViewController.searchResults = results;
+        [self.searchResultTableViewController.tableView reloadData];
+        return;
+    }
+    self.searchResultTableViewController = [[LTSearchResultTableViewController alloc] initWithSearchResults:results];
+    [self addChildViewController:self.searchResultTableViewController];
+    [self.songSelectionContainerView addSubview:self.searchResultTableViewController.view];
+    self.searchResultTableViewController.view.frame = self.songSelectionContainerView.bounds;
+    [self.searchResultTableViewController didMoveToParentViewController:self];
 }
 
 @end

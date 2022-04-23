@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		088917952810A9A2003E620A /* LTLyricsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 088917942810A9A2003E620A /* LTLyricsViewController.m */; };
-		08891798281249B7003E620A /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 08891797281249B7003E620A /* Utils.m */; };
+		08891798281249B7003E620A /* LTDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08891797281249B7003E620A /* LTDataManager.m */; };
 		08892339278BE3B600BBBA41 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 08892338278BE3B600BBBA41 /* AppDelegate.m */; };
 		0889233C278BE3B600BBBA41 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0889233B278BE3B600BBBA41 /* SceneDelegate.m */; };
 		0889233F278BE3B600BBBA41 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0889233E278BE3B600BBBA41 /* ViewController.m */; };
@@ -19,7 +19,9 @@
 		08892354278BE3B700BBBA41 /* LyricsTesterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 08892353278BE3B700BBBA41 /* LyricsTesterTests.m */; };
 		0889235E278BE3B700BBBA41 /* LyricsTesterUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0889235D278BE3B700BBBA41 /* LyricsTesterUITests.m */; };
 		08892360278BE3B700BBBA41 /* LyricsTesterUITestsLaunchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0889235F278BE3B700BBBA41 /* LyricsTesterUITestsLaunchTests.m */; };
-		08892371278BEDD200BBBA41 /* LTTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08892370278BEDD200BBBA41 /* LTTableViewController.m */; };
+		08892371278BEDD200BBBA41 /* LTLyricsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08892370278BEDD200BBBA41 /* LTLyricsTableViewController.m */; };
+		088E822F281273E90017A073 /* LTSearchResultTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 088E822E281273E90017A073 /* LTSearchResultTableViewController.m */; };
+		088E82352813D8710017A073 /* LTSearchResultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 088E82342813D8710017A073 /* LTSearchResultTableViewCell.m */; };
 		E4C05C0B52312C9324756C87 /* Pods_LyricsTester.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD5F8B4E860950ECFB0FB391 /* Pods_LyricsTester.framework */; };
 		F0D48DFBE0ACDDB8DA0C2093 /* Pods_LyricsTester_LyricsTesterUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A780A83FF6D164630C4A4FEB /* Pods_LyricsTester_LyricsTesterUITests.framework */; };
 		FB2313910A8F6164D5E1F3DE /* Pods_LyricsTesterTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 093D785535CAB94571E3425B /* Pods_LyricsTesterTests.framework */; };
@@ -45,8 +47,8 @@
 /* Begin PBXFileReference section */
 		088917932810A9A2003E620A /* LTLyricsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTLyricsViewController.h; sourceTree = "<group>"; };
 		088917942810A9A2003E620A /* LTLyricsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LTLyricsViewController.m; sourceTree = "<group>"; };
-		08891796281249B7003E620A /* Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
-		08891797281249B7003E620A /* Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
+		08891796281249B7003E620A /* LTDataManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTDataManager.h; sourceTree = "<group>"; };
+		08891797281249B7003E620A /* LTDataManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LTDataManager.m; sourceTree = "<group>"; };
 		08892334278BE3B600BBBA41 /* LyricsTester.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LyricsTester.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08892337278BE3B600BBBA41 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		08892338278BE3B600BBBA41 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -64,8 +66,12 @@
 		08892359278BE3B700BBBA41 /* LyricsTesterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LyricsTesterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0889235D278BE3B700BBBA41 /* LyricsTesterUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LyricsTesterUITests.m; sourceTree = "<group>"; };
 		0889235F278BE3B700BBBA41 /* LyricsTesterUITestsLaunchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LyricsTesterUITestsLaunchTests.m; sourceTree = "<group>"; };
-		0889236F278BEDD200BBBA41 /* LTTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTTableViewController.h; sourceTree = "<group>"; };
-		08892370278BEDD200BBBA41 /* LTTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LTTableViewController.m; sourceTree = "<group>"; };
+		0889236F278BEDD200BBBA41 /* LTLyricsTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTLyricsTableViewController.h; sourceTree = "<group>"; };
+		08892370278BEDD200BBBA41 /* LTLyricsTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LTLyricsTableViewController.m; sourceTree = "<group>"; };
+		088E822D281273E90017A073 /* LTSearchResultTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTSearchResultTableViewController.h; sourceTree = "<group>"; };
+		088E822E281273E90017A073 /* LTSearchResultTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LTSearchResultTableViewController.m; sourceTree = "<group>"; };
+		088E82332813D8710017A073 /* LTSearchResultTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTSearchResultTableViewCell.h; sourceTree = "<group>"; };
+		088E82342813D8710017A073 /* LTSearchResultTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LTSearchResultTableViewCell.m; sourceTree = "<group>"; };
 		093D785535CAB94571E3425B /* Pods_LyricsTesterTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LyricsTesterTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		20085E4A9981B1A84228F05E /* Pods-LyricsTester-LyricsTesterUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LyricsTester-LyricsTesterUITests.release.xcconfig"; path = "Target Support Files/Pods-LyricsTester-LyricsTesterUITests/Pods-LyricsTester-LyricsTesterUITests.release.xcconfig"; sourceTree = "<group>"; };
 		2F29047C0FB4395C316CC424 /* Pods-LyricsTester.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LyricsTester.release.xcconfig"; path = "Target Support Files/Pods-LyricsTester/Pods-LyricsTester.release.xcconfig"; sourceTree = "<group>"; };
@@ -136,12 +142,16 @@
 				0889233B278BE3B600BBBA41 /* SceneDelegate.m */,
 				0889233D278BE3B600BBBA41 /* ViewController.h */,
 				0889233E278BE3B600BBBA41 /* ViewController.m */,
-				08891796281249B7003E620A /* Utils.h */,
-				08891797281249B7003E620A /* Utils.m */,
+				0889236F278BEDD200BBBA41 /* LTLyricsTableViewController.h */,
+				08892370278BEDD200BBBA41 /* LTLyricsTableViewController.m */,
+				088E82332813D8710017A073 /* LTSearchResultTableViewCell.h */,
+				088E82342813D8710017A073 /* LTSearchResultTableViewCell.m */,
+				088E822D281273E90017A073 /* LTSearchResultTableViewController.h */,
+				088E822E281273E90017A073 /* LTSearchResultTableViewController.m */,
 				088917932810A9A2003E620A /* LTLyricsViewController.h */,
 				088917942810A9A2003E620A /* LTLyricsViewController.m */,
-				0889236F278BEDD200BBBA41 /* LTTableViewController.h */,
-				08892370278BEDD200BBBA41 /* LTTableViewController.m */,
+				08891796281249B7003E620A /* LTDataManager.h */,
+				08891797281249B7003E620A /* LTDataManager.m */,
 				08892340278BE3B600BBBA41 /* Main.storyboard */,
 				08892343278BE3B700BBBA41 /* Assets.xcassets */,
 				08892345278BE3B700BBBA41 /* LaunchScreen.storyboard */,
@@ -429,12 +439,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				08892371278BEDD200BBBA41 /* LTTableViewController.m in Sources */,
+				08892371278BEDD200BBBA41 /* LTLyricsTableViewController.m in Sources */,
 				0889233F278BE3B600BBBA41 /* ViewController.m in Sources */,
 				088917952810A9A2003E620A /* LTLyricsViewController.m in Sources */,
+				088E82352813D8710017A073 /* LTSearchResultTableViewCell.m in Sources */,
 				08892339278BE3B600BBBA41 /* AppDelegate.m in Sources */,
 				0889234A278BE3B700BBBA41 /* main.m in Sources */,
-				08891798281249B7003E620A /* Utils.m in Sources */,
+				08891798281249B7003E620A /* LTDataManager.m in Sources */,
+				088E822F281273E90017A073 /* LTSearchResultTableViewController.m in Sources */,
 				0889233C278BE3B600BBBA41 /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

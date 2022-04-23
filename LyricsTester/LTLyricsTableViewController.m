@@ -5,9 +5,9 @@
 //  Created by Brandon Yao on 1/9/22.
 //
 
-#import "LTTableViewController.h"
+#import "LTLyricsTableViewController.h"
 
-@interface LTTableViewController () {
+@interface LTLyricsTableViewController () {
     NSArray *_lyricsArray;
 }
 @property (nonatomic, strong) NSIndexPath *previouslySelectedPath;
@@ -16,7 +16,7 @@
 - (void)tableView:(UITableView *)tableView selectCellAtIndexPath:(NSIndexPath *)indexPath;
 @end
 
-@implementation LTTableViewController
+@implementation LTLyricsTableViewController
 
 
 + (UIColor *)selectedCellColor {

@@ -7,8 +7,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Utils : NSObject
+@interface LTDataManager : NSObject
 + (NSData *)dataForURL:(NSURL *)URL headers:(NSDictionary *)headers method:(NSString *)method;
 + (NSData *)dataForURL:(NSURL *)URL headers:(NSDictionary *)headers;
 + (NSData *)dataForURL:(NSURL *)URL;
++ (NSArray *)infoForTrack:(NSString *)name;
 @end
