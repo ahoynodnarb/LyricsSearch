@@ -65,7 +65,7 @@
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.textLabel.text = [[self.lyricsArray objectAtIndex:indexPath.section] objectForKey:@"lyrics"];
+    cell.textLabel.text = [[self.lyricsArray objectAtIndex:indexPath.section] objectForKey:@"words"];
     cell.textLabel.numberOfLines = 0;
     cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
     cell.textLabel.font = [UIFont systemFontOfSize:40 weight:UIFontWeightHeavy];

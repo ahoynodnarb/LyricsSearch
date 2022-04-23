@@ -9,6 +9,24 @@
 
 @implementation LTDataManager
 
++ (NSData *)dataForURL:(NSURL *)URL headers:(NSDictionary *)headers {
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:URL];
+    [request setHTTPMethod:@"GET"];
+    for(NSString *header in headers) {
+        [request setValue:[headers valueForKey:header] forHTTPHeaderField:header];
+    }
+    NSData *__block responseData = nil;
+    BOOL __block fetchComplete = NO;
+    NSURLSessionDataTask *dataTask = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+        if(httpResponse.statusCode == 200) responseData = data;
+        fetchComplete = YES;
+    }];
+    [dataTask resume];
+    while(!fetchComplete) {}
+    return responseData;
+}
+
 + (NSArray *)infoForTrack:(NSString *)name {
     NSString *searchTerm = [name stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSString *accessToken = [[[NSProcessInfo processInfo] environment] objectForKey:@"ACCESS_TOKEN"];
@@ -30,13 +48,22 @@
 }
 
 + (NSArray *)lyricsForSong:(NSString *)song artist:(NSString *)artist {
-    NSString *URLString = [NSString stringWithFormat:@"https://api.textyl.co/api/lyrics?q=%@ %@", song, artist];
+    NSString *searchTerm = [NSString stringWithFormat:@"%@ %@", song, artist];
+    NSString *URLString = [NSString stringWithFormat:@"https://timestamp-lyrics.p.rapidapi.com/extract-lyrics?name=%@", searchTerm];
     URLString = [URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSURL *URL = [NSURL URLWithString:URLString];
-    NSData *responseData = [NSData dataWithContentsOfURL:URL];
+    NSString *host = @"timestamp-lyrics.p.rapidapi.com";
+    NSString *key = @"f47ed3409dmsh35cdc754cb3d2c2p1bb437jsnfd4b45952108";
+    NSDictionary *headers = @{
+        @"X-RapidAPI-Host": host,
+        @"X-RapidAPI-Key": key
+    };
+    NSData *responseData = [LTDataManager dataForURL:URL headers:headers];
     if(responseData) {
-        NSArray *lyricsArray = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:nil];
-        return lyricsArray;
+        NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:nil];
+        NSArray *lyrics = [responseDict objectForKey:@"lyrics"];
+        // slice the first one because it's empty
+        return [lyrics subarrayWithRange:NSMakeRange(1, [lyrics count] - 1)];
     }
     return nil;
 }

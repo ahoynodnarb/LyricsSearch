@@ -46,18 +46,18 @@
     searchButton.translatesAutoresizingMaskIntoConstraints = NO;
     [searchContainerView addSubview:searchButton];
     [self.promptContainerView addSubview:self.promptTextField];
-    self.songSelectionContainerView = [[UIView alloc] init];
-    self.songSelectionContainerView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:self.songSelectionContainerView];
+    self.searchResultContainerView = [[UIView alloc] init];
+    self.searchResultContainerView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.searchResultContainerView];
     [NSLayoutConstraint activateConstraints:@[
         [self.promptContainerView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
         [self.promptContainerView.bottomAnchor constraintEqualToAnchor:self.view.topAnchor constant:150],
         [self.promptContainerView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
         [self.promptContainerView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
-        [self.songSelectionContainerView.topAnchor constraintEqualToAnchor:self.promptContainerView.bottomAnchor],
-        [self.songSelectionContainerView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
-        [self.songSelectionContainerView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-        [self.songSelectionContainerView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+        [self.searchResultContainerView.topAnchor constraintEqualToAnchor:self.promptContainerView.bottomAnchor],
+        [self.searchResultContainerView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
+        [self.searchResultContainerView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+        [self.searchResultContainerView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
         [self.promptTextField.widthAnchor constraintEqualToConstant:300],
         [self.promptTextField.heightAnchor constraintEqualToConstant:40],
         [self.promptTextField.bottomAnchor constraintEqualToAnchor:self.promptContainerView.bottomAnchor constant:-10],
@@ -79,8 +79,8 @@
     }
     self.searchResultTableViewController = [[LTSearchResultTableViewController alloc] initWithSearchResults:results];
     [self addChildViewController:self.searchResultTableViewController];
-    [self.songSelectionContainerView addSubview:self.searchResultTableViewController.view];
-    self.searchResultTableViewController.view.frame = self.songSelectionContainerView.bounds;
+    [self.searchResultContainerView addSubview:self.searchResultTableViewController.view];
+    self.searchResultTableViewController.view.frame = self.searchResultContainerView.bounds;
     [self.searchResultTableViewController didMoveToParentViewController:self];
 }
 

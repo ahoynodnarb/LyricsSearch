@@ -10,7 +10,7 @@
 #import "LTSearchResultTableViewController.h"
 
 @interface ViewController : UIViewController
-@property (nonatomic, strong) UIView *songSelectionContainerView;
+@property (nonatomic, strong) UIView *searchResultContainerView;
 @property (nonatomic, strong) UIView *promptContainerView;
 @property (nonatomic, strong) UITextField *promptTextField;
 @property (nonatomic, strong) LTLyricsViewController *lyricsViewController;
