@@ -22,6 +22,7 @@
 		08892371278BEDD200BBBA41 /* LTLyricsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08892370278BEDD200BBBA41 /* LTLyricsTableViewController.m */; };
 		088E822F281273E90017A073 /* LTSearchResultTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 088E822E281273E90017A073 /* LTSearchResultTableViewController.m */; };
 		088E82352813D8710017A073 /* LTSearchResultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 088E82342813D8710017A073 /* LTSearchResultTableViewCell.m */; };
+		08A400952814F85B00CF6D1C /* LTLyricsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A400942814F85B00CF6D1C /* LTLyricsTableViewCell.m */; };
 		E4C05C0B52312C9324756C87 /* Pods_LyricsTester.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD5F8B4E860950ECFB0FB391 /* Pods_LyricsTester.framework */; };
 		F0D48DFBE0ACDDB8DA0C2093 /* Pods_LyricsTester_LyricsTesterUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A780A83FF6D164630C4A4FEB /* Pods_LyricsTester_LyricsTesterUITests.framework */; };
 		FB2313910A8F6164D5E1F3DE /* Pods_LyricsTesterTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 093D785535CAB94571E3425B /* Pods_LyricsTesterTests.framework */; };
@@ -72,6 +73,8 @@
 		088E822E281273E90017A073 /* LTSearchResultTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LTSearchResultTableViewController.m; sourceTree = "<group>"; };
 		088E82332813D8710017A073 /* LTSearchResultTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTSearchResultTableViewCell.h; sourceTree = "<group>"; };
 		088E82342813D8710017A073 /* LTSearchResultTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LTSearchResultTableViewCell.m; sourceTree = "<group>"; };
+		08A400932814F85B00CF6D1C /* LTLyricsTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTLyricsTableViewCell.h; sourceTree = "<group>"; };
+		08A400942814F85B00CF6D1C /* LTLyricsTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LTLyricsTableViewCell.m; sourceTree = "<group>"; };
 		093D785535CAB94571E3425B /* Pods_LyricsTesterTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LyricsTesterTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		20085E4A9981B1A84228F05E /* Pods-LyricsTester-LyricsTesterUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LyricsTester-LyricsTesterUITests.release.xcconfig"; path = "Target Support Files/Pods-LyricsTester-LyricsTesterUITests/Pods-LyricsTester-LyricsTesterUITests.release.xcconfig"; sourceTree = "<group>"; };
 		2F29047C0FB4395C316CC424 /* Pods-LyricsTester.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LyricsTester.release.xcconfig"; path = "Target Support Files/Pods-LyricsTester/Pods-LyricsTester.release.xcconfig"; sourceTree = "<group>"; };
@@ -144,6 +147,8 @@
 				0889233E278BE3B600BBBA41 /* ViewController.m */,
 				088917932810A9A2003E620A /* LTLyricsViewController.h */,
 				088917942810A9A2003E620A /* LTLyricsViewController.m */,
+				08A400932814F85B00CF6D1C /* LTLyricsTableViewCell.h */,
+				08A400942814F85B00CF6D1C /* LTLyricsTableViewCell.m */,
 				0889236F278BEDD200BBBA41 /* LTLyricsTableViewController.h */,
 				08892370278BEDD200BBBA41 /* LTLyricsTableViewController.m */,
 				088E82332813D8710017A073 /* LTSearchResultTableViewCell.h */,
@@ -446,6 +451,7 @@
 				08892339278BE3B600BBBA41 /* AppDelegate.m in Sources */,
 				0889234A278BE3B700BBBA41 /* main.m in Sources */,
 				08891798281249B7003E620A /* LTDataManager.m in Sources */,
+				08A400952814F85B00CF6D1C /* LTLyricsTableViewCell.m in Sources */,
 				088E822F281273E90017A073 /* LTSearchResultTableViewController.m in Sources */,
 				0889233C278BE3B600BBBA41 /* SceneDelegate.m in Sources */,
 			);

@@ -6,8 +6,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LTLyricsViewController.h"
 
 @interface LTSearchResultTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) NSArray *searchResults;
+@property (nonatomic, strong) LTLyricsViewController *lyricsViewController;
 - (instancetype)initWithSearchResults:(NSArray *)searchResults;
 @end

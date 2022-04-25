@@ -16,6 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *song;
 @property (nonatomic, strong) NSString *artist;
 @property (nonatomic, strong) UIImage *backgroundImage;
+@property (nonatomic, strong) UIImageView *backgroundImageView;
+@property (nonatomic, strong) MarqueeLabel *songLabel;
+@property (nonatomic, strong) MarqueeLabel *artistLabel;
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) LTLyricsTableViewController *tableViewController;
 - (instancetype)initWithLyrics:(NSArray *)lyrics song:(NSString *)song artist:(NSString *)artist image:(UIImage *)image;

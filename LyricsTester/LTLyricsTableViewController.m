@@ -6,23 +6,13 @@
 //
 
 #import "LTLyricsTableViewController.h"
+#import "LTLyricsTableViewCell.h"
 
 @interface LTLyricsTableViewController ()
-@property (nonatomic, strong) NSIndexPath *previouslySelectedPath;
-+ (UIColor *)deselectedCellColor;
-+ (UIColor *)selectedCellColor;
-- (void)tableView:(UITableView *)tableView selectCellAtIndexPath:(NSIndexPath *)indexPath;
+@property (nonatomic, assign) NSInteger nextSection;
 @end
 
 @implementation LTLyricsTableViewController
-
-+ (UIColor *)selectedCellColor {
-    return [UIColor whiteColor];
-}
-
-+ (UIColor *)deselectedCellColor {
-    return [UIColor colorWithWhite:1.0 alpha:0.5];
-}
 
 - (instancetype)initWithLyrics:(NSArray *)lyrics {
     if(self = [super init]) {
@@ -31,38 +21,57 @@
     return self;
 }
 
+- (void)updateTimer {
+    if(self.nextSection == [self.lyricsArray count]) {
+        [self.timer invalidate];
+        return;
+    }
+    float nextDelay = [[[self.lyricsArray objectAtIndex:self.nextSection] objectForKey:@"timestamp"] floatValue] / 1000.0f;
+    float currentDelay = [[[self.lyricsArray objectAtIndex:self.nextSection - 1] objectForKey:@"timestamp"] floatValue] / 1000.0f;
+    float delay = nextDelay - currentDelay;
+    self.timer.fireDate = [self.timer.fireDate dateByAddingTimeInterval:delay];
+}
+
+- (void)selectNextCell {
+    NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:self.nextSection++];
+    [self.tableView selectRowAtIndexPath:selectedIndexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
+    [self updateTimer];
+}
+
+- (void)beginTimer {
+    float delay = [[[self.lyricsArray objectAtIndex:self.nextSection] objectForKey:@"timestamp"] floatValue] / 1000.0f;
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(selectNextCell) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.showsHorizontalScrollIndicator = NO;
     self.tableView.backgroundColor = UIColor.clearColor;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.tableView registerClass:[LTLyricsTableViewCell class] forCellReuseIdentifier:@"Cell"];
 }
 
-- (void)tableView:(UITableView *)tableView selectCellAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    if(self.previouslySelectedPath != indexPath) {
-        UITableViewCell *previouslySelectedCell = [tableView cellForRowAtIndexPath:self.previouslySelectedPath];
-        previouslySelectedCell.textLabel.transform = CGAffineTransformMakeScale(0.8,0.8);
-        previouslySelectedCell.textLabel.textColor = [self.class deselectedCellColor];
-        self.previouslySelectedPath = indexPath;
-        cell.textLabel.layer.anchorPoint = CGPointMake(0,0);
-        cell.textLabel.layer.position = cell.textLabel.layer.frame.origin;
-        cell.textLabel.textColor = [self.class selectedCellColor];
-        [UIView animateWithDuration:0.4 animations:^(void){
-            cell.textLabel.transform = CGAffineTransformMakeScale(1, 1);
-        }];
-    }
-    [UIView setAnimationsEnabled:NO];
-    [self.tableView beginUpdates];
-    [self.tableView endUpdates];
-    [UIView setAnimationsEnabled:YES];
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [self.timer invalidate];
+    self.nextSection = 0;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    NSLog(@"view will appear");
+    [self beginTimer];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    self.nextSection = [indexPath section] + 1;
+    [self updateTimer];
     [tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    self.previouslySelectedPath = indexPath;
 }
 
-- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.textLabel.text = [[self.lyricsArray objectAtIndex:indexPath.section] objectForKey:@"words"];
@@ -71,21 +80,11 @@
     cell.textLabel.font = [UIFont systemFontOfSize:40 weight:UIFontWeightHeavy];
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     cell.backgroundColor = UIColor.clearColor;
-    if(indexPath == self.previouslySelectedPath) {
-        cell.textLabel.transform = CGAffineTransformMakeScale(1, 1);
-        cell.textLabel.textColor = [self.class selectedCellColor];
-        self.previouslySelectedPath = indexPath;
-    }
-    else {
-        cell.textLabel.transform = CGAffineTransformMakeScale(0.8,0.8);
-        cell.textLabel.textColor = [self.class deselectedCellColor];
-    }
     return cell;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    NSUInteger count = self.lyricsArray.count;
-    return count;
+    return [self.lyricsArray count];
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

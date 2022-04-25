@@ -55,8 +55,12 @@
     NSString *artist = cell.authorLabel.text;
     NSArray *lyrics = [LTDataManager lyricsForSong:song artist:artist];
     UIImage *backgroundImage = cell.artImageView.image;
-    LTLyricsViewController *lyricsViewController = [[LTLyricsViewController alloc] initWithLyrics:lyrics song:song artist:artist image:backgroundImage];
-    [self presentViewController:lyricsViewController animated:YES completion:nil];
+    if(!self.lyricsViewController) self.lyricsViewController = [[LTLyricsViewController alloc] init];
+    self.lyricsViewController.lyrics = lyrics;
+    self.lyricsViewController.song = song;
+    self.lyricsViewController.artist = artist;
+    self.lyricsViewController.backgroundImage = backgroundImage;
+    [self presentViewController:self.lyricsViewController animated:YES completion:nil];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
