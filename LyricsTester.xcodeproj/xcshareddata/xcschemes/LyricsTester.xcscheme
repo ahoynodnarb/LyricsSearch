@@ -70,16 +70,20 @@
             ReferencedContainer = "container:LyricsTester.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <CommandLineArguments>
-         <CommandLineArgument
-            argument = "-destination &apos;generic/platform=iOS&apos; "
-            isEnabled = "YES">
-         </CommandLineArgument>
-      </CommandLineArguments>
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "ACCESS_TOKEN"
             value = "14fqESqdMGlW4THQXt6HJnQZfk9O_6J9nFsX4OYJiTxaXJJAVGH0o4JCERehO3gg"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "API_KEY"
+            value = "a3454edb65483e706c127deaa11df69d"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "USER_TOKEN"
+            value = "201219dbdb0f6aaba1c774bd931d0e79a28024e28db027ae72955c"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>

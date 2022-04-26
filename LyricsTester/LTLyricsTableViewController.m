@@ -26,8 +26,9 @@
         [self.timer invalidate];
         return;
     }
-    float nextDelay = [[[self.lyricsArray objectAtIndex:self.nextSection] objectForKey:@"timestamp"] floatValue] / 1000.0f;
-    float currentDelay = [[[self.lyricsArray objectAtIndex:self.nextSection - 1] objectForKey:@"timestamp"] floatValue] / 1000.0f;
+//    float nextDelay = [[[self.lyricsArray objectAtIndex:self.nextSection] objectForKey:@"timestamp"] floatValue] / 1000.0f;
+    float nextDelay = [self.lyricsArray[self.nextSection][@"time"][@"total"] floatValue];
+    float currentDelay = [self.lyricsArray[self.nextSection-1][@"time"][@"total"] floatValue];
     float delay = nextDelay - currentDelay;
     self.timer.fireDate = [self.timer.fireDate dateByAddingTimeInterval:delay];
 }
@@ -39,7 +40,7 @@
 }
 
 - (void)beginTimer {
-    float delay = [[[self.lyricsArray objectAtIndex:self.nextSection] objectForKey:@"timestamp"] floatValue] / 1000.0f;
+    float delay = [self.lyricsArray[self.nextSection][@"time"][@"total"] floatValue];
     self.timer = [NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(selectNextCell) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
 }
@@ -62,7 +63,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     NSLog(@"view will appear");
-    [self beginTimer];
+    if(self.lyricsArray) [self beginTimer];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -74,7 +75,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.textLabel.text = [[self.lyricsArray objectAtIndex:indexPath.section] objectForKey:@"words"];
+    cell.textLabel.text = self.lyricsArray[indexPath.section][@"text"];
+//    cell.textLabel.text = [[self.lyricsArray objectAtIndex:indexPath.section] objectForKey:@"text"];
     cell.textLabel.numberOfLines = 0;
     cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
     cell.textLabel.font = [UIFont systemFontOfSize:40 weight:UIFontWeightHeavy];

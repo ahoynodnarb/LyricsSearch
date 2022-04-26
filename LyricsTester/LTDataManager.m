@@ -25,10 +25,35 @@
     return responseData;
 }
 
-+ (NSArray *)infoForTrack:(NSString *)name {
-    NSString *searchTerm = [name stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+//+ (NSData *)albumArtDataForID:(NSInteger)ID {
+//    NSString *APIKey = @"a3454edb65483e706c127deaa11df69d";
+//    NSString *URLString = [NSString stringWithFormat:@"https://api.musixmatch.com/ws/1.1/track.search?q=%@&page_size=12&page=1&s_track_rating=desc&apikey=%@", searchTerm, APIKey];
+//    URLString = [URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+//    NSURL *URL = [NSURL URLWithString:URLString];
+//    NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfURL:URL] options:NSJSONReadingMutableContainers error:nil];
+//}
+
++ (NSArray *)infoForSearchTerm:(NSString *)searchTerm {
+    // do this instead of genius perhaps
+//    NSString *APIKey = @"a3454edb65483e706c127deaa11df69d";
+//    NSString *URLString = [NSString stringWithFormat:@"https://api.musixmatch.com/ws/1.1/track.search?q=%@&page_size=12&page=1&s_track_rating=desc&apikey=%@", searchTerm, APIKey];
+//    URLString = [URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+//    NSURL *URL = [NSURL URLWithString:URLString];
+//    NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfURL:URL] options:NSJSONReadingMutableContainers error:nil];
+//    NSArray *tracks = response[@"message"][@"body"][@"track_list"];
+//    NSMutableArray *info = [[NSMutableArray alloc] init];
+//    for(NSDictionary *track in tracks) {
+//        NSDictionary *trackInfo = track[@"track"];
+//        NSString *songName = track[@"track_name"];
+//        NSString *artistName = track[@"artist_name"];
+//        NSData *artData = [LTDataManager albumArtDataForID:trackInfo[@"album_id"]];
+//        NSDictionary *dict = @{@"songName": songName, @"artistName": artistName, @"artData":artData};
+//        [info addObject:dict];
+//    }
+//    return info;
+    NSString *sanitized = [searchTerm stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSString *accessToken = [[[NSProcessInfo processInfo] environment] objectForKey:@"ACCESS_TOKEN"];
-    NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"https://api.genius.com/search?per_page=12&q=%@&access_token=%@", searchTerm, accessToken]];
+    NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"https://api.genius.com/search?per_page=12&q=%@&access_token=%@", sanitized, accessToken]];
     NSData *data = [NSData dataWithContentsOfURL:URL];
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
     NSDictionary *response = [dict objectForKey:@"response"];
@@ -45,93 +70,36 @@
     return info;
 }
 
-+ (NSArray *)lyricsForSong:(NSString *)song artist:(NSString *)artist {
-    NSArray *array = @[
-            @{ @"timestamp": @(11750), @"words": @"You prolly think that you are better now, better now" },
-            @{ @"timestamp": @(15190), @"words": @"You only say that 'cause I'm not around, not around" },
-            @{ @"timestamp": @(18220), @"words": @"You know I never meant to let you down, let you down" },
-            @{ @"timestamp": @(21660), @"words": @"Woulda gave you anything" },
-            @{ @"timestamp": @(23470), @"words": @"Woulda gave you everything" },
-            @{ @"timestamp": @(25350), @"words": @"You know I say that I am better now, better now" },
-            @{ @"timestamp": @(28260), @"words": @"I only say that 'cause you're not around, not around" },
-            @{ @"timestamp": @(31600), @"words": @"You know I never meant to let you down, let you down" },
-            @{ @"timestamp": @(35080), @"words": @"Woulda gave you anything" },
-            @{ @"timestamp": @(36940), @"words": @"Woulda gave you everything, oh-oh" },
-            @{ @"timestamp": @(39700), @"words": @"I did not believe that it would end, no" },
-            @{ @"timestamp": @(42870), @"words": @"Everything came second to the Benzo" },
-            @{ @"timestamp": @(46150), @"words": @"You're not even speakin' to my friends, no" },
-            @{ @"timestamp": @(49520), @"words": @"You knew all my uncles and my aunts though" },
-            @{ @"timestamp": @(52900), @"words": @"Twenty candles, blow 'em out and open your eyes" },
-            @{ @"timestamp": @(56150), @"words": @"We were lookin' forward to the rest of our lives" },
-            @{ @"timestamp": @(59310), @"words": @"Used to keep my picture posted by your bedside" },
-            @{ @"timestamp": @(62670), @"words": @"Now it's in your dresser with the socks you don't like" },
-            @{ @"timestamp": @(65910), @"words": @"And I'm rollin', rollin', rollin', rollin'" },
-            @{ @"timestamp": @(69160), @"words": @"With my brothers like it's Jonas, Jonas" },
-            @{ @"timestamp": @(72480), @"words": @"Drinkin' Henny and I'm tryna forget" },
-            @{ @"timestamp": @(75900), @"words": @"But I can't get this shit outta my head" },
-            @{ @"timestamp": @(78170), @"words": @"You prolly think that you are better now, better now" },
-            @{ @"timestamp": @(81000), @"words": @"You only say that 'cause I'm not around, not around" },
-            @{ @"timestamp": @(84430), @"words": @"You know I never meant to let you down, let you down" },
-            @{ @"timestamp": @(87910), @"words": @"Woulda gave you anything" },
-            @{ @"timestamp": @(89710), @"words": @"Woulda gave you everything" },
-            @{ @"timestamp": @(91480), @"words": @"You know I say that I am better now, better now" },
-            @{ @"timestamp": @(94300), @"words": @"I only say that 'cause you're not around, not around" },
-            @{ @"timestamp": @(98150), @"words": @"You know I never meant to let you down, let you down" },
-            @{ @"timestamp": @(100950), @"words": @"Woulda gave you anything" },
-            @{ @"timestamp": @(102650), @"words": @"Woulda gave you everything, oh-oh" },
-            @{ @"timestamp": @(106050), @"words": @"I seen you with your other dude" },
-            @{ @"timestamp": @(109280), @"words": @"He seemed like he was pretty cool" },
-            @{ @"timestamp": @(112420), @"words": @"I was so broken over you" },
-            @{ @"timestamp": @(115820), @"words": @"Life, it goes on, what can you do?" },
-            @{ @"timestamp": @(118430), @"words": @"I just wonder what it's gonna take" },
-            @{ @"timestamp": @(121880), @"words": @"Another foreign or a bigger chain" },
-            @{ @"timestamp": @(125130), @"words": @"Because no matter how my life has changed" },
-            @{ @"timestamp": @(128310), @"words": @"I keep on looking back on better days" },
-            @{ @"timestamp": @(131020), @"words": @"You prolly think that you are better now, better now" },
-            @{ @"timestamp": @(134130), @"words": @"You only say that 'cause I'm not around, not around" },
-            @{ @"timestamp": @(137580), @"words": @"You know I never meant to let you down, let you down" },
-            @{ @"timestamp": @(140670), @"words": @"Woulda gave you anything" },
-            @{ @"timestamp": @(142460), @"words": @"Woulda gave you everything" },
-            @{ @"timestamp": @(144390), @"words": @"You know I say that I am better now, better now" },
-            @{ @"timestamp": @(147530), @"words": @"I only say that 'cause you're not around, not around" },
-            @{ @"timestamp": @(150570), @"words": @"You know I never meant to let you down, let you down" },
-            @{ @"timestamp": @(154160), @"words": @"Woulda gave you anything" },
-            @{ @"timestamp": @(155660), @"words": @"Woulda gave you everything, oh-oh" },
-            @{ @"timestamp": @(159030), @"words": @"I promise, I swear to you, I'll be okay" },
-            @{ @"timestamp": @(164850), @"words": @"You're only the love of my life (the love of my life)" },
-            @{ @"timestamp": @(171140), @"words": @"You prolly think that you are better now, better now" },
-            @{ @"timestamp": @(174100), @"words": @"You only say that 'cause I'm not around, not around" },
-            @{ @"timestamp": @(177660), @"words": @"You know I never meant to let you down, let you down" },
-            @{ @"timestamp": @(180570), @"words": @"Woulda gave you anything" },
-            @{ @"timestamp": @(182110), @"words": @"Woulda gave you everything" },
-            @{ @"timestamp": @(184080), @"words": @"You know I say that I am better now, better now" },
-            @{ @"timestamp": @(186950), @"words": @"I only say that 'cause you're not around, not around" },
-            @{ @"timestamp": @(190310), @"words": @"You know I never meant to let you down, let you down" },
-            @{ @"timestamp": @(193530), @"words": @"Woulda gave you anything" },
-            @{ @"timestamp": @(195810), @"words": @"Woulda gave you everything, oh-oh" },
-            @{ @"timestamp": @(197350), @"words": @"" }
-    ];
-    return array;
++ (NSInteger)commonTrackIDForSong:(NSString *)song artist:(NSString *)artist {
+    NSString *const token = [[[NSProcessInfo processInfo] environment] objectForKey:@"API_KEY"];
+    NSString *const baseURL = [@"https://api.musixmatch.com/ws/1.1/track.search?page_size=12&page=1&s_track_rating=desc&apikey=" stringByAppendingString:token];
+    NSString *URLString = [NSString stringWithFormat:@"%@&q_track=%@&q_artist=%@", baseURL, song, artist];
+    URLString = [URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSLog(@"%@", URLString);
+    NSURL *URL = [NSURL URLWithString:URLString];
+    NSData *data = [NSData dataWithContentsOfURL:URL];
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+    NSInteger commonTrackID = [dict[@"message"][@"body"][@"track_list"][0][@"track"][@"commontrack_id"] intValue];
+    return commonTrackID;
+//    q_track=Better%20Now%20(Acoustic)&q_artist=Etham
+}
 
-//   @ NSString *searchTerm = [NSString stringWithFormat:@"%@ %@", song, artist];
-//    NSString *URLString = [NSString stringWithFormat:@"https://timestamp-lyrics.p.rapidapi.com/extract-lyrics?name=%@", searchTerm];
-//    URLString = [URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-//    NSURL *URL = [NSURL URLWithString:URLString];
-//    NSString *host = @"timestamp-lyrics.p.rapidapi.com";
-////    NSString *key = @"f47ed3409dmsh35cdc754cb3d2c2p1bb437jsnfd4b45952108";
-//    NSString *key = @"3208b5e382mshb926545181fd915p1ac7ffjsne5199020e9c5";
-//    NSDictionary *headers = @{
-//        @"X-RapidAPI-Host": host,
-//        @"X-RapidAPI-Key": key
-//    };
-//    NSData *responseData = [LTDataManager dataForURL:URL headers:headers];
-//    if(responseData) {
-//        NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:nil];
-//        NSArray *lyrics = [responseDict objectForKey:@"lyrics"];
-//        // slice the first one because it's empty
-//        return [lyrics subarrayWithRange:NSMakeRange(1, [lyrics count] - 1)];
-//    }
-//    return nil;
++ (NSArray *)lyricsForSong:(NSString *)song artist:(NSString *)artist {
+    // sorry I stole someone's key
+    NSString *const token = [[[NSProcessInfo processInfo] environment] objectForKey:@"USER_TOKEN"];
+    NSString *const baseURL = [@"https://apic-desktop.musixmatch.com/ws/1.1/macro.subtitles.get?format=json&user_language=en&namespace=lyrics_synched&f_subtitle_length_max_deviation=1&subtitle_format=mxm&app_id=web-desktop-app-v1.0&usertoken=" stringByAppendingString:token];
+    NSInteger commonTrackID = [LTDataManager commonTrackIDForSong:song artist:artist];
+    NSString *URLString = [NSString stringWithFormat:@"%@&commontrack_id=%ld", baseURL, (long)commonTrackID];
+    URLString = [URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSLog(@"%@", URLString);
+    NSURL *URL = [NSURL URLWithString:URLString];
+    NSData *data = [NSData dataWithContentsOfURL:URL];
+    if(!data) return nil;
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+    NSLog(@"%@", dict[@"message"][@"body"][@"macro_calls"][@"track.subtitles.get"][@"message"][@"body"]);
+    NSString *lyricsJSON = dict[@"message"][@"body"][@"macro_calls"][@"track.subtitles.get"][@"message"][@"body"][@"subtitle_list"][0][@"subtitle"][@"subtitle_body"];
+    NSData *lyricsData = [lyricsJSON dataUsingEncoding:NSUTF8StringEncoding];
+    return lyricsData ? [NSJSONSerialization JSONObjectWithData:lyricsData options:0 error:nil] : nil;
 }
 
 @end

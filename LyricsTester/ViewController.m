@@ -21,6 +21,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+//    [self test];
     self.view.backgroundColor = [UIColor blackColor];
     UIImage *searchIconImage = [UIImage imageNamed:@"SearchIcon"];
     self.promptContainerView = [[UIView alloc] init];
@@ -69,9 +70,28 @@
     ]];
 }
 
+//- (void)test {
+////    NSString *const token = [[[NSProcessInfo processInfo] environment] objectForKey:@"USER_TOKEN"];
+////    NSString *const baseURL = [@"https://apic-desktop.musixmatch.com/ws/1.1/macro.subtitles.get?format=json&user_language=en&namespace=lyrics_synched&f_subtitle_length_max_deviation=1&subtitle_format=mxm&app_id=web-desktop-app-v1.0&usertoken=" stringByAppendingString:token];
+////    NSInteger commonTrackID = [LTDataManager commonTrackIDForSong:song artist:artist];
+////    NSString *URLString = [NSString stringWithFormat:@"%@&commontrack_id=%ld", baseURL, (long)commonTrackID];
+////    NSString *URLString = @"https://apic-desktop.musixmatch.com/ws/1.1/macro.subtitles.get?format=json&user_language=en&namespace=lyrics_synched&f_subtitle_length_max_deviation=1&subtitle_format=mxm&app_id=web-desktop-app-v1.0&usertoken=201219dbdb0f6aaba1c774bd931d0e79a28024e28db027ae72955c&commontrack_id=75649419";
+//    NSString *URLString = @"https://apic-desktop.musixmatch.com/ws/1.1/macro.subtitles.get?format=json&user_language=en&namespace=lyrics_synched&f_subtitle_length_max_deviation=1&subtitle_format=mxm&app_id=web-desktop-app-v1.0&usertoken=201219dbdb0f6aaba1c774bd931d0e79a28024e28db027ae72955c";
+////    URLString = [URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+//    NSLog(@"%@", URLString);
+//    NSURL *URL = [NSURL URLWithString:URLString];
+//    NSData *data = [NSData dataWithContentsOfURL:URL];
+////    if(!data) return nil;
+//    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+//    NSLog(@"%@", dict[@"message"][@"body"][@"macro_calls"][@"track.subtitles.get"][@"message"][@"body"][@"subtitle_list"][0][@"subtitle"][@"subtitle_body"]);
+////    NSString *lyricsJSON = dict[@"message"][@"body"][@"macro_calls"][@"track.subtitles.get"][@"message"][@"body"][@"subtitle_list"][0][@"subtitle"][@"subtitle_body"];
+////    NSData *lyricsData = [lyricsJSON dataUsingEncoding:NSUTF8StringEncoding];
+////    return lyricsData ? [NSJSONSerialization JSONObjectWithData:lyricsData options:0 error:nil] : nil;
+//}
+
 - (void)presentSearchResults {
     NSString *search = self.promptTextField.text;
-    NSArray *results = [LTDataManager infoForTrack:search];
+    NSArray *results = [LTDataManager infoForSearchTerm:search];
     if(self.searchResultTableViewController) {
         self.searchResultTableViewController.searchResults = results;
         [self.searchResultTableViewController.tableView reloadData];
