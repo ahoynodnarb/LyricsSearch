@@ -33,19 +33,16 @@
 - (void)setBackgroundImage:(UIImage *)backgroundImage {
     _backgroundImage = backgroundImage;
     self.backgroundImageView.image = backgroundImage;
-    NSLog(@"setting background image");
 }
 
 - (void)setSong:(NSString *)song {
     _song = song;
     self.songLabel.text = song;
-    NSLog(@"setting song");
 }
 
 - (void)setArtist:(NSString *)artist {
     _artist = artist;
     self.artistLabel.text = artist;
-    NSLog(@"setting artist");
 }
 
 - (void)viewDidLoad {

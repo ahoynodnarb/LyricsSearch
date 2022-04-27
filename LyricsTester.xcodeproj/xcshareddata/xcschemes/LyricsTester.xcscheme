@@ -70,12 +70,6 @@
             ReferencedContainer = "container:LyricsTester.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <CommandLineArguments>
-         <CommandLineArgument
-            argument = "-destination &apos;generic/platform=iOS&apos; "
-            isEnabled = "YES">
-         </CommandLineArgument>
-      </CommandLineArguments>
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "ACCESS_TOKEN"

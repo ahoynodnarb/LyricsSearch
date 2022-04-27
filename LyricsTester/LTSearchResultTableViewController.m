@@ -11,16 +11,33 @@
 #import "LTDataManager.h"
 
 @interface LTSearchResultTableViewController ()
-
 @end
 
 @implementation LTSearchResultTableViewController
 
-- (instancetype)initWithSearchResults:(NSArray *)searchResults {
+- (instancetype)initWithSearchTerm:(NSString *)searchTerm {
     if(self = [super init]) {
-        self.searchResults = searchResults;
+        self.searchTerm = searchTerm;
+        self.currentPage = 1;
+        [self loadNextPage];
     }
     return self;
+}
+
+- (void)loadNextPage {
+    NSArray *info = [LTDataManager infoForSearchTerm:self.searchTerm page:self.currentPage];
+    if(!self.searchResults) self.searchResults = info;
+    else self.searchResults = [self.searchResults arrayByAddingObjectsFromArray:info];
+    self.currentPage++;
+}
+
+- (void)displayMoreResults {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self loadNextPage];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+    });
 }
 
 - (void)viewDidLoad {
@@ -28,6 +45,7 @@
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView registerClass:[LTSearchResultTableViewCell class] forCellReuseIdentifier:@"Cell"];
+    [self displayMoreResults];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -36,6 +54,27 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 1;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 70;
+}
+
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+//    NSLog(@"Scrolling");
+//    if(scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.frame.size.height) {
+//        NSLog(@"Scrolled past");
+//        [self displayMoreResults];
+//    }
+//}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    NSLog(@"Scrolling");
+    if(scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.frame.size.height) {
+        NSLog(@"Scrolled past");
+        [self displayMoreResults];
+    }
 }
 
 - (LTSearchResultTableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -63,7 +102,4 @@
     [self presentViewController:self.lyricsViewController animated:YES completion:nil];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 70;
-}
 @end

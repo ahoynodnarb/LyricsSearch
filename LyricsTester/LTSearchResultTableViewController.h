@@ -9,7 +9,10 @@
 #import "LTLyricsViewController.h"
 
 @interface LTSearchResultTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
+@property (nonatomic, assign) NSInteger currentPage;
 @property (nonatomic, strong) NSArray *searchResults;
+@property (nonatomic, strong) NSString *searchTerm;
 @property (nonatomic, strong) LTLyricsViewController *lyricsViewController;
-- (instancetype)initWithSearchResults:(NSArray *)searchResults;
+- (void)loadNextPage;
+- (instancetype)initWithSearchTerm:(NSString *)searchTerm;
 @end

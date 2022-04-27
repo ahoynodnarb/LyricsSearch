@@ -8,7 +8,8 @@
 #import <Foundation/Foundation.h>
 
 @interface LTDataManager : NSObject
-+ (NSData *)dataForURL:(NSURL *)URL headers:(NSDictionary *)headers;
++ (NSArray *)infoForSearchTerm:(NSString *)searchTerm page:(NSInteger)page pageSize:(NSInteger)pageSize;
++ (NSArray *)infoForSearchTerm:(NSString *)searchTerm page:(NSInteger)page;
 + (NSArray *)infoForSearchTerm:(NSString *)name;
 + (NSArray *)lyricsForSong:(NSString *)song artist:(NSString *)artist;
 @end
