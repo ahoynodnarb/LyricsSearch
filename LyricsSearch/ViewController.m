@@ -1,7 +1,6 @@
-// TODO: Asynchronous/background downloading
-// TODO: Add message in case no lyrics found (find better API?)
+// TODO: Add message in case no lyrics found
 // TODO: Optimize downloading and maybe persistent cache
-// TODO: Add queue for songs
+// TODO: Add queue for songs (option button next to each cell
 // TODO: Add play/pause skip/previous seek (maybe player at the top or bottom?)
 
 //

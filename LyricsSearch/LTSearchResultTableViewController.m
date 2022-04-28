@@ -24,6 +24,11 @@
     return self;
 }
 
+- (void)setSearchTerm:(NSString *)searchTerm {
+    _searchTerm = searchTerm;
+    self.searchResults = nil;
+}
+
 - (void)loadNextPage {
     NSArray *info = [LTDataManager infoForSearchTerm:self.searchTerm page:self.currentPage];
     if(!self.searchResults) self.searchResults = info;
@@ -60,7 +65,11 @@
     return 70;
 }
 
-//- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (scrollView.contentOffset.y == roundf(scrollView.contentSize.height-scrollView.frame.size.height)) {
+        NSLog(@"reached the bottom");
+    }
+}
 //- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
 //    NSLog(@"Scrolling");
 //    if(scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.frame.size.height) {
@@ -70,11 +79,7 @@
 //}
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    NSLog(@"Scrolling");
-    if(scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.frame.size.height) {
-        NSLog(@"Scrolled past");
-        [self displayMoreResults];
-    }
+    if(scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.frame.size.height) [self displayMoreResults];
 }
 
 - (LTSearchResultTableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -92,13 +97,13 @@
     LTSearchResultTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     NSString *song = cell.titleLabel.text;
     NSString *artist = cell.authorLabel.text;
-    NSArray *lyrics = [LTDataManager lyricsForSong:song artist:artist];
     UIImage *backgroundImage = cell.artImageView.image;
+    NSArray *lyrics = [LTDataManager lyricsForSong:song artist:artist];
     if(!self.lyricsViewController) self.lyricsViewController = [[LTLyricsViewController alloc] init];
-    self.lyricsViewController.lyrics = lyrics;
     self.lyricsViewController.song = song;
     self.lyricsViewController.artist = artist;
     self.lyricsViewController.backgroundImage = backgroundImage;
+    self.lyricsViewController.lyrics = lyrics;
     [self presentViewController:self.lyricsViewController animated:YES completion:nil];
 }
 
