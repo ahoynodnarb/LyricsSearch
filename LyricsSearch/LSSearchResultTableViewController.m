@@ -5,15 +5,17 @@
 //  Created by Brandon Yao on 4/21/22.
 //
 
-#import "LTSearchResultTableViewController.h"
-#import "LTSearchResultTableViewCell.h"
-#import "LTLyricsViewController.h"
-#import "LTDataManager.h"
+#import "LSDataManager.h"
+#import "LSLyricsViewController.h"
+#import "LSTrackItem.h"
+#import "LSTrackQueue.h"
+#import "LSSearchResultTableViewController.h"
+#import "LSSearchResultTableViewCell.h"
 
-@interface LTSearchResultTableViewController ()
+@interface LSSearchResultTableViewController ()
 @end
 
-@implementation LTSearchResultTableViewController
+@implementation LSSearchResultTableViewController
 
 - (instancetype)initWithSearchTerm:(NSString *)searchTerm {
     if(self = [super init]) {
@@ -30,7 +32,7 @@
 }
 
 - (void)loadNextPage {
-    NSArray *info = [LTDataManager infoForSearchTerm:self.searchTerm page:self.currentPage];
+    NSArray *info = [LSDataManager infoForSearchTerm:self.searchTerm page:self.currentPage];
     if(!self.searchResults) self.searchResults = info;
     else self.searchResults = [self.searchResults arrayByAddingObjectsFromArray:info];
     self.currentPage++;
@@ -49,7 +51,7 @@
     [super viewDidLoad];
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [self.tableView registerClass:[LTSearchResultTableViewCell class] forCellReuseIdentifier:@"Cell"];
+    [self.tableView registerClass:[LSSearchResultTableViewCell class] forCellReuseIdentifier:@"Cell"];
     [self displayMoreResults];
 }
 
@@ -65,45 +67,34 @@
     return 70;
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if (scrollView.contentOffset.y == roundf(scrollView.contentSize.height-scrollView.frame.size.height)) {
-        NSLog(@"reached the bottom");
-    }
-}
-//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-//    NSLog(@"Scrolling");
-//    if(scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.frame.size.height) {
-//        NSLog(@"Scrolled past");
-//        [self displayMoreResults];
-//    }
-//}
-
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if(scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.frame.size.height) [self displayMoreResults];
 }
 
-- (LTSearchResultTableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    LTSearchResultTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+- (LSSearchResultTableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    LSSearchResultTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     NSDictionary *result = [self.searchResults objectAtIndex:[indexPath section]];
     NSData *artData = [result objectForKey:@"artData"];
-    cell.artImageView.image = [UIImage imageWithData:artData];
-    cell.titleLabel.text = [result objectForKey:@"songName"];
-    cell.authorLabel.text = [result objectForKey:@"artistName"];
+    cell.artImage = [UIImage imageWithData:artData];
+    cell.title = [result objectForKey:@"songName"];
+    cell.author = [result objectForKey:@"artistName"];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    LTSearchResultTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    NSString *song = cell.titleLabel.text;
-    NSString *artist = cell.authorLabel.text;
-    UIImage *backgroundImage = cell.artImageView.image;
-    NSArray *lyrics = [LTDataManager lyricsForSong:song artist:artist];
-    if(!self.lyricsViewController) self.lyricsViewController = [[LTLyricsViewController alloc] init];
-    self.lyricsViewController.song = song;
-    self.lyricsViewController.artist = artist;
-    self.lyricsViewController.backgroundImage = backgroundImage;
-    self.lyricsViewController.lyrics = lyrics;
+    LSSearchResultTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    UIImage *artImage = cell.artImage;
+    NSString *song = cell.title;
+    NSString *artist = cell.author;
+    NSArray *lyrics = [LSDataManager lyricsForSong:song artist:artist];
+    if(!self.lyricsViewController) self.lyricsViewController = [[LSLyricsViewController alloc] initWithLyrics:lyrics song:song artist:artist image:artImage];
+    else {
+        self.lyricsViewController.song = song;
+        self.lyricsViewController.artist = artist;
+        self.lyricsViewController.backgroundImage = artImage;
+        self.lyricsViewController.lyrics = lyrics;
+    }
     [self presentViewController:self.lyricsViewController animated:YES completion:nil];
 }
 

@@ -5,12 +5,16 @@
 //  Created by Brandon Yao on 4/22/22.
 //
 
-#import "LTSearchResultTableViewCell.h"
+#import "LSSearchResultTableViewCell.h"
 
-@implementation LTSearchResultTableViewCell
+@implementation LSSearchResultTableViewCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if(self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.optionsButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.optionsButton addTarget:self action:@selector(showOptions) forControlEvents:UIControlEventTouchUpInside];
+        [self.optionsButton setImage:[UIImage imageNamed:@"OptionsIcon"] forState:UIControlStateNormal];
+        self.optionsButton.translatesAutoresizingMaskIntoConstraints = NO;
         self.backgroundColor = [UIColor clearColor];
         self.artImageView = [[UIImageView alloc] init];
         self.artImageView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -41,6 +45,25 @@
         ]];
     }
     return self;
+}
+
+- (void)setArtImage:(UIImage *)artImage {
+    _artImage = artImage;
+    self.artImageView.image = artImage;
+}
+
+- (void)setTitle:(NSString *)title {
+    _title = title;
+    self.titleLabel.text = title;
+}
+
+- (void)setAuthor:(NSString *)author {
+    _author = author;
+    self.authorLabel.text = author;
+}
+
+- (void)showOptions {
+    
 }
 
 @end

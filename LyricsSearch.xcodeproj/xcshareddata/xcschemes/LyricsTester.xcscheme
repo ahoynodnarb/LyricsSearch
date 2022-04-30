@@ -20,34 +20,6 @@
                ReferencedContainer = "container:LyricsSearch.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "NO"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0889234E278BE3B700BBBA41"
-               BuildableName = "LyricsTesterTests.xctest"
-               BlueprintName = "LyricsSearchTests"
-               ReferencedContainer = "container:LyricsSearch.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "NO"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "08892358278BE3B700BBBA41"
-               BuildableName = "LyricsTesterUITests.xctest"
-               BlueprintName = "LyricsSearchUITests"
-               ReferencedContainer = "container:LyricsSearch.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction

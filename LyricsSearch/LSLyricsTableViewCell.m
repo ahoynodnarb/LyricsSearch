@@ -5,9 +5,9 @@
 //  Created by Brandon Yao on 4/23/22.
 //
 
-#import "LTLyricsTableViewCell.h"
+#import "LSLyricsTableViewCell.h"
 
-@implementation LTLyricsTableViewCell
+@implementation LSLyricsTableViewCell
 
 + (UIColor *)selectedCellColor {
     return [UIColor whiteColor];
@@ -21,11 +21,11 @@
     [super setSelected:selected animated:animated];
     if(selected) {
         self.textLabel.transform = CGAffineTransformIdentity;
-        self.textLabel.textColor = [LTLyricsTableViewCell selectedCellColor];
+        self.textLabel.textColor = [LSLyricsTableViewCell selectedCellColor];
         return;
     }
     self.textLabel.transform = CGAffineTransformMakeScale(0.8,0.8);
-    self.textLabel.textColor = [LTLyricsTableViewCell deselectedCellColor];
+    self.textLabel.textColor = [LSLyricsTableViewCell deselectedCellColor];
 }
 
 @end

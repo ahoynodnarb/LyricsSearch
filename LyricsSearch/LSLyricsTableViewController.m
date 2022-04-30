@@ -5,14 +5,14 @@
 //  Created by Brandon Yao on 1/9/22.
 //
 
-#import "LTLyricsTableViewController.h"
-#import "LTLyricsTableViewCell.h"
+#import "LSLyricsTableViewController.h"
+#import "LSLyricsTableViewCell.h"
 
-@interface LTLyricsTableViewController ()
+@interface LSLyricsTableViewController ()
 @property (nonatomic, assign) NSInteger nextSection;
 @end
 
-@implementation LTLyricsTableViewController
+@implementation LSLyricsTableViewController
 
 - (instancetype)initWithLyrics:(NSArray *)lyrics {
     if(self = [super init]) {
@@ -22,12 +22,12 @@
 }
 
 - (void)updateTimer {
-    if(self.nextSection == [self.lyricsArray count]) {
+    if(self.nextSection == [self.lyricsArray count] - 1) {
         [self.timer invalidate];
         return;
     }
     float nextDelay = [self.lyricsArray[self.nextSection][@"time"][@"total"] floatValue];
-    float currentDelay = [self.lyricsArray[self.nextSection-1][@"time"][@"total"] floatValue];
+    float currentDelay = [self.lyricsArray[self.nextSection - 1][@"time"][@"total"] floatValue];
     float delay = nextDelay - currentDelay;
     self.timer.fireDate = [self.timer.fireDate dateByAddingTimeInterval:delay];
 }
@@ -48,9 +48,9 @@
     [super viewDidLoad];
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.showsHorizontalScrollIndicator = NO;
-    self.tableView.backgroundColor = UIColor.clearColor;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [self.tableView registerClass:[LTLyricsTableViewCell class] forCellReuseIdentifier:@"Cell"];
+    self.tableView.backgroundColor = [UIColor clearColor];
+    [self.tableView registerClass:[LSLyricsTableViewCell class] forCellReuseIdentifier:@"Cell"];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -74,17 +74,19 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.textLabel.text = self.lyricsArray[indexPath.section][@"text"];
+    NSString *text = self.lyricsArray[indexPath.section][@"text"];
+    cell.textLabel.text = [text length] == 0 ? @"..." : text;
     cell.textLabel.numberOfLines = 0;
     cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
     cell.textLabel.font = [UIFont systemFontOfSize:40 weight:UIFontWeightHeavy];
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
-    cell.backgroundColor = UIColor.clearColor;
+    cell.backgroundColor = [UIColor clearColor];
     return cell;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [self.lyricsArray count];
+    // omit the last item because it's empty
+    return [self.lyricsArray count] - 1;
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface LTDataManager : NSObject
+@interface LSDataManager : NSObject
 + (NSArray *)infoForSearchTerm:(NSString *)searchTerm page:(NSInteger)page pageSize:(NSInteger)pageSize;
 + (NSArray *)infoForSearchTerm:(NSString *)searchTerm page:(NSInteger)page;
 + (NSArray *)infoForSearchTerm:(NSString *)name;

@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LTLyricsTableViewController : UITableViewController
+@interface LSLyricsTableViewController : UITableViewController
 @property (nonatomic, strong) NSArray *lyricsArray;
 @property (nonatomic, strong) NSTimer *timer;
 - (instancetype)initWithLyrics:(NSArray *)lyrics;

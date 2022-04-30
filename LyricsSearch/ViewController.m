@@ -11,7 +11,7 @@
 //
 
 #import "ViewController.h"
-#import "LTDataManager.h"
+#import "LSDataManager.h"
 
 @interface ViewController ()
 
@@ -26,26 +26,28 @@
     self.promptContainerView = [[UIView alloc] init];
     self.promptContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.promptContainerView];
-    self.promptTextField = [[UITextField alloc] init];
-    self.promptTextField.placeholder = @"Song Name";
-    self.promptTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-    self.promptTextField.textColor = [UIColor blackColor];
-    self.promptTextField.backgroundColor = [UIColor whiteColor];
-    self.promptTextField.layer.cornerRadius = 18;
-    self.promptTextField.layer.masksToBounds = YES;
-    self.promptTextField.translatesAutoresizingMaskIntoConstraints = NO;
+    self.searchTextField = [[UITextField alloc] init];
+    // have to use attributed string to make placeholder text black
+    self.searchTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Song Name" attributes:@{NSForegroundColorAttributeName: [UIColor darkGrayColor]}];
+    self.searchTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.searchTextField.textColor = [UIColor blackColor];
+    self.searchTextField.backgroundColor = [UIColor whiteColor];
+    self.searchTextField.layer.cornerRadius = 18;
+    self.searchTextField.layer.masksToBounds = YES;
+    self.searchTextField.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.searchTextField addTarget:self action:@selector(presentSearchResults) forControlEvents:UIControlEventEditingDidEndOnExit];
     UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 18, 20)];
-    self.promptTextField.leftView = paddingView;
-    self.promptTextField.leftViewMode = UITextFieldViewModeAlways;
+    self.searchTextField.leftView = paddingView;
+    self.searchTextField.leftViewMode = UITextFieldViewModeAlways;
     UIView *searchContainerView = [[UIView alloc] initWithFrame:CGRectMake(0,0,searchIconImage.size.width+15,searchIconImage.size.height)];
-    self.promptTextField.rightView = searchContainerView;
-    self.promptTextField.rightViewMode = UITextFieldViewModeAlways;
+    self.searchTextField.rightView = searchContainerView;
+    self.searchTextField.rightViewMode = UITextFieldViewModeAlways;
     UIButton *searchButton = [[UIButton alloc] initWithFrame:CGRectMake(0,0,searchIconImage.size.width,searchIconImage.size.height)];
     [searchButton addTarget:self action:@selector(presentSearchResults) forControlEvents:UIControlEventTouchUpInside];
     [searchButton setImage:searchIconImage forState:UIControlStateNormal];
     searchButton.translatesAutoresizingMaskIntoConstraints = NO;
     [searchContainerView addSubview:searchButton];
-    [self.promptContainerView addSubview:self.promptTextField];
+    [self.promptContainerView addSubview:self.searchTextField];
     self.searchResultContainerView = [[UIView alloc] init];
     self.searchResultContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.searchResultContainerView];
@@ -58,10 +60,10 @@
         [self.searchResultContainerView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
         [self.searchResultContainerView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
         [self.searchResultContainerView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
-        [self.promptTextField.widthAnchor constraintEqualToConstant:300],
-        [self.promptTextField.heightAnchor constraintEqualToConstant:40],
-        [self.promptTextField.bottomAnchor constraintEqualToAnchor:self.promptContainerView.bottomAnchor constant:-10],
-        [self.promptTextField.centerXAnchor constraintEqualToAnchor:self.promptContainerView.centerXAnchor],
+        [self.searchTextField.widthAnchor constraintEqualToConstant:300],
+        [self.searchTextField.heightAnchor constraintEqualToConstant:40],
+        [self.searchTextField.bottomAnchor constraintEqualToAnchor:self.promptContainerView.bottomAnchor constant:-10],
+        [self.searchTextField.centerXAnchor constraintEqualToAnchor:self.promptContainerView.centerXAnchor],
         [searchButton.topAnchor constraintEqualToAnchor:searchContainerView.topAnchor],
         [searchButton.leftAnchor constraintEqualToAnchor:searchContainerView.leftAnchor],
         [searchButton.bottomAnchor constraintEqualToAnchor:searchContainerView.bottomAnchor],
@@ -70,7 +72,8 @@
 }
 
 - (void)presentSearchResults {
-    NSString *search = self.promptTextField.text;
+    [self.searchTextField endEditing:YES];
+    NSString *search = self.searchTextField.text;
     if(self.searchResultTableViewController) {
         self.searchResultTableViewController.searchTerm = search;
         self.searchResultTableViewController.currentPage = 1;
@@ -78,7 +81,7 @@
         [self.searchResultTableViewController.tableView reloadData];
         return;
     }
-    self.searchResultTableViewController = [[LTSearchResultTableViewController alloc] initWithSearchTerm:search];
+    self.searchResultTableViewController = [[LSSearchResultTableViewController alloc] initWithSearchTerm:search];
     [self addChildViewController:self.searchResultTableViewController];
     [self.searchResultContainerView addSubview:self.searchResultTableViewController.view];
     self.searchResultTableViewController.view.frame = self.searchResultContainerView.bounds;

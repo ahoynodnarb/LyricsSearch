@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LTLyricsTableViewCell : UITableViewCell
+@interface LSLyricsTableViewCell : UITableViewCell
 + (UIColor *)deselectedCellColor;
 + (UIColor *)selectedCellColor;
 @end

@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		088917952810A9A2003E620A /* LTLyricsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 088917942810A9A2003E620A /* LTLyricsViewController.m */; };
-		08891798281249B7003E620A /* LTDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08891797281249B7003E620A /* LTDataManager.m */; };
+		088917952810A9A2003E620A /* LSLyricsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 088917942810A9A2003E620A /* LSLyricsViewController.m */; };
+		08891798281249B7003E620A /* LSDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08891797281249B7003E620A /* LSDataManager.m */; };
 		08892339278BE3B600BBBA41 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 08892338278BE3B600BBBA41 /* AppDelegate.m */; };
 		0889233C278BE3B600BBBA41 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0889233B278BE3B600BBBA41 /* SceneDelegate.m */; };
 		0889233F278BE3B600BBBA41 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0889233E278BE3B600BBBA41 /* ViewController.m */; };
@@ -16,18 +16,20 @@
 		08892344278BE3B700BBBA41 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08892343278BE3B700BBBA41 /* Assets.xcassets */; };
 		08892347278BE3B700BBBA41 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08892345278BE3B700BBBA41 /* LaunchScreen.storyboard */; };
 		0889234A278BE3B700BBBA41 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 08892349278BE3B700BBBA41 /* main.m */; };
-		08892371278BEDD200BBBA41 /* LTLyricsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08892370278BEDD200BBBA41 /* LTLyricsTableViewController.m */; };
-		088E822F281273E90017A073 /* LTSearchResultTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 088E822E281273E90017A073 /* LTSearchResultTableViewController.m */; };
-		088E82352813D8710017A073 /* LTSearchResultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 088E82342813D8710017A073 /* LTSearchResultTableViewCell.m */; };
-		08A400952814F85B00CF6D1C /* LTLyricsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A400942814F85B00CF6D1C /* LTLyricsTableViewCell.m */; };
+		08892371278BEDD200BBBA41 /* LSLyricsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08892370278BEDD200BBBA41 /* LSLyricsTableViewController.m */; };
+		088E822F281273E90017A073 /* LSSearchResultTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 088E822E281273E90017A073 /* LSSearchResultTableViewController.m */; };
+		088E82352813D8710017A073 /* LSSearchResultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 088E82342813D8710017A073 /* LSSearchResultTableViewCell.m */; };
+		08A400952814F85B00CF6D1C /* LSLyricsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A400942814F85B00CF6D1C /* LSLyricsTableViewCell.m */; };
+		08BE5A7D281CC1D800E7FE09 /* LSTrackQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 08BE5A7C281CC1D800E7FE09 /* LSTrackQueue.m */; };
+		08BE5A80281CC34D00E7FE09 /* LSTrackItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 08BE5A7F281CC34D00E7FE09 /* LSTrackItem.m */; };
 		41E4EFCF6D5C05A7FD47D1CD /* Pods_LyricsSearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D3299B403A1DEA005CD438F /* Pods_LyricsSearch.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		088917932810A9A2003E620A /* LTLyricsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTLyricsViewController.h; sourceTree = "<group>"; };
-		088917942810A9A2003E620A /* LTLyricsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LTLyricsViewController.m; sourceTree = "<group>"; };
-		08891796281249B7003E620A /* LTDataManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTDataManager.h; sourceTree = "<group>"; };
-		08891797281249B7003E620A /* LTDataManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LTDataManager.m; sourceTree = "<group>"; };
+		088917932810A9A2003E620A /* LSLyricsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSLyricsViewController.h; sourceTree = "<group>"; };
+		088917942810A9A2003E620A /* LSLyricsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSLyricsViewController.m; sourceTree = "<group>"; };
+		08891796281249B7003E620A /* LSDataManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSDataManager.h; sourceTree = "<group>"; };
+		08891797281249B7003E620A /* LSDataManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSDataManager.m; sourceTree = "<group>"; };
 		08892334278BE3B600BBBA41 /* LyricsSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LyricsSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08892337278BE3B600BBBA41 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		08892338278BE3B600BBBA41 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -40,14 +42,18 @@
 		08892346278BE3B700BBBA41 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		08892348278BE3B700BBBA41 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		08892349278BE3B700BBBA41 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		0889236F278BEDD200BBBA41 /* LTLyricsTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTLyricsTableViewController.h; sourceTree = "<group>"; };
-		08892370278BEDD200BBBA41 /* LTLyricsTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LTLyricsTableViewController.m; sourceTree = "<group>"; };
-		088E822D281273E90017A073 /* LTSearchResultTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTSearchResultTableViewController.h; sourceTree = "<group>"; };
-		088E822E281273E90017A073 /* LTSearchResultTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LTSearchResultTableViewController.m; sourceTree = "<group>"; };
-		088E82332813D8710017A073 /* LTSearchResultTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTSearchResultTableViewCell.h; sourceTree = "<group>"; };
-		088E82342813D8710017A073 /* LTSearchResultTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LTSearchResultTableViewCell.m; sourceTree = "<group>"; };
-		08A400932814F85B00CF6D1C /* LTLyricsTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTLyricsTableViewCell.h; sourceTree = "<group>"; };
-		08A400942814F85B00CF6D1C /* LTLyricsTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LTLyricsTableViewCell.m; sourceTree = "<group>"; };
+		0889236F278BEDD200BBBA41 /* LSLyricsTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSLyricsTableViewController.h; sourceTree = "<group>"; };
+		08892370278BEDD200BBBA41 /* LSLyricsTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSLyricsTableViewController.m; sourceTree = "<group>"; };
+		088E822D281273E90017A073 /* LSSearchResultTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSSearchResultTableViewController.h; sourceTree = "<group>"; };
+		088E822E281273E90017A073 /* LSSearchResultTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSSearchResultTableViewController.m; sourceTree = "<group>"; };
+		088E82332813D8710017A073 /* LSSearchResultTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSSearchResultTableViewCell.h; sourceTree = "<group>"; };
+		088E82342813D8710017A073 /* LSSearchResultTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSSearchResultTableViewCell.m; sourceTree = "<group>"; };
+		08A400932814F85B00CF6D1C /* LSLyricsTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSLyricsTableViewCell.h; sourceTree = "<group>"; };
+		08A400942814F85B00CF6D1C /* LSLyricsTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSLyricsTableViewCell.m; sourceTree = "<group>"; };
+		08BE5A7B281CC1D800E7FE09 /* LSTrackQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSTrackQueue.h; sourceTree = "<group>"; };
+		08BE5A7C281CC1D800E7FE09 /* LSTrackQueue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSTrackQueue.m; sourceTree = "<group>"; };
+		08BE5A7E281CC34D00E7FE09 /* LSTrackItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSTrackItem.h; sourceTree = "<group>"; };
+		08BE5A7F281CC34D00E7FE09 /* LSTrackItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSTrackItem.m; sourceTree = "<group>"; };
 		552122A159791632A4EBF15D /* Pods-LyricsSearch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LyricsSearch.release.xcconfig"; path = "Target Support Files/Pods-LyricsSearch/Pods-LyricsSearch.release.xcconfig"; sourceTree = "<group>"; };
 		6DE363E7FC21C97D788861AF /* Pods-LyricsSearch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LyricsSearch.debug.xcconfig"; path = "Target Support Files/Pods-LyricsSearch/Pods-LyricsSearch.debug.xcconfig"; sourceTree = "<group>"; };
 		8D3299B403A1DEA005CD438F /* Pods_LyricsSearch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LyricsSearch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -92,18 +98,22 @@
 				0889233B278BE3B600BBBA41 /* SceneDelegate.m */,
 				0889233D278BE3B600BBBA41 /* ViewController.h */,
 				0889233E278BE3B600BBBA41 /* ViewController.m */,
-				088917932810A9A2003E620A /* LTLyricsViewController.h */,
-				088917942810A9A2003E620A /* LTLyricsViewController.m */,
-				08A400932814F85B00CF6D1C /* LTLyricsTableViewCell.h */,
-				08A400942814F85B00CF6D1C /* LTLyricsTableViewCell.m */,
-				0889236F278BEDD200BBBA41 /* LTLyricsTableViewController.h */,
-				08892370278BEDD200BBBA41 /* LTLyricsTableViewController.m */,
-				088E82332813D8710017A073 /* LTSearchResultTableViewCell.h */,
-				088E82342813D8710017A073 /* LTSearchResultTableViewCell.m */,
-				088E822D281273E90017A073 /* LTSearchResultTableViewController.h */,
-				088E822E281273E90017A073 /* LTSearchResultTableViewController.m */,
-				08891796281249B7003E620A /* LTDataManager.h */,
-				08891797281249B7003E620A /* LTDataManager.m */,
+				088917932810A9A2003E620A /* LSLyricsViewController.h */,
+				088917942810A9A2003E620A /* LSLyricsViewController.m */,
+				08A400932814F85B00CF6D1C /* LSLyricsTableViewCell.h */,
+				08A400942814F85B00CF6D1C /* LSLyricsTableViewCell.m */,
+				0889236F278BEDD200BBBA41 /* LSLyricsTableViewController.h */,
+				08892370278BEDD200BBBA41 /* LSLyricsTableViewController.m */,
+				088E82332813D8710017A073 /* LSSearchResultTableViewCell.h */,
+				088E82342813D8710017A073 /* LSSearchResultTableViewCell.m */,
+				088E822D281273E90017A073 /* LSSearchResultTableViewController.h */,
+				088E822E281273E90017A073 /* LSSearchResultTableViewController.m */,
+				08BE5A7B281CC1D800E7FE09 /* LSTrackQueue.h */,
+				08BE5A7C281CC1D800E7FE09 /* LSTrackQueue.m */,
+				08BE5A7E281CC34D00E7FE09 /* LSTrackItem.h */,
+				08BE5A7F281CC34D00E7FE09 /* LSTrackItem.m */,
+				08891796281249B7003E620A /* LSDataManager.h */,
+				08891797281249B7003E620A /* LSDataManager.m */,
 				08892340278BE3B600BBBA41 /* Main.storyboard */,
 				08892343278BE3B700BBBA41 /* Assets.xcassets */,
 				08892345278BE3B700BBBA41 /* LaunchScreen.storyboard */,
@@ -244,16 +254,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				08892371278BEDD200BBBA41 /* LTLyricsTableViewController.m in Sources */,
+				08892371278BEDD200BBBA41 /* LSLyricsTableViewController.m in Sources */,
 				0889233F278BE3B600BBBA41 /* ViewController.m in Sources */,
-				088917952810A9A2003E620A /* LTLyricsViewController.m in Sources */,
-				088E82352813D8710017A073 /* LTSearchResultTableViewCell.m in Sources */,
+				088917952810A9A2003E620A /* LSLyricsViewController.m in Sources */,
+				088E82352813D8710017A073 /* LSSearchResultTableViewCell.m in Sources */,
 				08892339278BE3B600BBBA41 /* AppDelegate.m in Sources */,
 				0889234A278BE3B700BBBA41 /* main.m in Sources */,
-				08891798281249B7003E620A /* LTDataManager.m in Sources */,
-				08A400952814F85B00CF6D1C /* LTLyricsTableViewCell.m in Sources */,
-				088E822F281273E90017A073 /* LTSearchResultTableViewController.m in Sources */,
+				08891798281249B7003E620A /* LSDataManager.m in Sources */,
+				08A400952814F85B00CF6D1C /* LSLyricsTableViewCell.m in Sources */,
+				088E822F281273E90017A073 /* LSSearchResultTableViewController.m in Sources */,
 				0889233C278BE3B600BBBA41 /* SceneDelegate.m in Sources */,
+				08BE5A7D281CC1D800E7FE09 /* LSTrackQueue.m in Sources */,
+				08BE5A80281CC34D00E7FE09 /* LSTrackItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,6 +421,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -440,6 +453,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

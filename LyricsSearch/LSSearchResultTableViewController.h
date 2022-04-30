@@ -6,13 +6,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "LTLyricsViewController.h"
+#import "LSLyricsViewController.h"
 
-@interface LTSearchResultTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
+@interface LSSearchResultTableViewController : UITableViewController
 @property (nonatomic, assign) NSInteger currentPage;
 @property (nonatomic, strong) NSArray *searchResults;
 @property (nonatomic, strong) NSString *searchTerm;
-@property (nonatomic, strong) LTLyricsViewController *lyricsViewController;
+@property (nonatomic, strong) LSLyricsViewController *lyricsViewController;
 - (void)loadNextPage;
 - (instancetype)initWithSearchTerm:(NSString *)searchTerm;
 @end
