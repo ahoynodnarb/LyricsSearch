@@ -6,17 +6,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LSDataManager.h"
+#import "LSTrackItem.h"
+#import "LSTrackQueue.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
-@interface LSSearchResultTableViewCell : UITableViewCell
-@property (nonatomic, strong) UIButton *optionsButton;
-@property (nonatomic, strong) UIImageView *artImageView;
-@property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UILabel *authorLabel;
+@interface LSSearchResultTableViewCell : UITableViewCell {
+    NSLayoutConstraint *containerViewLeading;
+}
+@property (nonatomic, readonly) LSTrackItem *trackItem;
 @property (nonatomic, strong) UIImage *artImage;
-@property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSString *author;
+@property (nonatomic, strong) NSString *song;
+@property (nonatomic, strong) NSString *artist;
+@property (nonatomic, assign) NSInteger duration;
 @end
-
-NS_ASSUME_NONNULL_END

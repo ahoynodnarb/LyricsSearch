@@ -7,11 +7,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LSTrackItem : NSObject <NSCopying>
-@property (nonatomic, strong) NSArray *lyrics;
+@interface LSTrackItem : NSObject
 @property (nonatomic, strong) UIImage *artImage;
 @property (nonatomic, strong) NSString *songName;
 @property (nonatomic, strong) NSString *artistName;
-- (instancetype)initWithLyrics:(NSArray *)lyrics artImage:(UIImage *)artImage songName:(NSString *)songName artistName:(NSString *)artistName;
-- (instancetype)initWithDictionary:(NSDictionary *)dict;
+@property (nonatomic, assign) NSInteger duration;
+- (instancetype)initWithArtImage:(UIImage *)artImage songName:(NSString *)songName artistName:(NSString *)artistName duration:(NSInteger)duration;
 @end

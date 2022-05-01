@@ -1,6 +1,6 @@
 // TODO: Add message in case no lyrics found
+// TODO: Download next song's lyrics while current song playing
 // TODO: Optimize downloading and maybe persistent cache
-// TODO: Add queue for songs (option button next to each cell
 // TODO: Add play/pause skip/previous seek (maybe player at the top or bottom?)
 
 //
@@ -11,10 +11,12 @@
 //
 
 #import "ViewController.h"
-#import "LSDataManager.h"
 
 @interface ViewController ()
-
+@property (nonatomic, strong) UIView *searchResultContainerView;
+@property (nonatomic, strong) UIView *promptContainerView;
+@property (nonatomic, strong) UITextField *searchTextField;
+@property (nonatomic, strong) LSSearchResultTableViewController *searchResultTableViewController;
 @end
 
 @implementation ViewController
@@ -28,7 +30,7 @@
     [self.view addSubview:self.promptContainerView];
     self.searchTextField = [[UITextField alloc] init];
     // have to use attributed string to make placeholder text black
-    self.searchTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Song Name" attributes:@{NSForegroundColorAttributeName: [UIColor darkGrayColor]}];
+    self.searchTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Song Name" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor]}];
     self.searchTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.searchTextField.textColor = [UIColor blackColor];
     self.searchTextField.backgroundColor = [UIColor whiteColor];

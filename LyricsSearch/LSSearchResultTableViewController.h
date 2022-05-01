@@ -6,7 +6,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LSDataManager.h"
 #import "LSLyricsViewController.h"
+#import "LSSearchResultTableViewCell.h"
 
 @interface LSSearchResultTableViewController : UITableViewController
 @property (nonatomic, assign) NSInteger currentPage;

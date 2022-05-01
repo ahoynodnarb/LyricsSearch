@@ -6,14 +6,10 @@
 
 
 #import <UIKit/UIKit.h>
-#import "LSLyricsViewController.h"
+#import "LSDataManager.h"
 #import "LSSearchResultTableViewController.h"
 
 @interface ViewController : UIViewController
-@property (nonatomic, strong) UIView *searchResultContainerView;
-@property (nonatomic, strong) UIView *promptContainerView;
-@property (nonatomic, strong) UITextField *searchTextField;
-@property (nonatomic, strong) LSLyricsViewController *lyricsViewController;
-@property (nonatomic, strong) LSSearchResultTableViewController *searchResultTableViewController;
+
 @end
 

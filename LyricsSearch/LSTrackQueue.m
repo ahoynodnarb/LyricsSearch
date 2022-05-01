@@ -7,7 +7,7 @@
 
 #import "LSTrackQueue.h"
 
-@interface LSTrackQueue (private)
+@interface LSTrackQueue ()
 @property (nonatomic, strong) NSMutableArray<LSTrackItem *> *queue;
 @property (nonatomic, assign) NSUInteger index;
 @end
@@ -23,11 +23,9 @@
     return _sharedQueue;
 }
 - (void)push:(LSTrackItem *)item {
-    if(![item isKindOfClass:[LSTrackItem class]]) return;
     [self.queue insertObject:item atIndex:0];
 }
 - (void)enqueue:(LSTrackItem *)item {
-    if(![item isKindOfClass:[LSTrackItem class]]) return;
     [self.queue addObject:item];
 }
 - (LSTrackItem *)currentItem {
@@ -35,15 +33,10 @@
     return self.queue[self.index];
 }
 - (void)decrement {
-    if(self.index == 0) return;
-    else self.index--;
+    self.index--;
 }
 - (void)increment {
-    if(self.index == [self.queue count] - 1) return;
     self.index++;
-}
-- (void)setIndex:(NSUInteger)idx {
-    self.index = idx;
 }
 - (NSInteger)size {
     return [self.queue count];

@@ -22,7 +22,7 @@
 		08A400952814F85B00CF6D1C /* LSLyricsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A400942814F85B00CF6D1C /* LSLyricsTableViewCell.m */; };
 		08BE5A7D281CC1D800E7FE09 /* LSTrackQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 08BE5A7C281CC1D800E7FE09 /* LSTrackQueue.m */; };
 		08BE5A80281CC34D00E7FE09 /* LSTrackItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 08BE5A7F281CC34D00E7FE09 /* LSTrackItem.m */; };
-		41E4EFCF6D5C05A7FD47D1CD /* Pods_LyricsSearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D3299B403A1DEA005CD438F /* Pods_LyricsSearch.framework */; };
+		E43E1040CBCA8E362828ADBC /* Pods_LyricsSearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8CD6B085BF94F38ABBFF8DC /* Pods_LyricsSearch.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,9 +54,9 @@
 		08BE5A7C281CC1D800E7FE09 /* LSTrackQueue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSTrackQueue.m; sourceTree = "<group>"; };
 		08BE5A7E281CC34D00E7FE09 /* LSTrackItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSTrackItem.h; sourceTree = "<group>"; };
 		08BE5A7F281CC34D00E7FE09 /* LSTrackItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSTrackItem.m; sourceTree = "<group>"; };
-		552122A159791632A4EBF15D /* Pods-LyricsSearch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LyricsSearch.release.xcconfig"; path = "Target Support Files/Pods-LyricsSearch/Pods-LyricsSearch.release.xcconfig"; sourceTree = "<group>"; };
-		6DE363E7FC21C97D788861AF /* Pods-LyricsSearch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LyricsSearch.debug.xcconfig"; path = "Target Support Files/Pods-LyricsSearch/Pods-LyricsSearch.debug.xcconfig"; sourceTree = "<group>"; };
-		8D3299B403A1DEA005CD438F /* Pods_LyricsSearch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LyricsSearch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		742450C283FFA98D5F320085 /* Pods-LyricsSearch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LyricsSearch.debug.xcconfig"; path = "Target Support Files/Pods-LyricsSearch/Pods-LyricsSearch.debug.xcconfig"; sourceTree = "<group>"; };
+		93888344C1C4A32F376C679F /* Pods-LyricsSearch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LyricsSearch.release.xcconfig"; path = "Target Support Files/Pods-LyricsSearch/Pods-LyricsSearch.release.xcconfig"; sourceTree = "<group>"; };
+		C8CD6B085BF94F38ABBFF8DC /* Pods_LyricsSearch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LyricsSearch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,7 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				41E4EFCF6D5C05A7FD47D1CD /* Pods_LyricsSearch.framework in Frameworks */,
+				E43E1040CBCA8E362828ADBC /* Pods_LyricsSearch.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,7 +77,7 @@
 				08892336278BE3B600BBBA41 /* LyricsSearch */,
 				08892335278BE3B600BBBA41 /* Products */,
 				EE7FC24E7362C18F4F4642DB /* Pods */,
-				6575A7D80CFC930EEF3E3142 /* Frameworks */,
+				247F14B58D43F70F54050469 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -100,14 +100,14 @@
 				0889233E278BE3B600BBBA41 /* ViewController.m */,
 				088917932810A9A2003E620A /* LSLyricsViewController.h */,
 				088917942810A9A2003E620A /* LSLyricsViewController.m */,
-				08A400932814F85B00CF6D1C /* LSLyricsTableViewCell.h */,
-				08A400942814F85B00CF6D1C /* LSLyricsTableViewCell.m */,
 				0889236F278BEDD200BBBA41 /* LSLyricsTableViewController.h */,
 				08892370278BEDD200BBBA41 /* LSLyricsTableViewController.m */,
-				088E82332813D8710017A073 /* LSSearchResultTableViewCell.h */,
-				088E82342813D8710017A073 /* LSSearchResultTableViewCell.m */,
+				08A400932814F85B00CF6D1C /* LSLyricsTableViewCell.h */,
+				08A400942814F85B00CF6D1C /* LSLyricsTableViewCell.m */,
 				088E822D281273E90017A073 /* LSSearchResultTableViewController.h */,
 				088E822E281273E90017A073 /* LSSearchResultTableViewController.m */,
+				088E82332813D8710017A073 /* LSSearchResultTableViewCell.h */,
+				088E82342813D8710017A073 /* LSSearchResultTableViewCell.m */,
 				08BE5A7B281CC1D800E7FE09 /* LSTrackQueue.h */,
 				08BE5A7C281CC1D800E7FE09 /* LSTrackQueue.m */,
 				08BE5A7E281CC34D00E7FE09 /* LSTrackItem.h */,
@@ -123,10 +123,10 @@
 			path = LyricsSearch;
 			sourceTree = "<group>";
 		};
-		6575A7D80CFC930EEF3E3142 /* Frameworks */ = {
+		247F14B58D43F70F54050469 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8D3299B403A1DEA005CD438F /* Pods_LyricsSearch.framework */,
+				C8CD6B085BF94F38ABBFF8DC /* Pods_LyricsSearch.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -134,8 +134,8 @@
 		EE7FC24E7362C18F4F4642DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				6DE363E7FC21C97D788861AF /* Pods-LyricsSearch.debug.xcconfig */,
-				552122A159791632A4EBF15D /* Pods-LyricsSearch.release.xcconfig */,
+				742450C283FFA98D5F320085 /* Pods-LyricsSearch.debug.xcconfig */,
+				93888344C1C4A32F376C679F /* Pods-LyricsSearch.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -147,11 +147,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 08892363278BE3B700BBBA41 /* Build configuration list for PBXNativeTarget "LyricsSearch" */;
 			buildPhases = (
-				476CC99D0EB1A5EA70429737 /* [CP] Check Pods Manifest.lock */,
+				613A8501024ABB3BC60D5445 /* [CP] Check Pods Manifest.lock */,
 				08892330278BE3B600BBBA41 /* Sources */,
 				08892331278BE3B600BBBA41 /* Frameworks */,
 				08892332278BE3B600BBBA41 /* Resources */,
-				1A07832A2D1565A45AA3D525 /* [CP] Embed Pods Frameworks */,
+				5F59CC222F70AF26C1E87464 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -208,7 +208,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1A07832A2D1565A45AA3D525 /* [CP] Embed Pods Frameworks */ = {
+		5F59CC222F70AF26C1E87464 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -225,7 +225,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LyricsSearch/Pods-LyricsSearch-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		476CC99D0EB1A5EA70429737 /* [CP] Check Pods Manifest.lock */ = {
+		613A8501024ABB3BC60D5445 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -405,7 +405,7 @@
 		};
 		08892364278BE3B700BBBA41 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6DE363E7FC21C97D788861AF /* Pods-LyricsSearch.debug.xcconfig */;
+			baseConfigurationReference = 742450C283FFA98D5F320085 /* Pods-LyricsSearch.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -437,7 +437,7 @@
 		};
 		08892365278BE3B700BBBA41 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 552122A159791632A4EBF15D /* Pods-LyricsSearch.release.xcconfig */;
+			baseConfigurationReference = 93888344C1C4A32F376C679F /* Pods-LyricsSearch.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

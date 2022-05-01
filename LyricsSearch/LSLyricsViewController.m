@@ -6,57 +6,55 @@
 //
 
 #import "LSLyricsViewController.h"
-#import "LSDataManager.h"
-#import "LSTrackQueue.h"
 
 @interface LSLyricsViewController ()
-
+@property (nonatomic, strong) NSArray *lyrics;
+@property (nonatomic, strong) NSString *song;
+@property (nonatomic, strong) NSString *artist;
+@property (nonatomic, strong) UIImage *backgroundImage;
+@property (nonatomic, assign) NSInteger duration;
+@property (nonatomic, strong) MarqueeLabel *songLabel;
+@property (nonatomic, strong) MarqueeLabel *artistLabel;
+@property (nonatomic, strong) UIImageView *backgroundImageView;
+@property (nonatomic, strong) UIView *containerView;
+@property (nonatomic, strong) UIView *controlsView;
+@property (nonatomic, strong) UIButton *pauseButton;
+@property (nonatomic, strong) UIButton *previousButton;
+@property (nonatomic, strong) UIButton *skipButton;
+@property (nonatomic, strong) LSLyricsTableViewController *tableViewController;
 @end
 
 @implementation LSLyricsViewController
 
-- (instancetype)initWithLyrics:(NSArray *)lyrics song:(NSString *)song artist:(NSString *)artist image:(UIImage *)image {
+- (instancetype)initWithLyrics:(NSArray *)lyrics song:(NSString *)song artist:(NSString *)artist image:(UIImage *)image duration:(NSInteger)duration {
     if(self = [super init]) {
         self.lyrics = lyrics;
         self.song = song;
         self.artist = artist;
         self.backgroundImage = image;
+        self.duration = duration;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackEnded) name:@"trackEnded" object:nil];
     }
     return self;
 }
 
+
 - (instancetype)initWithTrackItem:(LSTrackItem *)trackItem {
-    NSArray *lyrics = trackItem.lyrics;
+    NSArray *lyrics = [LSDataManager lyricsForSong:trackItem.songName artist:trackItem.artistName];
     NSString *song = trackItem.songName;
     NSString *artist = trackItem.artistName;
     UIImage *image = trackItem.artImage;
-    return [self initWithLyrics:lyrics song:song artist:artist image:image];
+    NSInteger duration = trackItem.duration;
+    return [self initWithLyrics:lyrics song:song artist:artist image:image duration:duration];
 }
 
-- (void)setLyrics:(NSArray *)lyrics {
-    _lyrics = lyrics;
-    self.tableViewController.lyricsArray = lyrics;
-    [self.tableViewController.tableView reloadData];
-}
-
-- (void)setBackgroundImage:(UIImage *)backgroundImage {
-    _backgroundImage = backgroundImage;
-    self.backgroundImageView.image = backgroundImage;
-}
-
-- (void)setSong:(NSString *)song {
-    _song = song;
-    self.songLabel.text = song;
-}
-
-- (void)setArtist:(NSString *)artist {
-    _artist = artist;
-    self.artistLabel.text = artist;
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.tableViewController = [[LSLyricsTableViewController alloc] initWithLyrics:self.lyrics];
+    self.tableViewController = [[LSLyricsTableViewController alloc] initWithLyrics:self.lyrics trackDuration:self.duration];
     self.backgroundImageView = [[UIImageView alloc] initWithImage:self.backgroundImage];
     self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -116,29 +114,28 @@
     [content didMoveToParentViewController:self];
 }
 
-- (void)setPlayingTrack:(LSTrackItem *)track {
-    self.lyrics = track.lyrics;
-    self.backgroundImage = track.artImage;
-    self.artist = track.artistName;
-    self.song = track.songName;
-}
-
-- (void)togglePaused:(BOOL)paused {
-    
-}
-
-- (void)skipTrack {
+- (void)trackEnded {
     LSTrackQueue *sharedQueue = [LSTrackQueue sharedQueue];
-    [sharedQueue decrement];
-    LSTrackItem *previousItem = [sharedQueue currentItem];
-    if(previousItem == nil) {
+    [sharedQueue increment];
+    LSTrackItem *nextItem = [sharedQueue currentItem];
+    if(!nextItem) {
         [self dismissViewControllerAnimated:YES completion:nil];
         return;
     }
-    [self setPlayingTrack:previousItem];
+    [self setPlayingTrack:nextItem];
 }
 
-- (void)previousTrack {
+- (void)setPlayingTrack:(LSTrackItem *)track {
+    self.tableViewController.lyricsArray = [LSDataManager lyricsForSong:track.songName artist:track.artistName];
+    self.tableViewController.duration = track.duration;
+    [self.tableViewController.tableView reloadData];
+    self.backgroundImageView.image = track.artImage;
+    self.artistLabel.text = track.artistName;
+    self.songLabel.text = track.songName;
+    [self.tableViewController trackChanged];
+}
+
+- (void)skipTrack {
     LSTrackQueue *sharedQueue = [LSTrackQueue sharedQueue];
     [sharedQueue increment];
     LSTrackItem *nextItem = [sharedQueue currentItem];
@@ -147,6 +144,17 @@
         return;
     }
     [self setPlayingTrack:nextItem];
+}
+
+- (void)previousTrack {
+    LSTrackQueue *sharedQueue = [LSTrackQueue sharedQueue];
+    [sharedQueue decrement];
+    LSTrackItem *previousItem = [sharedQueue currentItem];
+    if(previousItem == nil) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+        return;
+    }
+    [self setPlayingTrack:previousItem];
 }
 
 @end

@@ -6,26 +6,23 @@
 //
 
 #import "LSLyricsTableViewController.h"
-#import "LSLyricsTableViewCell.h"
 
 @interface LSLyricsTableViewController ()
 @property (nonatomic, assign) NSInteger nextSection;
+@property (nonatomic, strong) NSTimer *timer;
 @end
 
 @implementation LSLyricsTableViewController
 
-- (instancetype)initWithLyrics:(NSArray *)lyrics {
+- (instancetype)initWithLyrics:(NSArray *)lyrics trackDuration:(NSInteger)duration {
     if(self = [super init]) {
         self.lyricsArray = lyrics;
+        self.duration = duration;
     }
     return self;
 }
 
 - (void)updateTimer {
-    if(self.nextSection == [self.lyricsArray count] - 1) {
-        [self.timer invalidate];
-        return;
-    }
     float nextDelay = [self.lyricsArray[self.nextSection][@"time"][@"total"] floatValue];
     float currentDelay = [self.lyricsArray[self.nextSection - 1][@"time"][@"total"] floatValue];
     float delay = nextDelay - currentDelay;
@@ -33,6 +30,18 @@
 }
 
 - (void)selectNextCell {
+    if(self.nextSection == [self.lyricsArray count]) {
+        [self.timer invalidate];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"trackEnded" object:nil];
+        return;
+    }
+    if(self.nextSection == [self.lyricsArray count] - 1) {
+        float current = [self.lyricsArray[self.nextSection - 1][@"time"][@"total"] floatValue];
+        float delay = self.duration - current;
+        self.timer.fireDate = [self.timer.fireDate dateByAddingTimeInterval:delay];
+        self.nextSection++;
+        return;
+    }
     NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:self.nextSection++];
     [self.tableView selectRowAtIndexPath:selectedIndexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
     [self updateTimer];
@@ -53,11 +62,19 @@
     [self.tableView registerClass:[LSLyricsTableViewCell class] forCellReuseIdentifier:@"Cell"];
 }
 
+- (void)trackChanged {
+    self.nextSection = 0;
+    NSIndexPath *top = [NSIndexPath indexPathForRow:0 inSection:0];
+    [self.tableView scrollToRowAtIndexPath:top atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    [self beginTimer];
+}
+
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [self.timer invalidate];
     self.nextSection = 0;
-    self.tableView.contentOffset = CGPointZero;
+    NSIndexPath *top = [NSIndexPath indexPathForRow:0 inSection:0];
+    [self.tableView scrollToRowAtIndexPath:top atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -67,8 +84,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     self.nextSection = [indexPath section] + 1;
-    [self updateTimer];
     [tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    [self updateTimer];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

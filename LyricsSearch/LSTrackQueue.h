@@ -17,7 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)enqueue:(LSTrackItem *)item;
 - (void)decrement;
 - (void)increment;
-- (void)setIndex:(NSUInteger)idx;
 @end
 
 NS_ASSUME_NONNULL_END
