@@ -26,7 +26,7 @@
     float nextDelay = [self.lyricsArray[self.nextSection][@"time"][@"total"] floatValue];
     float currentDelay = [self.lyricsArray[self.nextSection - 1][@"time"][@"total"] floatValue];
     float delay = nextDelay - currentDelay;
-    self.timer.fireDate = [self.timer.fireDate dateByAddingTimeInterval:delay];
+    self.timer.fireDate = [[NSDate now] dateByAddingTimeInterval:delay];
 }
 
 - (void)selectNextCell {
@@ -36,7 +36,7 @@
         return;
     }
     if(self.nextSection == [self.lyricsArray count] - 1) {
-        float current = [self.lyricsArray[self.nextSection - 1][@"time"][@"total"] floatValue];
+        float current = [self.lyricsArray[self.nextSection][@"time"][@"total"] floatValue];
         float delay = self.duration - current;
         self.timer.fireDate = [self.timer.fireDate dateByAddingTimeInterval:delay];
         self.nextSection++;
@@ -64,8 +64,11 @@
     [self.tableView registerClass:[LSLyricsTableViewCell class] forCellReuseIdentifier:@"Cell"];
 }
 
-- (void)trackChanged {
+- (void)setPlayingTrack:(LSTrackItem *)track {
+    self.lyricsArray = [LSDataManager lyricsForSong:track.songName artist:track.artistName];
+    self.duration = track.duration;
     self.nextSection = 0;
+    [self.tableView reloadData];
     NSIndexPath *top = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.tableView scrollToRowAtIndexPath:top atScrollPosition:UITableViewScrollPositionTop animated:YES];
     [self beginTimer];
@@ -75,6 +78,8 @@
     [super viewDidDisappear:animated];
     [self.timer invalidate];
     self.nextSection = 0;
+    [[LSTrackQueue sharedQueue] increment];
+    if([self.lyricsArray count] == 0) return;
     NSIndexPath *top = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.tableView scrollToRowAtIndexPath:top atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
@@ -92,7 +97,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     NSString *text = self.lyricsArray[indexPath.section][@"text"];
     cell.textLabel.text = [text length] == 0 ? @"..." : text;
     cell.textLabel.numberOfLines = 0;
@@ -100,6 +104,7 @@
     cell.textLabel.font = [UIFont systemFontOfSize:40 weight:UIFontWeightHeavy];
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     cell.backgroundColor = [UIColor clearColor];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 

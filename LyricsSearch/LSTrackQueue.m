@@ -24,21 +24,27 @@
 }
 - (void)setCurrentItem:(LSTrackItem *)item {
     [self.queue insertObject:item atIndex:self.index];
+    NSLog(@"%@", self.queue);
 }
 - (void)enqueue:(LSTrackItem *)item {
     [self.queue addObject:item];
+    NSLog(@"%@", self.queue);
 }
 - (LSTrackItem *)currentItem {
+    NSLog(@"%@", self.queue);
     if([self.queue count] <= self.index) return nil;
     return self.queue[self.index];
 }
 - (void)decrement {
+    NSLog(@"%@", self.queue);
     self.index--;
 }
 - (void)increment {
+    NSLog(@"%@", self.queue);
     self.index++;
 }
 - (NSInteger)size {
+    NSLog(@"%@", self.queue);
     return [self.queue count];
 }
 @end

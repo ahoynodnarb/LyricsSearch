@@ -6,12 +6,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "LSTrackItem.h"
+#import "LSDataManager.h"
 #import "LSLyricsTableViewCell.h"
+#import "LSTrackItem.h"
+#import "LSTrackQueue.h"
 
 @interface LSLyricsTableViewController : UITableViewController
 @property (nonatomic, strong) NSArray *lyricsArray;
 @property (nonatomic, assign) NSInteger duration;
 - (instancetype)initWithLyrics:(NSArray *)lyrics trackDuration:(NSInteger)duration;
-- (void)trackChanged;
+- (void)setPlayingTrack:(LSTrackItem *)track;
 @end

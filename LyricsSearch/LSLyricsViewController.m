@@ -60,8 +60,8 @@
     self.backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.backgroundImageView.translatesAutoresizingMaskIntoConstraints = NO;
     UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
-    blurEffectView.frame = self.view.bounds;
-    [self.backgroundImageView insertSubview:blurEffectView atIndex:0];
+    blurEffectView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.backgroundImageView addSubview:blurEffectView];
     [self.view addSubview:self.backgroundImageView];
     self.containerView = [[UIView alloc] init];
     self.containerView.backgroundColor = [UIColor clearColor];
@@ -71,40 +71,47 @@
     self.songLabel.marqueeType = MLLeftRight;
     self.songLabel.font = [UIFont systemFontOfSize:40 weight:UIFontWeightHeavy];
     self.songLabel.textColor = [UIColor whiteColor];
-    self.songLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.songLabel.text = self.song;
+    self.songLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.songLabel.textAlignment = NSTextAlignmentLeft;
     [self.view addSubview:self.songLabel];
     self.artistLabel = [[MarqueeLabel alloc] init];
     self.artistLabel.marqueeType = MLLeftRight;
     self.artistLabel.font = [UIFont systemFontOfSize:30 weight:UIFontWeightHeavy];
     self.artistLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.5];
-    self.artistLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.artistLabel.text = self.artist;
+    self.artistLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.artistLabel.textAlignment = NSTextAlignmentLeft;
     [self.view addSubview:self.artistLabel];
     self.controlsView = [[UIView alloc] init];
     self.controlsView.backgroundColor = [UIColor clearColor];
     self.controlsView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.controlsView];
+    [self displayContentController:self.tableViewController];
     [NSLayoutConstraint activateConstraints:@[
         [self.backgroundImageView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
-        [self.backgroundImageView.widthAnchor constraintEqualToConstant:self.view.bounds.size.width],
-        [self.backgroundImageView.heightAnchor constraintEqualToAnchor:self.view.heightAnchor],
+        [self.backgroundImageView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
+        [self.backgroundImageView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+        [self.backgroundImageView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+        [blurEffectView.topAnchor constraintEqualToAnchor:self.backgroundImageView.topAnchor],
+        [blurEffectView.bottomAnchor constraintEqualToAnchor:self.backgroundImageView.bottomAnchor],
+        [blurEffectView.leadingAnchor constraintEqualToAnchor:self.backgroundImageView.leadingAnchor],
+        [blurEffectView.trailingAnchor constraintEqualToAnchor:self.backgroundImageView.trailingAnchor],
         [self.containerView.topAnchor constraintEqualToAnchor:self.view.topAnchor constant:150],
         [self.containerView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant:-100],
         [self.containerView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:25],
         [self.containerView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-25],
         [self.songLabel.topAnchor constraintEqualToAnchor:self.view.topAnchor constant:50],
-        [self.songLabel.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:45],
-        [self.songLabel.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-45],
+        [self.songLabel.leadingAnchor constraintEqualToAnchor:self.containerView.leadingAnchor constant:self.tableViewController.tableView.contentInset.left + 25],
+        [self.songLabel.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-25],
         [self.artistLabel.topAnchor constraintEqualToAnchor:self.view.topAnchor constant:100],
-        [self.artistLabel.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:45],
-        [self.artistLabel.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-45],
+        [self.artistLabel.leadingAnchor constraintEqualToAnchor:self.containerView.leadingAnchor constant:self.tableViewController.tableView.contentInset.left + 25],
+        [self.artistLabel.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-25],
         [self.controlsView.topAnchor constraintEqualToAnchor:self.containerView.bottomAnchor],
         [self.controlsView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
         [self.controlsView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:25],
         [self.controlsView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-25]
     ]];
-    [self displayContentController:self.tableViewController];
 }
 
 - (void)displayContentController:(UIViewController *)content {
@@ -115,13 +122,10 @@
 }
 
 - (void)setPlayingTrack:(LSTrackItem *)track {
-    self.tableViewController.lyricsArray = [LSDataManager lyricsForSong:track.songName artist:track.artistName];
-    self.tableViewController.duration = track.duration;
-    [self.tableViewController.tableView reloadData];
     self.backgroundImageView.image = track.artImage;
     self.artistLabel.text = track.artistName;
     self.songLabel.text = track.songName;
-    [self.tableViewController trackChanged];
+    [self.tableViewController setPlayingTrack:track];
 }
 
 - (void)playNextTrack {
