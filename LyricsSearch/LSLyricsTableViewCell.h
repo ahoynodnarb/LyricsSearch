@@ -1,5 +1,5 @@
 //
-//  LTLyricsTableViewCell.h
+//  LSLyricsTableViewCell.h
 //  LyricsTester
 //
 //  Created by Brandon Yao on 4/23/22.

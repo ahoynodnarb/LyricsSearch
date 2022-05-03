@@ -1,5 +1,5 @@
 //
-//  ViewController.m
+//  LSLyricsViewController.m
 //  LyricsTester
 //
 //  Created by Brandon Yao on 1/9/22.
@@ -114,17 +114,6 @@
     [content didMoveToParentViewController:self];
 }
 
-- (void)trackEnded {
-    LSTrackQueue *sharedQueue = [LSTrackQueue sharedQueue];
-    [sharedQueue increment];
-    LSTrackItem *nextItem = [sharedQueue currentItem];
-    if(!nextItem) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-        return;
-    }
-    [self setPlayingTrack:nextItem];
-}
-
 - (void)setPlayingTrack:(LSTrackItem *)track {
     self.tableViewController.lyricsArray = [LSDataManager lyricsForSong:track.songName artist:track.artistName];
     self.tableViewController.duration = track.duration;
@@ -135,18 +124,18 @@
     [self.tableViewController trackChanged];
 }
 
-- (void)skipTrack {
+- (void)playNextTrack {
     LSTrackQueue *sharedQueue = [LSTrackQueue sharedQueue];
     [sharedQueue increment];
     LSTrackItem *nextItem = [sharedQueue currentItem];
-    if(nextItem == nil) {
+    if(!nextItem) {
         [self dismissViewControllerAnimated:YES completion:nil];
         return;
     }
     [self setPlayingTrack:nextItem];
 }
 
-- (void)previousTrack {
+- (void)playPreviousTrack {
     LSTrackQueue *sharedQueue = [LSTrackQueue sharedQueue];
     [sharedQueue decrement];
     LSTrackItem *previousItem = [sharedQueue currentItem];
@@ -155,6 +144,18 @@
         return;
     }
     [self setPlayingTrack:previousItem];
+}
+
+- (void)trackEnded {
+    [self playNextTrack];
+}
+
+- (void)skipTrack {
+    [self playNextTrack];
+}
+
+- (void)previousTrack {
+    [self playPreviousTrack];
 }
 
 @end

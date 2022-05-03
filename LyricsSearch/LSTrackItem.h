@@ -1,5 +1,5 @@
 //
-//  LSQueueItem.h
+//  LSTrackitem.h
 //  LyricsSearch
 //
 //  Created by Brandon Yao on 4/29/22.

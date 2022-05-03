@@ -1,5 +1,5 @@
 //
-//  LTSongSelectionViewController.m
+//  LSSearchResultTableViewController.m
 //  LyricsTester
 //
 //  Created by Brandon Yao on 4/21/22.
@@ -80,9 +80,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     LSSearchResultTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    [[LSTrackQueue sharedQueue] push:cell.trackItem];
-    if(!self.lyricsViewController) self.lyricsViewController = [[LSLyricsViewController alloc] initWithTrackItem:cell.trackItem];
-    else [self.lyricsViewController setPlayingTrack:cell.trackItem];
+    LSTrackQueue *sharedQueue = [LSTrackQueue sharedQueue];
+    [sharedQueue setCurrentItem:cell.trackItem];
+    if(!self.lyricsViewController) self.lyricsViewController = [[LSLyricsViewController alloc] initWithTrackItem:[sharedQueue currentItem]];
+    else [self.lyricsViewController setPlayingTrack:[sharedQueue currentItem]];
     [self presentViewController:self.lyricsViewController animated:YES completion:nil];
 }
 

@@ -1,5 +1,5 @@
 //
-//  ViewController.m
+//  LSLyricsTableViewController.m
 //  LyricsTester
 //
 //  Created by Brandon Yao on 1/9/22.
@@ -48,6 +48,8 @@
 }
 
 - (void)beginTimer {
+    // should fix songs playing too quickly/incorrectly
+    if(self.timer) [self.timer invalidate];
     float delay = [self.lyricsArray[self.nextSection][@"time"][@"total"] floatValue];
     self.timer = [NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(selectNextCell) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];

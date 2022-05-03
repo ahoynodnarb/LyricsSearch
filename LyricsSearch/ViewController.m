@@ -2,6 +2,7 @@
 // TODO: Download next song's lyrics while current song playing
 // TODO: Optimize downloading and maybe persistent cache
 // TODO: Add play/pause skip/previous seek (maybe player at the top or bottom?)
+// TODO: Keep playing song in background when viewcontroller closed
 
 //
 //  ViewController.m

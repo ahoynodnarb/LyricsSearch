@@ -1,5 +1,5 @@
 //
-//  LTSearchResultTableViewCell.m
+//  LSSearchResultTableViewCell.m
 //  LyricsTester
 //
 //  Created by Brandon Yao on 4/22/22.

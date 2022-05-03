@@ -1,5 +1,5 @@
 //
-//  LTSongSelectionViewController.h
+//  LSSearchResultTableViewController.h
 //  LyricsTester
 //
 //  Created by Brandon Yao on 4/21/22.

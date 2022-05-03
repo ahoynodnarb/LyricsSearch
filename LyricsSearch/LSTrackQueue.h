@@ -1,5 +1,5 @@
 //
-//  LSQueueModel.h
+//  LSTrackQueue.h
 //  LyricsSearch
 //
 //  Created by Brandon Yao on 4/29/22.
@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LSTrackQueue : NSObject
 + (instancetype)sharedQueue;
 - (LSTrackItem *)currentItem;
-- (void)push:(LSTrackItem *)item;
+- (void)setCurrentItem:(LSTrackItem *)item;
 - (void)enqueue:(LSTrackItem *)item;
 - (void)decrement;
 - (void)increment;

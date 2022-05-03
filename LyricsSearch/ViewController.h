@@ -6,7 +6,6 @@
 
 
 #import <UIKit/UIKit.h>
-#import "LSDataManager.h"
 #import "LSSearchResultTableViewController.h"
 
 @interface ViewController : UIViewController

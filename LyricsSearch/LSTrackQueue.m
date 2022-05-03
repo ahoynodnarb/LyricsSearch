@@ -1,5 +1,5 @@
 //
-//  LSQueueModel.m
+//  LSTrackQueue.m
 //  LyricsSearch
 //
 //  Created by Brandon Yao on 4/29/22.
@@ -22,8 +22,8 @@
     });
     return _sharedQueue;
 }
-- (void)push:(LSTrackItem *)item {
-    [self.queue insertObject:item atIndex:0];
+- (void)setCurrentItem:(LSTrackItem *)item {
+    [self.queue insertObject:item atIndex:self.index];
 }
 - (void)enqueue:(LSTrackItem *)item {
     [self.queue addObject:item];

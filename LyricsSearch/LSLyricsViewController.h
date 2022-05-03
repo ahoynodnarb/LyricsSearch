@@ -1,5 +1,5 @@
 //
-//  LTLyricsViewController.h
+//  LSLyricsViewController.h
 //  LyricsTester
 //
 //  Created by Brandon Yao on 4/20/22.
