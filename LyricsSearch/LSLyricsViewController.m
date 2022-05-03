@@ -33,7 +33,7 @@
         self.artist = artist;
         self.backgroundImage = image;
         self.duration = duration;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackEnded) name:@"trackEnded" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playNextTrack) name:@"playNextTrack" object:nil];
     }
     return self;
 }
@@ -87,6 +87,21 @@
     self.controlsView.backgroundColor = [UIColor clearColor];
     self.controlsView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.controlsView];
+    self.skipButton = [[UIButton alloc] init];
+    [self.skipButton addTarget:self action:@selector(playNextTrack) forControlEvents:UIControlEventTouchUpInside];
+    [self.skipButton setImage:[UIImage imageNamed:@"SkipIcon"] forState:UIControlStateNormal];
+    self.skipButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.controlsView addSubview:self.skipButton];
+    self.previousButton = [[UIButton alloc] init];
+    [self.previousButton addTarget:self action:@selector(playPreviousTrack) forControlEvents:UIControlEventTouchUpInside];
+    [self.previousButton setImage:[UIImage imageNamed:@"PreviousIcon"] forState:UIControlStateNormal];
+    self.previousButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.controlsView addSubview:self.previousButton];
+    self.pauseButton = [[UIButton alloc] init];
+    [self.pauseButton addTarget:self action:@selector(pauseTrack) forControlEvents:UIControlEventTouchUpInside];
+    [self.pauseButton setImage:[UIImage imageNamed:@"PauseIcon"] forState:UIControlStateNormal];
+    self.pauseButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.controlsView addSubview:self.pauseButton];
     [self displayContentController:self.tableViewController];
     [NSLayoutConstraint activateConstraints:@[
         [self.backgroundImageView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
@@ -109,8 +124,20 @@
         [self.artistLabel.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-25],
         [self.controlsView.topAnchor constraintEqualToAnchor:self.containerView.bottomAnchor],
         [self.controlsView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
-        [self.controlsView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:25],
-        [self.controlsView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-25]
+        [self.controlsView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
+        [self.controlsView.widthAnchor constraintEqualToConstant:260],
+        [self.previousButton.centerYAnchor constraintEqualToAnchor:self.controlsView.centerYAnchor],
+        [self.previousButton.leadingAnchor constraintEqualToAnchor:self.controlsView.leadingAnchor],
+        [self.previousButton.heightAnchor constraintEqualToConstant:40],
+        [self.previousButton.widthAnchor constraintEqualToConstant:40],
+        [self.skipButton.centerYAnchor constraintEqualToAnchor:self.controlsView.centerYAnchor],
+        [self.skipButton.trailingAnchor constraintEqualToAnchor:self.controlsView.trailingAnchor],
+        [self.skipButton.heightAnchor constraintEqualToConstant:40],
+        [self.skipButton.widthAnchor constraintEqualToConstant:40],
+        [self.pauseButton.centerXAnchor constraintEqualToAnchor:self.controlsView.centerXAnchor],
+        [self.pauseButton.centerYAnchor constraintEqualToAnchor:self.controlsView.centerYAnchor],
+        [self.pauseButton.heightAnchor constraintEqualToConstant:40],
+        [self.pauseButton.widthAnchor constraintEqualToConstant:40],
     ]];
 }
 
@@ -150,16 +177,8 @@
     [self setPlayingTrack:previousItem];
 }
 
-- (void)trackEnded {
-    [self playNextTrack];
-}
-
-- (void)skipTrack {
-    [self playNextTrack];
-}
-
-- (void)previousTrack {
-    [self playPreviousTrack];
+- (void)pauseTrack {
+    NSLog(@"track paused");
 }
 
 @end

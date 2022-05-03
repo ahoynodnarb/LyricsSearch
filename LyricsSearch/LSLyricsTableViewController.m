@@ -32,7 +32,7 @@
 - (void)selectNextCell {
     if(self.nextSection == [self.lyricsArray count]) {
         [self.timer invalidate];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"trackEnded" object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"playNextTrack" object:nil];
         return;
     }
     if(self.nextSection == [self.lyricsArray count] - 1) {
