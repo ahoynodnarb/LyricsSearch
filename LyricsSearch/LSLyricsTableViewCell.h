@@ -1,6 +1,6 @@
 //
 //  LSLyricsTableViewCell.h
-//  LyricsTester
+//  LyricsSearch
 //
 //  Created by Brandon Yao on 4/23/22.
 //

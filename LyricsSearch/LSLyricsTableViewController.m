@@ -1,6 +1,6 @@
 //
 //  LSLyricsTableViewController.m
-//  LyricsTester
+//  LyricsSearch
 //
 //  Created by Brandon Yao on 1/9/22.
 //
@@ -8,6 +8,8 @@
 #import "LSLyricsTableViewController.h"
 
 @interface LSLyricsTableViewController ()
+@property (nonatomic, assign) float nextTimestamp;
+@property (nonatomic, assign) float elapsedTime;
 @property (nonatomic, assign) NSInteger nextSection;
 @property (nonatomic, strong) NSTimer *timer;
 @end
@@ -17,41 +19,33 @@
 - (instancetype)initWithLyrics:(NSArray *)lyrics trackDuration:(NSInteger)duration {
     if(self = [super init]) {
         self.lyricsArray = lyrics;
-        self.duration = duration;
+        self.duration = duration * 1000;
+        self.playing = YES;
     }
     return self;
 }
 
-- (void)updateTimer {
-    float nextDelay = [self.lyricsArray[self.nextSection][@"time"][@"total"] floatValue];
-    float currentDelay = [self.lyricsArray[self.nextSection - 1][@"time"][@"total"] floatValue];
-    float delay = nextDelay - currentDelay;
-    self.timer.fireDate = [[NSDate now] dateByAddingTimeInterval:delay];
-}
-
-- (void)selectNextCell {
-    if(self.nextSection == [self.lyricsArray count]) {
+- (void)timerFired {
+    self.elapsedTime++;
+    if(self.nextSection == [self.lyricsArray count] - 1 || !self.playing) {
         [self.timer invalidate];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"playNextTrack" object:nil];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (self.duration - self.elapsedTime) * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"playNextTrack" object:nil];
+        });
         return;
     }
-    if(self.nextSection == [self.lyricsArray count] - 1) {
-        float current = [self.lyricsArray[self.nextSection][@"time"][@"total"] floatValue];
-        float delay = self.duration - current;
-        self.timer.fireDate = [self.timer.fireDate dateByAddingTimeInterval:delay];
+    if(self.elapsedTime >= self.nextTimestamp) {
+        NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:self.nextSection];
+        [self.tableView selectRowAtIndexPath:selectedIndexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
         self.nextSection++;
-        return;
+        self.nextTimestamp = [self.lyricsArray[self.nextSection][@"time"][@"total"] floatValue] * 1000;
     }
-    NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:self.nextSection++];
-    [self.tableView selectRowAtIndexPath:selectedIndexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
-    [self updateTimer];
 }
 
 - (void)beginTimer {
-    // should fix songs playing too quickly/incorrectly
     if(self.timer) [self.timer invalidate];
-    float delay = [self.lyricsArray[self.nextSection][@"time"][@"total"] floatValue];
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(selectNextCell) userInfo:nil repeats:YES];
+    self.nextTimestamp = [self.lyricsArray[self.nextSection][@"time"][@"total"] floatValue] * 1000;
+    self.timer = [NSTimer timerWithTimeInterval:0.001 target:self selector:@selector(timerFired) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
 }
 
@@ -91,8 +85,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     self.nextSection = [indexPath section] + 1;
+    self.nextTimestamp = [self.lyricsArray[self.nextSection][@"time"][@"total"] floatValue] * 1000;
+    self.elapsedTime = self.nextSection == 0 ? 0 : [self.lyricsArray[self.nextSection - 1][@"time"][@"total"] floatValue] * 1000;
     [tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    [self updateTimer];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

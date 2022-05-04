@@ -1,6 +1,6 @@
 //
 //  ViewController.h
-//  LyricsTester
+//  LyricsSearch
 //
 //  Created by Brandon Yao on 1/9/
 

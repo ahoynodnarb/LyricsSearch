@@ -3,10 +3,11 @@
 // TODO: Optimize downloading and maybe persistent cache
 // TODO: Add play/pause skip/previous seek (maybe player at the top or bottom?)
 // TODO: Keep playing song in background when viewcontroller closed
+// TODO: Spotify integration
 
 //
 //  ViewController.m
-//  LyricsTester
+//  LyricsSearch
 //
 //  Created by Brandon Yao on 1/9/22.
 //
@@ -32,6 +33,7 @@
     self.searchTextField = [[UITextField alloc] init];
     // have to use attributed string to make placeholder text black
     self.searchTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Song Name" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor]}];
+    self.searchTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.searchTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.searchTextField.textColor = [UIColor blackColor];
     self.searchTextField.backgroundColor = [UIColor whiteColor];

@@ -1,6 +1,6 @@
 //
 //  main.m
-//  LyricsTester
+//  LyricsSearch
 //
 //  Created by Brandon Yao on 1/9/22.
 //

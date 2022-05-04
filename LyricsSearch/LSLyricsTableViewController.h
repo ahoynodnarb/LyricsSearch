@@ -1,6 +1,6 @@
 //
 //  LSLyricsTableViewController.h
-//  LyricsTester
+//  LyricsSearch
 //
 //  Created by Brandon Yao on 1/9/22.
 //
@@ -14,6 +14,7 @@
 @interface LSLyricsTableViewController : UITableViewController
 @property (nonatomic, strong) NSArray *lyricsArray;
 @property (nonatomic, assign) NSInteger duration;
+@property (nonatomic, assign) BOOL playing;
 - (instancetype)initWithLyrics:(NSArray *)lyrics trackDuration:(NSInteger)duration;
 - (void)setPlayingTrack:(LSTrackItem *)track;
 @end
