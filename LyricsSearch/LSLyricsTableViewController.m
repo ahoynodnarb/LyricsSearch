@@ -16,6 +16,14 @@
 
 @implementation LSLyricsTableViewController
 
+- (void)setPlaying:(BOOL)playing {
+    _playing = playing;
+    if(playing) {
+        if(![self.timer isValid]) [self beginTimer];
+    }
+    else [self.timer invalidate];
+}
+
 - (instancetype)initWithLyrics:(NSArray *)lyrics trackDuration:(NSInteger)duration {
     if(self = [super init]) {
         self.lyricsArray = lyrics;
@@ -27,7 +35,7 @@
 
 - (void)timerFired {
     self.elapsedTime++;
-    if(self.nextSection == [self.lyricsArray count] - 1 || !self.playing) {
+    if(self.nextSection == [self.lyricsArray count] - 1) {
         [self.timer invalidate];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (self.duration - self.elapsedTime) * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
             [[NSNotificationCenter defaultCenter] postNotificationName:@"playNextTrack" object:nil];
@@ -43,7 +51,7 @@
 }
 
 - (void)beginTimer {
-    if(self.timer) [self.timer invalidate];
+    if(self.timer || [self.timer isValid]) [self.timer invalidate];
     self.nextTimestamp = [self.lyricsArray[self.nextSection][@"time"][@"total"] floatValue] * 1000;
     self.timer = [NSTimer timerWithTimeInterval:0.001 target:self selector:@selector(timerFired) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
@@ -64,15 +72,15 @@
     self.nextSection = 0;
     [self.tableView reloadData];
     NSIndexPath *top = [NSIndexPath indexPathForRow:0 inSection:0];
+    if([self.lyricsArray count] == 0) return;
     [self.tableView scrollToRowAtIndexPath:top atScrollPosition:UITableViewScrollPositionTop animated:YES];
     [self beginTimer];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    [self.timer invalidate];
+    self.playing = NO;
     self.nextSection = 0;
-    [[LSTrackQueue sharedQueue] increment];
     if([self.lyricsArray count] == 0) return;
     NSIndexPath *top = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.tableView scrollToRowAtIndexPath:top atScrollPosition:UITableViewScrollPositionTop animated:YES];
@@ -80,7 +88,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if(self.lyricsArray) [self beginTimer];
+    if([self.lyricsArray count] != 0) [self beginTimer];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

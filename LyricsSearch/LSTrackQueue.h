@@ -11,12 +11,14 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LSTrackQueue : NSObject
+@property (nonatomic, readonly) NSUInteger index;
 + (instancetype)sharedQueue;
 - (LSTrackItem *)currentItem;
 - (void)setCurrentItem:(LSTrackItem *)item;
 - (void)enqueue:(LSTrackItem *)item;
 - (void)decrement;
 - (void)increment;
+- (NSInteger)size;
 @end
 
 NS_ASSUME_NONNULL_END

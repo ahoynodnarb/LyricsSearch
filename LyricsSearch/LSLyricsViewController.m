@@ -98,7 +98,7 @@
     self.previousButton.translatesAutoresizingMaskIntoConstraints = NO;
     [self.controlsView addSubview:self.previousButton];
     self.pauseButton = [[UIButton alloc] init];
-    [self.pauseButton addTarget:self action:@selector(pauseTrack) forControlEvents:UIControlEventTouchUpInside];
+    [self.pauseButton addTarget:self action:@selector(pauseButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [self.pauseButton setImage:[UIImage imageNamed:@"PauseIcon"] forState:UIControlStateNormal];
     self.pauseButton.translatesAutoresizingMaskIntoConstraints = NO;
     [self.controlsView addSubview:self.pauseButton];
@@ -141,6 +141,12 @@
     ]];
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    NSLog(@"disappearing");
+    [[LSTrackQueue sharedQueue] increment];
+}
+
 - (void)displayContentController:(UIViewController *)content {
     [self addChildViewController:content];
     [self.containerView addSubview:content.view];
@@ -157,28 +163,30 @@
 
 - (void)playNextTrack {
     LSTrackQueue *sharedQueue = [LSTrackQueue sharedQueue];
-    [sharedQueue increment];
-    LSTrackItem *nextItem = [sharedQueue currentItem];
-    if(!nextItem) {
+    if(sharedQueue.index == [sharedQueue size]) {
         [self dismissViewControllerAnimated:YES completion:nil];
         return;
     }
+    [sharedQueue increment];
+    LSTrackItem *nextItem = [sharedQueue currentItem];
     [self setPlayingTrack:nextItem];
 }
 
 - (void)playPreviousTrack {
     LSTrackQueue *sharedQueue = [LSTrackQueue sharedQueue];
-    [sharedQueue decrement];
-    LSTrackItem *previousItem = [sharedQueue currentItem];
-    if(previousItem == nil) {
+    if(sharedQueue.index == 0) {
         [self dismissViewControllerAnimated:YES completion:nil];
         return;
     }
+    [sharedQueue decrement];
+    LSTrackItem *previousItem = [sharedQueue currentItem];
     [self setPlayingTrack:previousItem];
 }
 
-- (void)pauseTrack {
-    NSLog(@"track paused");
+- (void)pauseButtonPressed {
+    self.tableViewController.playing = !self.tableViewController.playing;
+    if(self.tableViewController.playing) [self.pauseButton setImage:[UIImage imageNamed:@"PauseIcon"] forState:UIControlStateNormal];
+    else [self.pauseButton setImage:[UIImage imageNamed:@"PlayIcon"] forState:UIControlStateNormal];
 }
 
 @end

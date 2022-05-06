@@ -55,7 +55,7 @@
     NSData *data = [NSData dataWithContentsOfURL:URL];
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
     NSInteger statusCode = [dict[@"message"][@"header"][@"status_code"] longValue];
-    NSLog(@"%ld", (long)statusCode);
+    NSLog(@"%ld %@", (long)statusCode, URLString);
     if(statusCode != 200) return nil;
     NSString *lyricsJSON = dict[@"message"][@"body"][@"subtitle"][@"subtitle_body"];
     NSData *lyricsData = [lyricsJSON dataUsingEncoding:NSUTF8StringEncoding];

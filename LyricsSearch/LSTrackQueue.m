@@ -9,7 +9,6 @@
 
 @interface LSTrackQueue ()
 @property (nonatomic, strong) NSMutableArray<LSTrackItem *> *queue;
-@property (nonatomic, assign) NSUInteger index;
 @end
 
 @implementation LSTrackQueue
@@ -21,6 +20,9 @@
         _sharedQueue.queue = [[NSMutableArray alloc] init];
     });
     return _sharedQueue;
+}
+- (void)setIndex:(NSUInteger)index {
+    _index = index;
 }
 - (void)setCurrentItem:(LSTrackItem *)item {
     [self.queue insertObject:item atIndex:self.index];
