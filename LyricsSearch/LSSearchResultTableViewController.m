@@ -15,8 +15,6 @@
 - (instancetype)initWithSearchTerm:(NSString *)searchTerm {
     if(self = [super init]) {
         self.searchTerm = searchTerm;
-        self.currentPage = 1;
-        [self loadNextPage];
     }
     return self;
 }
@@ -26,11 +24,17 @@
     self.searchResults = nil;
 }
 
+- (void)loadNewPage {
+    self.currentPage = 1;
+    [self loadNextPage];
+    if([self.searchResults count] == 0) [self showErrorLabelWithMessage:@"No search results found"];
+    else self.errorMessageLabel.hidden = YES;
+}
+
 - (void)loadNextPage {
     NSArray *info = [LSDataManager infoForSearchTerm:self.searchTerm page:self.currentPage];
     if(!self.searchResults) self.searchResults = info;
     else self.searchResults = [self.searchResults arrayByAddingObjectsFromArray:info];
-    self.currentPage++;
 }
 
 - (void)displayMoreResults {
@@ -40,6 +44,25 @@
             [self.tableView reloadData];
         });
     });
+}
+
+- (void)showErrorLabelWithMessage:(NSString *)message {
+    self.errorMessageLabel.text = message;
+    self.errorMessageLabel.hidden = NO;
+}
+
+- (void)loadView {
+    [super loadView];
+    self.errorMessageLabel = [[UILabel alloc] init];
+    self.errorMessageLabel.textColor = [UIColor whiteColor];
+    self.errorMessageLabel.hidden = YES;
+    self.errorMessageLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.errorMessageLabel];
+    [NSLayoutConstraint activateConstraints:@[
+        [self.errorMessageLabel.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
+        [self.errorMessageLabel.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+    ]];
+    [self loadNewPage];
 }
 
 - (void)viewDidLoad {

@@ -1,8 +1,9 @@
-// TODO: Add message in case no lyrics found
-// TODO: Download next song's lyrics while current song playing
+// TODO: Add option to modify queue manually
+// TODO: Add seek
+// TODO: Load more songs when scrolling to bottom
 // TODO: Optimize downloading and maybe persistent cache
-// TODO: Add play/pause skip/previous seek (maybe player at the top or bottom?)
 // TODO: Keep playing song in background when viewcontroller closed
+// TODO: Download next song's lyrics while current song playing
 // TODO: Spotify integration
 
 //
@@ -78,19 +79,17 @@
 
 - (void)presentSearchResults {
     [self.searchTextField endEditing:YES];
-    NSString *search = self.searchTextField.text;
-    if(self.searchResultTableViewController) {
-        self.searchResultTableViewController.searchTerm = search;
-        self.searchResultTableViewController.currentPage = 1;
-        [self.searchResultTableViewController loadNextPage];
-        [self.searchResultTableViewController.tableView reloadData];
-        return;
+    NSString *searchTerm = self.searchTextField.text;
+    if(self.searchResultTableViewController) self.searchResultTableViewController.searchTerm = searchTerm;
+    else {
+        self.searchResultTableViewController = [[LSSearchResultTableViewController alloc] initWithSearchTerm:searchTerm];
+        [self addChildViewController:self.searchResultTableViewController];
+        [self.searchResultContainerView addSubview:self.searchResultTableViewController.view];
+        self.searchResultTableViewController.view.frame = self.searchResultContainerView.bounds;
+        [self.searchResultTableViewController didMoveToParentViewController:self];
     }
-    self.searchResultTableViewController = [[LSSearchResultTableViewController alloc] initWithSearchTerm:search];
-    [self addChildViewController:self.searchResultTableViewController];
-    [self.searchResultContainerView addSubview:self.searchResultTableViewController.view];
-    self.searchResultTableViewController.view.frame = self.searchResultContainerView.bounds;
-    [self.searchResultTableViewController didMoveToParentViewController:self];
+    [self.searchResultTableViewController loadNewPage];
+    [self.searchResultTableViewController.tableView reloadData];
 }
 
 @end

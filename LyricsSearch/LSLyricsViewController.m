@@ -52,8 +52,8 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+- (void)loadView {
+    [super loadView];
     self.tableViewController = [[LSLyricsTableViewController alloc] initWithLyrics:self.lyrics trackDuration:self.duration];
     self.backgroundImageView = [[UIImageView alloc] initWithImage:self.backgroundImage];
     self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -143,7 +143,6 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    NSLog(@"disappearing");
     [[LSTrackQueue sharedQueue] increment];
 }
 
@@ -155,6 +154,7 @@
 }
 
 - (void)setPlayingTrack:(LSTrackItem *)track {
+    if(!track) [self dismissViewControllerAnimated:YES completion:nil];
     self.backgroundImageView.image = track.artImage;
     self.artistLabel.text = track.artistName;
     self.songLabel.text = track.songName;

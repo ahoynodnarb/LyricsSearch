@@ -14,7 +14,9 @@
 @property (nonatomic, assign) NSInteger currentPage;
 @property (nonatomic, strong) NSArray *searchResults;
 @property (nonatomic, strong) NSString *searchTerm;
+@property (nonatomic, strong) UILabel *errorMessageLabel;
 @property (nonatomic, strong) LSLyricsViewController *lyricsViewController;
-- (void)loadNextPage;
 - (instancetype)initWithSearchTerm:(NSString *)searchTerm;
+- (void)loadNextPage;
+- (void)loadNewPage;
 @end

@@ -26,7 +26,7 @@
 }
 - (void)setCurrentItem:(LSTrackItem *)item {
     [self.queue insertObject:item atIndex:self.index];
-    NSLog(@"%@", self.queue);
+    
 }
 - (void)enqueue:(LSTrackItem *)item {
     [self.queue addObject:item];
