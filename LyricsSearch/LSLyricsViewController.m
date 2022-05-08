@@ -22,6 +22,7 @@
 @property (nonatomic, strong) UIButton *previousButton;
 @property (nonatomic, strong) UIButton *skipButton;
 @property (nonatomic, strong) LSLyricsTableViewController *tableViewController;
+@property (nonatomic, strong) UIProgressView *progressBar;
 @end
 
 @implementation LSLyricsViewController
@@ -33,7 +34,8 @@
         self.artist = artist;
         self.backgroundImage = image;
         self.duration = duration;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playNextTrack) name:@"playNextTrack" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playNextTrack) name:@"trackEnded" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateElapsedTime:) name:@"elapsedTimeUpdated" object:nil];
     }
     return self;
 }
@@ -48,13 +50,14 @@
     return [self initWithLyrics:lyrics song:song artist:artist image:image duration:duration];
 }
 
+
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)loadView {
     [super loadView];
-    self.tableViewController = [[LSLyricsTableViewController alloc] initWithLyrics:self.lyrics trackDuration:self.duration];
+    self.tableViewController = [[LSLyricsTableViewController alloc] initWithLyrics:self.lyrics];
     self.backgroundImageView = [[UIImageView alloc] initWithImage:self.backgroundImage];
     self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -87,6 +90,9 @@
     self.controlsView.backgroundColor = [UIColor clearColor];
     self.controlsView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.controlsView];
+    self.progressBar = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
+    self.progressBar.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.controlsView addSubview:self.progressBar];
     self.skipButton = [[UIButton alloc] init];
     [self.skipButton addTarget:self action:@selector(playNextTrack) forControlEvents:UIControlEventTouchUpInside];
     [self.skipButton setImage:[UIImage imageNamed:@"SkipIcon"] forState:UIControlStateNormal];
@@ -126,6 +132,10 @@
         [self.controlsView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
         [self.controlsView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
         [self.controlsView.widthAnchor constraintEqualToConstant:260],
+        [self.progressBar.topAnchor constraintEqualToAnchor:self.controlsView.topAnchor],
+        [self.progressBar.centerXAnchor constraintEqualToAnchor:self.controlsView.centerXAnchor],
+        [self.progressBar.widthAnchor constraintEqualToAnchor:self.controlsView.widthAnchor],
+        [self.progressBar.heightAnchor constraintEqualToConstant:10],
         [self.previousButton.centerYAnchor constraintEqualToAnchor:self.controlsView.centerYAnchor],
         [self.previousButton.leadingAnchor constraintEqualToAnchor:self.controlsView.leadingAnchor],
         [self.previousButton.heightAnchor constraintEqualToConstant:40],
@@ -141,6 +151,12 @@
     ]];
 }
 
+- (void)updateElapsedTime:(NSNotification *)note {
+    NSInteger elapsedTime = [[note userInfo][@"elapsedTime"] integerValue];
+    float progress = (float)elapsedTime / (float)(self.duration * 1000);
+    [self.progressBar setProgress:progress animated:YES];
+}
+
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [[LSTrackQueue sharedQueue] increment];
@@ -154,7 +170,12 @@
 }
 
 - (void)setPlayingTrack:(LSTrackItem *)track {
-    if(!track) [self dismissViewControllerAnimated:YES completion:nil];
+    LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
+    [sharedPlayer setCurrentItem:track];
+    if(!track) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+        return;
+    }
     self.backgroundImageView.image = track.artImage;
     self.artistLabel.text = track.artistName;
     self.songLabel.text = track.songName;
@@ -184,9 +205,15 @@
 }
 
 - (void)pauseButtonPressed {
-    self.tableViewController.playing = !self.tableViewController.playing;
-    if(self.tableViewController.playing) [self.pauseButton setImage:[UIImage imageNamed:@"PauseIcon"] forState:UIControlStateNormal];
-    else [self.pauseButton setImage:[UIImage imageNamed:@"PlayIcon"] forState:UIControlStateNormal];
+    LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
+    if(sharedPlayer.isPlaying ) {
+        [self.pauseButton setImage:[UIImage imageNamed:@"PlayIcon"] forState:UIControlStateNormal];
+        [sharedPlayer pauseTimer];
+    }
+    else {
+        [self.pauseButton setImage:[UIImage imageNamed:@"PauseIcon"] forState:UIControlStateNormal];
+        [sharedPlayer unpauseTimer];
+    }
 }
 
 @end

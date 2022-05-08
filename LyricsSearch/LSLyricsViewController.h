@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "LSDataManager.h"
 #import "LSLyricsTableViewController.h"
+#import "LSPlayerModel.h"
 #import "LSTrackItem.h"
 #import "LSTrackQueue.h"
 

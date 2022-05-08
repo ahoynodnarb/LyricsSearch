@@ -8,13 +8,12 @@
 #import <UIKit/UIKit.h>
 #import "LSDataManager.h"
 #import "LSLyricsTableViewCell.h"
+#import "LSPlayerModel.h"
 #import "LSTrackItem.h"
 #import "LSTrackQueue.h"
 
 @interface LSLyricsTableViewController : UITableViewController
 @property (nonatomic, strong) NSArray *lyricsArray;
-@property (nonatomic, assign) NSInteger duration;
-@property (nonatomic, assign) BOOL playing;
-- (instancetype)initWithLyrics:(NSArray *)lyrics trackDuration:(NSInteger)duration;
+- (instancetype)initWithLyrics:(NSArray *)lyrics;
 - (void)setPlayingTrack:(LSTrackItem *)track;
 @end

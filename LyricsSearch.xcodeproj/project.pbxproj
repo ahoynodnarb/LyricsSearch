@@ -20,6 +20,7 @@
 		088E822F281273E90017A073 /* LSSearchResultTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 088E822E281273E90017A073 /* LSSearchResultTableViewController.m */; };
 		088E82352813D8710017A073 /* LSSearchResultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 088E82342813D8710017A073 /* LSSearchResultTableViewCell.m */; };
 		08A400952814F85B00CF6D1C /* LSLyricsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A400942814F85B00CF6D1C /* LSLyricsTableViewCell.m */; };
+		08B0D8142826F4C40017330D /* LSPlayerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B0D8132826F4C40017330D /* LSPlayerModel.m */; };
 		08BE5A7D281CC1D800E7FE09 /* LSTrackQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 08BE5A7C281CC1D800E7FE09 /* LSTrackQueue.m */; };
 		08BE5A80281CC34D00E7FE09 /* LSTrackItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 08BE5A7F281CC34D00E7FE09 /* LSTrackItem.m */; };
 		E43E1040CBCA8E362828ADBC /* Pods_LyricsSearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8CD6B085BF94F38ABBFF8DC /* Pods_LyricsSearch.framework */; };
@@ -50,6 +51,8 @@
 		088E82342813D8710017A073 /* LSSearchResultTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSSearchResultTableViewCell.m; sourceTree = "<group>"; };
 		08A400932814F85B00CF6D1C /* LSLyricsTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSLyricsTableViewCell.h; sourceTree = "<group>"; };
 		08A400942814F85B00CF6D1C /* LSLyricsTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSLyricsTableViewCell.m; sourceTree = "<group>"; };
+		08B0D8122826F4C40017330D /* LSPlayerModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSPlayerModel.h; sourceTree = "<group>"; };
+		08B0D8132826F4C40017330D /* LSPlayerModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSPlayerModel.m; sourceTree = "<group>"; };
 		08BE5A7B281CC1D800E7FE09 /* LSTrackQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSTrackQueue.h; sourceTree = "<group>"; };
 		08BE5A7C281CC1D800E7FE09 /* LSTrackQueue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSTrackQueue.m; sourceTree = "<group>"; };
 		08BE5A7E281CC34D00E7FE09 /* LSTrackItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSTrackItem.h; sourceTree = "<group>"; };
@@ -108,6 +111,8 @@
 				088E822E281273E90017A073 /* LSSearchResultTableViewController.m */,
 				088E82332813D8710017A073 /* LSSearchResultTableViewCell.h */,
 				088E82342813D8710017A073 /* LSSearchResultTableViewCell.m */,
+				08B0D8122826F4C40017330D /* LSPlayerModel.h */,
+				08B0D8132826F4C40017330D /* LSPlayerModel.m */,
 				08BE5A7B281CC1D800E7FE09 /* LSTrackQueue.h */,
 				08BE5A7C281CC1D800E7FE09 /* LSTrackQueue.m */,
 				08BE5A7E281CC34D00E7FE09 /* LSTrackItem.h */,
@@ -257,6 +262,7 @@
 				08892371278BEDD200BBBA41 /* LSLyricsTableViewController.m in Sources */,
 				0889233F278BE3B600BBBA41 /* ViewController.m in Sources */,
 				088917952810A9A2003E620A /* LSLyricsViewController.m in Sources */,
+				08B0D8142826F4C40017330D /* LSPlayerModel.m in Sources */,
 				088E82352813D8710017A073 /* LSSearchResultTableViewCell.m in Sources */,
 				08892339278BE3B600BBBA41 /* AppDelegate.m in Sources */,
 				0889234A278BE3B700BBBA41 /* main.m in Sources */,

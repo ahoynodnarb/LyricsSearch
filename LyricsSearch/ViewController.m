@@ -24,8 +24,8 @@
 
 @implementation ViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+- (void)loadView {
+    [super loadView];
     self.view.backgroundColor = [UIColor blackColor];
     UIImage *searchIconImage = [UIImage imageNamed:@"SearchIcon"];
     self.promptContainerView = [[UIView alloc] init];

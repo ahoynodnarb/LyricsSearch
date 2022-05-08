@@ -35,6 +35,7 @@
     NSArray *info = [LSDataManager infoForSearchTerm:self.searchTerm page:self.currentPage];
     if(!self.searchResults) self.searchResults = info;
     else self.searchResults = [self.searchResults arrayByAddingObjectsFromArray:info];
+    self.currentPage++;
 }
 
 - (void)displayMoreResults {
@@ -106,7 +107,7 @@
     LSTrackQueue *sharedQueue = [LSTrackQueue sharedQueue];
     [sharedQueue setCurrentItem:cell.trackItem];
     if(!self.lyricsViewController) self.lyricsViewController = [[LSLyricsViewController alloc] initWithTrackItem:[sharedQueue currentItem]];
-    else [self.lyricsViewController setPlayingTrack:[sharedQueue currentItem]];
+    [self.lyricsViewController setPlayingTrack:[sharedQueue currentItem]];
     [self presentViewController:self.lyricsViewController animated:YES completion:nil];
 }
 

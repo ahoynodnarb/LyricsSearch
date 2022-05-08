@@ -39,7 +39,6 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
-      enableGPUValidationMode = "1"
       allowLocationSimulation = "YES">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
@@ -63,8 +62,23 @@
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
-            key = "USER_TOKEN"
+            key = "USER_TOKEN0"
             value = "201219dbdb0f6aaba1c774bd931d0e79a28024e28db027ae72955c"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "USER_TOKEN1"
+            value = "220508c7fd9fe3efc32d2522f627e5e8e8f70ab0e42c83bccf5a02"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "USER_TOKEN2"
+            value = "2205085437ae12d244cba12247d046fa3d26e99d1083d9c85f3e30"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "USER_TOKEN3"
+            value = "220508cbbe64841d76d8509d4d51daa1645bb99e80454e0f553afc"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
