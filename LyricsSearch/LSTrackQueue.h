@@ -8,17 +8,13 @@
 #import <Foundation/Foundation.h>
 #import "LSTrackItem.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface LSTrackQueue : NSObject
-@property (nonatomic, readonly) NSUInteger index;
+@property (nonatomic, strong) NSMutableArray *previousTracks;
+@property (nonatomic, strong) NSMutableArray *nextTracks;
+@property (nonatomic, strong) LSTrackItem *currentTrack;
 + (instancetype)sharedQueue;
-- (LSTrackItem *)currentItem;
-- (void)setCurrentItem:(LSTrackItem *)item;
 - (void)enqueue:(LSTrackItem *)item;
 - (void)decrement;
 - (void)increment;
 - (NSInteger)size;
 @end
-
-NS_ASSUME_NONNULL_END

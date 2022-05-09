@@ -11,7 +11,8 @@
 
 + (NSString *)getUserToken {
     NSInteger index = arc4random_uniform(4);
-    NSString *token = [NSString stringWithFormat:@"USER_TOKEN%ld", index];
+    NSString *tokenID = [NSString stringWithFormat:@"USER_TOKEN%ld", index];
+    NSString *token = [[[NSProcessInfo processInfo] environment] objectForKey:tokenID];
     return token;
 }
 
@@ -55,7 +56,7 @@
 + (NSArray *)lyricsForSong:(NSString *)song artist:(NSString *)artist {
     NSLog(@"%@ %@", song, artist);
     NSString *const userToken = [LSDataManager getUserToken];
-    NSString *const baseURL = [@"https://apic-desktop.musixmatch.com/ws/1.1/matcher.subtitle.get?app_id=web-desktop-app-v1.0&f_subtitle_length_max_deviation=1&namespace=lyrics_synched&subtitle_format=mxm&usertoken=" stringByAppendingString:token];
+    NSString *const baseURL = [@"https://apic-desktop.musixmatch.com/ws/1.1/matcher.subtitle.get?app_id=web-desktop-app-v1.0&f_subtitle_length_max_deviation=1&namespace=lyrics_synched&subtitle_format=mxm&usertoken=" stringByAppendingString:userToken];
     NSString *URLString = [NSString stringWithFormat:@"%@&q_track=%@&q_artist=%@/", baseURL, song, artist];
     URLString = [URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSURL *URL = [NSURL URLWithString:URLString];

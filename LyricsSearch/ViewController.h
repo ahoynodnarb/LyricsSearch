@@ -7,6 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import "LSSearchResultTableViewController.h"
+#import "LSQueueTableViewController.h"
 
 @interface ViewController : UIViewController
 

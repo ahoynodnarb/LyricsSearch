@@ -7,13 +7,10 @@
 
 #import <Foundation/Foundation.h>
 #import "LSTrackItem.h"
-#import "LSTrackQueue.h"
 
 @interface LSPlayerModel : NSObject
 @property (nonatomic, strong) LSTrackItem *currentItem;
-@property (nonatomic, assign) BOOL isPlaying;
+@property (nonatomic, assign, getter=isPaused) BOOL paused;
 + (instancetype)sharedPlayer;
 - (void)seek:(NSInteger)position;
-- (void)unpauseTimer;
-- (void)pauseTimer;
 @end

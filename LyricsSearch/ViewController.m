@@ -1,8 +1,9 @@
-// TODO: Add option to modify queue manually
+// TODO: Change LSTrackQueue to hold previous, current, and next tracks instead of current
 // TODO: Add seek
+// TODO: Add option to modify queue manually
+// TODO: Keep playing song in background when viewcontroller closed
 // TODO: Load more songs when scrolling to bottom
 // TODO: Optimize downloading and maybe persistent cache
-// TODO: Keep playing song in background when viewcontroller closed
 // TODO: Download next song's lyrics while current song playing
 // TODO: Spotify integration
 
@@ -19,6 +20,7 @@
 @property (nonatomic, strong) UIView *searchResultContainerView;
 @property (nonatomic, strong) UIView *promptContainerView;
 @property (nonatomic, strong) UITextField *searchTextField;
+@property (nonatomic, strong) UIButton *queueButton;
 @property (nonatomic, strong) LSSearchResultTableViewController *searchResultTableViewController;
 @end
 
@@ -26,8 +28,10 @@
 
 - (void)loadView {
     [super loadView];
-    self.view.backgroundColor = [UIColor blackColor];
+    NSLog(@"hello");
     UIImage *searchIconImage = [UIImage imageNamed:@"SearchIcon"];
+    UIImage *queueIconImage = [UIImage imageNamed:@"QueueIcon"];
+    self.view.backgroundColor = [UIColor blackColor];
     self.promptContainerView = [[UIView alloc] init];
     self.promptContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.promptContainerView];
@@ -57,6 +61,11 @@
     self.searchResultContainerView = [[UIView alloc] init];
     self.searchResultContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.searchResultContainerView];
+    self.queueButton = [[UIButton alloc] init];
+    [self.queueButton setImage:queueIconImage forState:UIControlStateNormal];
+    [self.queueButton addTarget:self action:@selector(presentQueue) forControlEvents:UIControlEventTouchUpInside];
+    self.queueButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.queueButton];
     [NSLayoutConstraint activateConstraints:@[
         [self.promptContainerView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
         [self.promptContainerView.bottomAnchor constraintEqualToAnchor:self.view.topAnchor constant:150],
@@ -69,12 +78,21 @@
         [self.searchTextField.widthAnchor constraintEqualToConstant:300],
         [self.searchTextField.heightAnchor constraintEqualToConstant:40],
         [self.searchTextField.bottomAnchor constraintEqualToAnchor:self.promptContainerView.bottomAnchor constant:-10],
-        [self.searchTextField.centerXAnchor constraintEqualToAnchor:self.promptContainerView.centerXAnchor],
+        [self.searchTextField.centerXAnchor constraintEqualToAnchor:self.promptContainerView.centerXAnchor constant:-20],
         [searchButton.topAnchor constraintEqualToAnchor:searchContainerView.topAnchor],
         [searchButton.leftAnchor constraintEqualToAnchor:searchContainerView.leftAnchor],
         [searchButton.bottomAnchor constraintEqualToAnchor:searchContainerView.bottomAnchor],
         [searchButton.rightAnchor constraintEqualToAnchor:searchContainerView.rightAnchor constant:-15],
+        [self.queueButton.leadingAnchor constraintEqualToAnchor:self.searchTextField.trailingAnchor constant:10],
+        [self.queueButton.centerYAnchor constraintEqualToAnchor:self.searchTextField.centerYAnchor],
+        [self.queueButton.heightAnchor constraintEqualToConstant:30],
+        [self.queueButton.widthAnchor constraintEqualToAnchor:self.queueButton.heightAnchor]
     ]];
+}
+
+- (void)presentQueue {
+    LSQueueTableViewController *queueTableViewController = [[LSQueueTableViewController alloc] init];
+    [self presentViewController:queueTableViewController animated:YES completion:nil];
 }
 
 - (void)presentSearchResults {

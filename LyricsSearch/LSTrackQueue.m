@@ -8,7 +8,7 @@
 #import "LSTrackQueue.h"
 
 @interface LSTrackQueue ()
-@property (nonatomic, strong) NSMutableArray<LSTrackItem *> *queue;
+//@property (nonatomic, strong) NSMutableArray<LSTrackItem *> *queue;
 @end
 
 @implementation LSTrackQueue
@@ -17,36 +17,36 @@
     static LSTrackQueue *_sharedQueue = nil;
     dispatch_once(&pred, ^{
         _sharedQueue = [[self alloc] init];
-        _sharedQueue.queue = [[NSMutableArray alloc] init];
+        _sharedQueue.previousTracks = [[NSMutableArray alloc] init];
+        _sharedQueue.nextTracks = [[NSMutableArray alloc] init];
     });
     return _sharedQueue;
 }
-- (void)setIndex:(NSUInteger)index {
-    _index = index;
-}
-- (void)setCurrentItem:(LSTrackItem *)item {
-    [self.queue insertObject:item atIndex:self.index];
-    
+- (void)setCurrentTrack:(LSTrackItem *)track {
+    if(self.currentTrack) [self.nextTracks insertObject:self.currentTrack atIndex:0];
+    _currentTrack = track;
 }
 - (void)enqueue:(LSTrackItem *)item {
-    [self.queue addObject:item];
-    NSLog(@"%@", self.queue);
-}
-- (LSTrackItem *)currentItem {
-    NSLog(@"%@", self.queue);
-    if([self.queue count] <= self.index) return nil;
-    return self.queue[self.index];
+    [self.nextTracks addObject:item];
 }
 - (void)decrement {
-    NSLog(@"%@", self.queue);
-    self.index--;
+    if(self.currentTrack) [self.nextTracks addObject:self.currentTrack];
+    if([self.previousTracks count] == 0) self.currentTrack = nil;
+    else {
+        NSInteger lastIndex = self.previousTracks.count - 1;
+        self.currentTrack = self.previousTracks[lastIndex];
+        [self.previousTracks removeObjectAtIndex:lastIndex];
+    }
 }
 - (void)increment {
-    NSLog(@"%@", self.queue);
-    self.index++;
+    if(self.currentTrack) [self.previousTracks addObject:self.currentTrack];
+    if([self.nextTracks count] == 0) self.currentTrack = nil;
+    else {
+        self.currentTrack = self.nextTracks[0];
+        [self.nextTracks removeObjectAtIndex:0];
+    }
 }
 - (NSInteger)size {
-    NSLog(@"%@", self.queue);
-    return [self.queue count];
+    return [self.previousTracks count] + [self.nextTracks count] + 1;
 }
 @end

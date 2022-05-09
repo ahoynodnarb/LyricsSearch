@@ -34,12 +34,24 @@
         self.artist = artist;
         self.backgroundImage = image;
         self.duration = duration;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playNextTrack) name:@"trackEnded" object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateElapsedTime:) name:@"elapsedTimeUpdated" object:nil];
+        LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
+        [sharedPlayer addObserver:self forKeyPath:@"currentItem" options:NSKeyValueObservingOptionNew context:nil];
+        [sharedPlayer addObserver:self forKeyPath:@"elapsedTime" options:NSKeyValueObservingOptionNew context:nil];
     }
     return self;
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    NSLog(@"%@", change);
+    id newChange = change[NSKeyValueChangeNewKey];
+    if([keyPath isEqualToString:@"elapsedTime"]) {
+        NSInteger elapsedTime = [newChange intValue];
+        [self updateElapsedTime:elapsedTime];
+    }
+    else if ([keyPath isEqualToString:@"currentItem"]) {
+        if([newChange isEqualToString:@"<null>"]) [self playNextTrack];
+    }
+}
 
 - (instancetype)initWithTrackItem:(LSTrackItem *)trackItem {
     NSArray *lyrics = [LSDataManager lyricsForSong:trackItem.songName artist:trackItem.artistName];
@@ -52,7 +64,9 @@
 
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
+    [sharedPlayer removeObserver:self forKeyPath:@"currentItem"];
+    [sharedPlayer removeObserver:self forKeyPath:@"elapsedTime"];
 }
 
 - (void)loadView {
@@ -151,15 +165,19 @@
     ]];
 }
 
-- (void)updateElapsedTime:(NSNotification *)note {
-    NSInteger elapsedTime = [[note userInfo][@"elapsedTime"] integerValue];
+- (void)updateElapsedTime:(NSInteger)elapsedTime {
+//    NSInteger elapsedTime = [[note userInfo][@"elapsedTime"] integerValue];
+    [self.tableViewController updateElapsedTime:elapsedTime];
     float progress = (float)elapsedTime / (float)(self.duration * 1000);
     [self.progressBar setProgress:progress animated:YES];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
+//    [[LSPlayerModel sharedPlayer] setPlaying:nil];
+    [[LSPlayerModel sharedPlayer] setCurrentItem:nil];
     [[LSTrackQueue sharedQueue] increment];
+    NSLog(@"disappearing");
 }
 
 - (void)displayContentController:(UIViewController *)content {
@@ -184,35 +202,37 @@
 
 - (void)playNextTrack {
     LSTrackQueue *sharedQueue = [LSTrackQueue sharedQueue];
-    if(sharedQueue.index == [sharedQueue size]) {
+    if([sharedQueue.nextTracks count] == 0) {
         [self dismissViewControllerAnimated:YES completion:nil];
         return;
     }
     [sharedQueue increment];
-    LSTrackItem *nextItem = [sharedQueue currentItem];
+    LSTrackItem *nextItem = [sharedQueue currentTrack];
     [self setPlayingTrack:nextItem];
 }
 
 - (void)playPreviousTrack {
     LSTrackQueue *sharedQueue = [LSTrackQueue sharedQueue];
-    if(sharedQueue.index == 0) {
+    if([sharedQueue.previousTracks count] == 0) {
         [self dismissViewControllerAnimated:YES completion:nil];
         return;
     }
     [sharedQueue decrement];
-    LSTrackItem *previousItem = [sharedQueue currentItem];
+    LSTrackItem *previousItem = [sharedQueue currentTrack];
     [self setPlayingTrack:previousItem];
 }
 
 - (void)pauseButtonPressed {
     LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
-    if(sharedPlayer.isPlaying ) {
-        [self.pauseButton setImage:[UIImage imageNamed:@"PlayIcon"] forState:UIControlStateNormal];
-        [sharedPlayer pauseTimer];
+    if(sharedPlayer.paused) {
+        [self.pauseButton setImage:[UIImage imageNamed:@"PauseIcon"] forState:UIControlStateNormal];
+        sharedPlayer.paused = NO;
+//        [sharedPlayer unpauseTimer];
     }
     else {
-        [self.pauseButton setImage:[UIImage imageNamed:@"PauseIcon"] forState:UIControlStateNormal];
-        [sharedPlayer unpauseTimer];
+        [self.pauseButton setImage:[UIImage imageNamed:@"PlayIcon"] forState:UIControlStateNormal];
+        sharedPlayer.paused = YES;
+//        [sharedPlayer pauseTimer];
     }
 }
 

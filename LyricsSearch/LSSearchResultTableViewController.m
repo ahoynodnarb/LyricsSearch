@@ -105,9 +105,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     LSSearchResultTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     LSTrackQueue *sharedQueue = [LSTrackQueue sharedQueue];
-    [sharedQueue setCurrentItem:cell.trackItem];
-    if(!self.lyricsViewController) self.lyricsViewController = [[LSLyricsViewController alloc] initWithTrackItem:[sharedQueue currentItem]];
-    [self.lyricsViewController setPlayingTrack:[sharedQueue currentItem]];
+    [sharedQueue setCurrentTrack:cell.trackItem];
+    if(!self.lyricsViewController) self.lyricsViewController = [[LSLyricsViewController alloc] initWithTrackItem:[sharedQueue currentTrack]];
+    [self.lyricsViewController setPlayingTrack:[sharedQueue currentTrack]];
     [self presentViewController:self.lyricsViewController animated:YES completion:nil];
 }
 

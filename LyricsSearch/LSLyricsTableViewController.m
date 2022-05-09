@@ -18,13 +18,8 @@
     if(self = [super init]) {
         _lyricsArray = lyrics;
         self.nextTimestamp = [self.lyricsArray[self.nextSection][@"time"][@"total"] floatValue] * 1000;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateElapsedTime:) name:@"elapsedTimeUpdated" object:nil];
     }
     return self;
-}
-
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad {
@@ -79,9 +74,8 @@
     return 1;
 }
 
-- (void)updateElapsedTime:(NSNotification *)note {
-    NSDictionary *userInfo = [note userInfo];
-    NSInteger elapsedTime = [userInfo[@"elapsedTime"] integerValue];
+- (void)updateElapsedTime:(NSInteger)elapsedTime {
+    NSLog(@"%ld %ld", elapsedTime, (long) self.nextTimestamp);
     if(elapsedTime > self.nextTimestamp) {
         if(self.nextSection < [self.lyricsArray count] - 1) {
             NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:self.nextSection];

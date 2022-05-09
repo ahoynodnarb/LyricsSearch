@@ -8,9 +8,10 @@
 #import "LSPlayerModel.h"
 
 @interface LSPlayerModel ()
-@property (nonatomic, assign) NSInteger startTime;
-@property (nonatomic, assign) NSInteger seekPosition;
+//@property (nonatomic, assign) CFAbsoluteTime previousTime;
+@property (nonatomic, assign) NSInteger elapsedTime;
 @property (nonatomic, assign) NSInteger trackDuration;
+//@property (nonatomic, strong) CADisplayLink *displayLink;
 @property (nonatomic, strong) NSTimer *timer;
 @end
 
@@ -23,34 +24,28 @@
     });
     return _sharedPlayer;
 }
+- (void)setPaused:(BOOL)paused {
+    _paused = paused;
+    if(paused) [self.timer invalidate];
+    else [self beginTimer];
+}
 - (void)seek:(NSInteger)position {
-    self.seekPosition = (CFAbsoluteTimeGetCurrent() * 1000) - position;
+    self.elapsedTime = position;
 }
 - (void)timerFired {
-    NSInteger elapsedTime = (CFAbsoluteTimeGetCurrent() * 1000) - (self.startTime + self.seekPosition);
-    if(elapsedTime >= self.trackDuration) {
+    self.elapsedTime += 10;
+    if(self.elapsedTime >= self.trackDuration) {
         [self trackEnded];
         return;
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"elapsedTimeUpdated" object:nil userInfo:@{@"elapsedTime": @(elapsedTime)}];
 }
 - (void)beginTimer {
-    self.isPlaying = YES;
-    self.timer = [NSTimer timerWithTimeInterval:0.001 target:self selector:@selector(timerFired) userInfo:nil repeats:YES];
+    self.timer = [NSTimer timerWithTimeInterval:0.01 target:self selector:@selector(timerFired) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
-}
-- (void)pauseTimer {
-    self.isPlaying = NO;
-    [self.timer invalidate];
-    self.timer = nil;
-}
-- (void)unpauseTimer {
-    [self beginTimer];
 }
 - (void)resetTimer {
     [self.timer invalidate];
-    self.timer = nil;
-    self.startTime = CFAbsoluteTimeGetCurrent() * 1000;
+    self.elapsedTime = 0;
 }
 - (void)restartTimer {
     [self resetTimer];
@@ -66,7 +61,8 @@
     [self restartTimer];
 }
 - (void)trackEnded {
-    [self resetTimer];
+//    [self resetTimer];
+    self.currentItem = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"trackEnded" object:nil];
 }
 @end
