@@ -1,11 +1,9 @@
-// TODO: Change LSTrackQueue to hold previous, current, and next tracks instead of current
-// TODO: Add seek
-// TODO: Add option to modify queue manually
 // TODO: Keep playing song in background when viewcontroller closed
 // TODO: Load more songs when scrolling to bottom
-// TODO: Optimize downloading and maybe persistent cache
 // TODO: Download next song's lyrics while current song playing
 // TODO: Spotify integration
+// TODO: Add option to modify queue manually
+// TODO: Optimize downloading and maybe persistent cache
 
 //
 //  ViewController.m
@@ -28,7 +26,6 @@
 
 - (void)loadView {
     [super loadView];
-    NSLog(@"hello");
     UIImage *searchIconImage = [UIImage imageNamed:@"SearchIcon"];
     UIImage *queueIconImage = [UIImage imageNamed:@"QueueIcon"];
     self.view.backgroundColor = [UIColor blackColor];

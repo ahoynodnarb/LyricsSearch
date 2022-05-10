@@ -14,6 +14,7 @@
 @interface LSLyricsTableViewController : UITableViewController
 @property (nonatomic, strong) NSArray *lyricsArray;
 - (instancetype)initWithLyrics:(NSArray *)lyrics;
+- (void)updateTimestampForTime:(NSInteger)time;
 - (void)updateElapsedTime:(NSInteger)elapsedTime;
 - (void)setPlayingTrack:(LSTrackItem *)track;
 @end

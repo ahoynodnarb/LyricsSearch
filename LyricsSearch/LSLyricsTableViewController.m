@@ -74,8 +74,28 @@
     return 1;
 }
 
+- (void)updateTimestampForTime:(NSInteger)time {
+    for(int i = 0; i < [self.lyricsArray count]; i++) {
+        NSInteger next = [self.lyricsArray[i][@"time"][@"total"] floatValue] * 1000;
+        if(next > time) {
+            self.nextSection = i;
+            self.nextTimestamp = next;
+            if(i == 0) {
+                [self.tableView selectRowAtIndexPath:nil animated:YES scrollPosition:UITableViewScrollPositionTop];
+                NSIndexPath *top = [NSIndexPath indexPathForRow:0 inSection:0];
+                [self.tableView scrollToRowAtIndexPath:top atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                return;
+            }
+            NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:i - 1];
+            [self.tableView selectRowAtIndexPath:selectedIndexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
+            return;
+        }
+    }
+    self.nextSection = [self.lyricsArray count] - 1;
+    [self.tableView selectRowAtIndexPath:nil animated:YES scrollPosition:UITableViewScrollPositionTop];
+}
+
 - (void)updateElapsedTime:(NSInteger)elapsedTime {
-    NSLog(@"%ld %ld", elapsedTime, (long) self.nextTimestamp);
     if(elapsedTime > self.nextTimestamp) {
         if(self.nextSection < [self.lyricsArray count] - 1) {
             NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:self.nextSection];

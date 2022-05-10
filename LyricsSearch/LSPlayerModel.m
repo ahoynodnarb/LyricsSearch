@@ -8,10 +8,8 @@
 #import "LSPlayerModel.h"
 
 @interface LSPlayerModel ()
-//@property (nonatomic, assign) CFAbsoluteTime previousTime;
 @property (nonatomic, assign) NSInteger elapsedTime;
 @property (nonatomic, assign) NSInteger trackDuration;
-//@property (nonatomic, strong) CADisplayLink *displayLink;
 @property (nonatomic, strong) NSTimer *timer;
 @end
 
@@ -31,19 +29,24 @@
 }
 - (void)seek:(NSInteger)position {
     self.elapsedTime = position;
+    [self.delegate updateElapsedTime:self.elapsedTime];
 }
 - (void)timerFired {
+    if(!self.shouldUpdate) return;
     self.elapsedTime += 10;
+    if(self.delegate) [self.delegate updateElapsedTime:self.elapsedTime];
     if(self.elapsedTime >= self.trackDuration) {
         [self trackEnded];
         return;
     }
 }
 - (void)beginTimer {
+    self.shouldUpdate = YES;
     self.timer = [NSTimer timerWithTimeInterval:0.01 target:self selector:@selector(timerFired) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
 }
 - (void)resetTimer {
+    self.shouldUpdate = NO;
     [self.timer invalidate];
     self.elapsedTime = 0;
 }
@@ -61,8 +64,8 @@
     [self restartTimer];
 }
 - (void)trackEnded {
-//    [self resetTimer];
+    [self resetTimer];
     self.currentItem = nil;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"trackEnded" object:nil];
+    if(self.delegate) [self.delegate trackEnded];
 }
 @end

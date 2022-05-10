@@ -13,6 +13,7 @@
 @property (nonatomic, strong) NSString *artist;
 @property (nonatomic, strong) UIImage *backgroundImage;
 @property (nonatomic, assign) NSInteger duration;
+@property (nonatomic, strong) LSLyricsTableViewController *tableViewController;
 @property (nonatomic, strong) MarqueeLabel *songLabel;
 @property (nonatomic, strong) MarqueeLabel *artistLabel;
 @property (nonatomic, strong) UIImageView *backgroundImageView;
@@ -21,8 +22,9 @@
 @property (nonatomic, strong) UIButton *pauseButton;
 @property (nonatomic, strong) UIButton *previousButton;
 @property (nonatomic, strong) UIButton *skipButton;
-@property (nonatomic, strong) LSLyricsTableViewController *tableViewController;
-@property (nonatomic, strong) UIProgressView *progressBar;
+@property (nonatomic, strong) UISlider *timeSlider;
+@property (nonatomic, strong) UILabel *elapsedTimeLabel;
+@property (nonatomic, strong) UILabel *durationLabel;
 @end
 
 @implementation LSLyricsViewController
@@ -35,22 +37,9 @@
         self.backgroundImage = image;
         self.duration = duration;
         LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
-        [sharedPlayer addObserver:self forKeyPath:@"currentItem" options:NSKeyValueObservingOptionNew context:nil];
-        [sharedPlayer addObserver:self forKeyPath:@"elapsedTime" options:NSKeyValueObservingOptionNew context:nil];
+        sharedPlayer.delegate = self;
     }
     return self;
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
-    NSLog(@"%@", change);
-    id newChange = change[NSKeyValueChangeNewKey];
-    if([keyPath isEqualToString:@"elapsedTime"]) {
-        NSInteger elapsedTime = [newChange intValue];
-        [self updateElapsedTime:elapsedTime];
-    }
-    else if ([keyPath isEqualToString:@"currentItem"]) {
-        if([newChange isEqualToString:@"<null>"]) [self playNextTrack];
-    }
 }
 
 - (instancetype)initWithTrackItem:(LSTrackItem *)trackItem {
@@ -60,13 +49,6 @@
     UIImage *image = trackItem.artImage;
     NSInteger duration = trackItem.duration;
     return [self initWithLyrics:lyrics song:song artist:artist image:image duration:duration];
-}
-
-
-- (void)dealloc {
-    LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
-    [sharedPlayer removeObserver:self forKeyPath:@"currentItem"];
-    [sharedPlayer removeObserver:self forKeyPath:@"elapsedTime"];
 }
 
 - (void)loadView {
@@ -104,9 +86,29 @@
     self.controlsView.backgroundColor = [UIColor clearColor];
     self.controlsView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.controlsView];
-    self.progressBar = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
-    self.progressBar.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.controlsView addSubview:self.progressBar];
+    UIImage *normalThumbImage = [UIImage imageNamed:@"ThumbImageNormal"];
+    UIImage *highlightedThumbImage = [UIImage imageNamed:@"ThumbImageHighlighted"];
+    self.timeSlider = [[UISlider alloc] init];
+    self.timeSlider.maximumValue = self.duration;
+    self.timeSlider.continuous = YES;
+    self.timeSlider.translatesAutoresizingMaskIntoConstraints = NO;
+    self.timeSlider.minimumTrackTintColor = [UIColor whiteColor];
+    [self.timeSlider setThumbImage:normalThumbImage forState:UIControlStateNormal];
+    [self.timeSlider setThumbImage:highlightedThumbImage forState:UIControlStateHighlighted];
+    [self.timeSlider addTarget:self action:@selector(sliderDragged:forEvent:) forControlEvents:UIControlEventValueChanged];
+    [self.controlsView addSubview:self.timeSlider];
+    self.elapsedTimeLabel = [[UILabel alloc] init];
+    self.elapsedTimeLabel.textColor = [UIColor grayColor];
+    self.elapsedTimeLabel.text = @"0:00";
+    self.elapsedTimeLabel.font = [UIFont fontWithName:@"Helvetica" size:11];
+    self.elapsedTimeLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.controlsView addSubview:self.elapsedTimeLabel];
+    self.durationLabel = [[UILabel alloc] init];
+    self.durationLabel.textColor = [UIColor grayColor];
+    self.durationLabel.text = [NSString stringWithFormat:@"%ld:%02ld", self.duration / 60, self.duration % 60];
+    self.durationLabel.font = [UIFont fontWithName:@"Helvetica" size:11];
+    self.durationLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.controlsView addSubview:self.durationLabel];
     self.skipButton = [[UIButton alloc] init];
     [self.skipButton addTarget:self action:@selector(playNextTrack) forControlEvents:UIControlEventTouchUpInside];
     [self.skipButton setImage:[UIImage imageNamed:@"SkipIcon"] forState:UIControlStateNormal];
@@ -133,7 +135,7 @@
         [blurEffectView.leadingAnchor constraintEqualToAnchor:self.backgroundImageView.leadingAnchor],
         [blurEffectView.trailingAnchor constraintEqualToAnchor:self.backgroundImageView.trailingAnchor],
         [self.containerView.topAnchor constraintEqualToAnchor:self.view.topAnchor constant:150],
-        [self.containerView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant:-100],
+        [self.containerView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant:-130],
         [self.containerView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:25],
         [self.containerView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-25],
         [self.songLabel.topAnchor constraintEqualToAnchor:self.view.topAnchor constant:50],
@@ -145,39 +147,72 @@
         [self.controlsView.topAnchor constraintEqualToAnchor:self.containerView.bottomAnchor],
         [self.controlsView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
         [self.controlsView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
-        [self.controlsView.widthAnchor constraintEqualToConstant:260],
-        [self.progressBar.topAnchor constraintEqualToAnchor:self.controlsView.topAnchor],
-        [self.progressBar.centerXAnchor constraintEqualToAnchor:self.controlsView.centerXAnchor],
-        [self.progressBar.widthAnchor constraintEqualToAnchor:self.controlsView.widthAnchor],
-        [self.progressBar.heightAnchor constraintEqualToConstant:10],
-        [self.previousButton.centerYAnchor constraintEqualToAnchor:self.controlsView.centerYAnchor],
-        [self.previousButton.leadingAnchor constraintEqualToAnchor:self.controlsView.leadingAnchor],
+        [self.controlsView.widthAnchor constraintEqualToConstant:330],
+        [self.timeSlider.topAnchor constraintEqualToAnchor:self.controlsView.topAnchor constant:15],
+        [self.timeSlider.centerXAnchor constraintEqualToAnchor:self.controlsView.centerXAnchor],
+        [self.timeSlider.widthAnchor constraintEqualToAnchor:self.controlsView.widthAnchor constant:-20],
+        [self.timeSlider.heightAnchor constraintEqualToConstant:10],
+        [self.elapsedTimeLabel.topAnchor constraintEqualToAnchor:self.timeSlider.bottomAnchor constant:8],
+        [self.elapsedTimeLabel.leadingAnchor constraintEqualToAnchor:self.timeSlider.leadingAnchor],
+        [self.durationLabel.topAnchor constraintEqualToAnchor:self.timeSlider.bottomAnchor constant:8],
+        [self.durationLabel.trailingAnchor constraintEqualToAnchor:self.timeSlider.trailingAnchor],
+        [self.previousButton.leadingAnchor constraintEqualToAnchor:self.controlsView.leadingAnchor constant:30],
+        [self.previousButton.centerYAnchor constraintEqualToAnchor:self.controlsView.centerYAnchor constant:10],
         [self.previousButton.heightAnchor constraintEqualToConstant:40],
         [self.previousButton.widthAnchor constraintEqualToConstant:40],
-        [self.skipButton.centerYAnchor constraintEqualToAnchor:self.controlsView.centerYAnchor],
-        [self.skipButton.trailingAnchor constraintEqualToAnchor:self.controlsView.trailingAnchor],
+        [self.skipButton.trailingAnchor constraintEqualToAnchor:self.controlsView.trailingAnchor constant:-30],
+        [self.skipButton.centerYAnchor constraintEqualToAnchor:self.controlsView.centerYAnchor constant:10],
         [self.skipButton.heightAnchor constraintEqualToConstant:40],
         [self.skipButton.widthAnchor constraintEqualToConstant:40],
         [self.pauseButton.centerXAnchor constraintEqualToAnchor:self.controlsView.centerXAnchor],
-        [self.pauseButton.centerYAnchor constraintEqualToAnchor:self.controlsView.centerYAnchor],
+        [self.pauseButton.centerYAnchor constraintEqualToAnchor:self.controlsView.centerYAnchor constant:10],
         [self.pauseButton.heightAnchor constraintEqualToConstant:40],
         [self.pauseButton.widthAnchor constraintEqualToConstant:40],
     ]];
 }
 
 - (void)updateElapsedTime:(NSInteger)elapsedTime {
-//    NSInteger elapsedTime = [[note userInfo][@"elapsedTime"] integerValue];
     [self.tableViewController updateElapsedTime:elapsedTime];
-    float progress = (float)elapsedTime / (float)(self.duration * 1000);
-    [self.progressBar setProgress:progress animated:YES];
+    NSInteger seconds = elapsedTime / 1000;
+    [self updateElapsedTimeLabel:seconds];
+    if(!self.timeSlider.isHighlighted) [self.timeSlider setValue:seconds animated:NO];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-//    [[LSPlayerModel sharedPlayer] setPlaying:nil];
     [[LSPlayerModel sharedPlayer] setCurrentItem:nil];
     [[LSTrackQueue sharedQueue] increment];
-    NSLog(@"disappearing");
+}
+
+- (void)updateElapsedTimeLabel:(NSInteger)time {
+    NSInteger minutes = time / 60;
+    NSInteger seconds = time % 60;
+    NSString *timeString = [NSString stringWithFormat:@"%ld:%02ld", minutes, seconds];
+    self.elapsedTimeLabel.text = timeString;
+}
+
+- (void)sliderDragged:(UISlider *)slider forEvent:(UIEvent *)event {
+    UITouch *touch = [[event allTouches] anyObject];
+    NSInteger selectedTime = slider.value * 1000;
+    LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
+    switch (touch.phase) {
+        case UITouchPhaseBegan:
+            sharedPlayer.shouldUpdate = NO;
+            break;
+        case UITouchPhaseMoved:
+            [self.tableViewController updateTimestampForTime:selectedTime];
+            [[LSPlayerModel sharedPlayer] seek:selectedTime];
+            break;
+        case UITouchPhaseEnded:
+            sharedPlayer.shouldUpdate = YES;
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)trackEnded {
+    [self playNextTrack];
 }
 
 - (void)displayContentController:(UIViewController *)content {
@@ -190,13 +225,18 @@
 - (void)setPlayingTrack:(LSTrackItem *)track {
     LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
     [sharedPlayer setCurrentItem:track];
+    [self.pauseButton setImage:[UIImage imageNamed:@"PauseIcon"] forState:UIControlStateNormal];
     if(!track) {
         [self dismissViewControllerAnimated:YES completion:nil];
         return;
     }
+    self.duration = track.duration;
+    self.timeSlider.maximumValue = self.duration;
+    self.durationLabel.text = [NSString stringWithFormat:@"%ld:%02ld", self.duration / 60, self.duration % 60];
     self.backgroundImageView.image = track.artImage;
     self.artistLabel.text = track.artistName;
     self.songLabel.text = track.songName;
+    self.elapsedTimeLabel.text = @"0:00";
     [self.tableViewController setPlayingTrack:track];
 }
 
@@ -227,13 +267,10 @@
     if(sharedPlayer.paused) {
         [self.pauseButton setImage:[UIImage imageNamed:@"PauseIcon"] forState:UIControlStateNormal];
         sharedPlayer.paused = NO;
-//        [sharedPlayer unpauseTimer];
     }
     else {
         [self.pauseButton setImage:[UIImage imageNamed:@"PlayIcon"] forState:UIControlStateNormal];
         sharedPlayer.paused = YES;
-//        [sharedPlayer pauseTimer];
     }
 }
-
 @end

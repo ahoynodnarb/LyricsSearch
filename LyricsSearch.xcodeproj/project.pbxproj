@@ -60,6 +60,7 @@
 		08BE5A7C281CC1D800E7FE09 /* LSTrackQueue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSTrackQueue.m; sourceTree = "<group>"; };
 		08BE5A7E281CC34D00E7FE09 /* LSTrackItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSTrackItem.h; sourceTree = "<group>"; };
 		08BE5A7F281CC34D00E7FE09 /* LSTrackItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSTrackItem.m; sourceTree = "<group>"; };
+		08FAFE8A2829F87000538E03 /* LSPlayerModelDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSPlayerModelDelegate.h; sourceTree = "<group>"; };
 		742450C283FFA98D5F320085 /* Pods-LyricsSearch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LyricsSearch.debug.xcconfig"; path = "Target Support Files/Pods-LyricsSearch/Pods-LyricsSearch.debug.xcconfig"; sourceTree = "<group>"; };
 		93888344C1C4A32F376C679F /* Pods-LyricsSearch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LyricsSearch.release.xcconfig"; path = "Target Support Files/Pods-LyricsSearch/Pods-LyricsSearch.release.xcconfig"; sourceTree = "<group>"; };
 		C8CD6B085BF94F38ABBFF8DC /* Pods_LyricsSearch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LyricsSearch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,6 +117,7 @@
 				08892370278BEDD200BBBA41 /* LSLyricsTableViewController.m */,
 				08A400932814F85B00CF6D1C /* LSLyricsTableViewCell.h */,
 				08A400942814F85B00CF6D1C /* LSLyricsTableViewCell.m */,
+				08FAFE8A2829F87000538E03 /* LSPlayerModelDelegate.h */,
 				08B0D8122826F4C40017330D /* LSPlayerModel.h */,
 				08B0D8132826F4C40017330D /* LSPlayerModel.m */,
 				08BE5A7B281CC1D800E7FE09 /* LSTrackQueue.h */,
@@ -431,8 +433,9 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -463,8 +466,9 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (

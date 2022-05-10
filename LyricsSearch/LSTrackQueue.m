@@ -8,7 +8,7 @@
 #import "LSTrackQueue.h"
 
 @interface LSTrackQueue ()
-//@property (nonatomic, strong) NSMutableArray<LSTrackItem *> *queue;
+
 @end
 
 @implementation LSTrackQueue
@@ -31,18 +31,19 @@
 }
 - (void)decrement {
     if(self.currentTrack) [self.nextTracks addObject:self.currentTrack];
-    if([self.previousTracks count] == 0) self.currentTrack = nil;
+    if([self.previousTracks count] == 0) _currentTrack = nil;
     else {
         NSInteger lastIndex = self.previousTracks.count - 1;
-        self.currentTrack = self.previousTracks[lastIndex];
+        _currentTrack = self.previousTracks[lastIndex];
         [self.previousTracks removeObjectAtIndex:lastIndex];
     }
 }
 - (void)increment {
     if(self.currentTrack) [self.previousTracks addObject:self.currentTrack];
-    if([self.nextTracks count] == 0) self.currentTrack = nil;
+    if([self.nextTracks count] == 0) _currentTrack = nil;
     else {
-        self.currentTrack = self.nextTracks[0];
+        NSLog(@"removing");
+        _currentTrack = self.nextTracks[0];
         [self.nextTracks removeObjectAtIndex:0];
     }
 }
