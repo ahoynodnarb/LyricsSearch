@@ -8,7 +8,6 @@
 #import "LSPlayerModel.h"
 
 @interface LSPlayerModel ()
-@property (nonatomic, assign) NSInteger elapsedTime;
 @property (nonatomic, assign) NSInteger trackDuration;
 @property (nonatomic, strong) NSTimer *timer;
 @end
@@ -27,14 +26,9 @@
     if(paused) [self.timer invalidate];
     else [self beginTimer];
 }
-- (void)seek:(NSInteger)position {
-    self.elapsedTime = position;
-    [self.delegate updateElapsedTime:self.elapsedTime];
-}
 - (void)timerFired {
     if(!self.shouldUpdate) return;
     self.elapsedTime += 10;
-    if(self.delegate) [self.delegate updateElapsedTime:self.elapsedTime];
     if(self.elapsedTime >= self.trackDuration) {
         [self trackEnded];
         return;
@@ -66,6 +60,5 @@
 - (void)trackEnded {
     [self resetTimer];
     self.currentItem = nil;
-    if(self.delegate) [self.delegate trackEnded];
 }
 @end

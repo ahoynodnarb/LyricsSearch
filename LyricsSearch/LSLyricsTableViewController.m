@@ -48,7 +48,7 @@
     self.nextTimestamp = [self.lyricsArray[self.nextSection][@"time"][@"total"] floatValue] * 1000;
     NSInteger selectedTimestamp = self.nextSection == 0 ? 0 : [self.lyricsArray[self.nextSection - 1][@"time"][@"total"] floatValue] * 1000;
     LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
-    [sharedPlayer seek:selectedTimestamp];
+    sharedPlayer.elapsedTime = selectedTimestamp;
     [tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 

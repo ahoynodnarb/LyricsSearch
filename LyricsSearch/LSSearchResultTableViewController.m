@@ -52,8 +52,8 @@
     self.errorMessageLabel.hidden = NO;
 }
 
-- (void)loadView {
-    [super loadView];
+- (void)viewDidLoad {
+    [super viewDidLoad];
     self.errorMessageLabel = [[UILabel alloc] init];
     self.errorMessageLabel.textColor = [UIColor whiteColor];
     self.errorMessageLabel.hidden = YES;
@@ -64,10 +64,6 @@
         [self.errorMessageLabel.topAnchor constraintEqualToAnchor:self.view.topAnchor],
     ]];
     [self loadNewPage];
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView registerClass:[LSSearchResultTableViewCell class] forCellReuseIdentifier:@"Cell"];

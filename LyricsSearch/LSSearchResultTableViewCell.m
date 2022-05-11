@@ -22,7 +22,7 @@
     if(self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         self.backgroundColor = [UIColor clearColor];
         self.containerView = [[UIView alloc] init];
-        self.containerView.backgroundColor = [UIColor blackColor];
+        self.containerView.backgroundColor = [UIColor clearColor];
         self.containerView.translatesAutoresizingMaskIntoConstraints = NO;
         [self.contentView addSubview:self.containerView];
         self.artImageView = [[UIImageView alloc] init];

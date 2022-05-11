@@ -15,6 +15,7 @@
 #import "ViewController.h"
 
 @interface ViewController ()
+@property (nonatomic, strong) LSMediaPlayerView *mediaPlayerView;
 @property (nonatomic, strong) UIView *searchResultContainerView;
 @property (nonatomic, strong) UIView *promptContainerView;
 @property (nonatomic, strong) UITextField *searchTextField;
@@ -24,11 +25,18 @@
 
 @implementation ViewController
 
-- (void)loadView {
-    [super loadView];
+- (void)viewDidLoad {
+    [super viewDidLoad];
     UIImage *searchIconImage = [UIImage imageNamed:@"SearchIcon"];
     UIImage *queueIconImage = [UIImage imageNamed:@"QueueIcon"];
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor colorWithWhite:0.12f alpha:1.0f];
+    self.mediaPlayerView = [[LSMediaPlayerView alloc] init];
+    self.mediaPlayerView.backgroundColor = [UIColor blackColor];
+    self.mediaPlayerView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.mediaPlayerView.layer.cornerRadius = 10;
+    self.mediaPlayerView.layer.masksToBounds = YES;
+    [self.view addSubview:self.mediaPlayerView];
+    [self.mediaPlayerView beginObserving];
     self.promptContainerView = [[UIView alloc] init];
     self.promptContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.promptContainerView];
@@ -57,13 +65,17 @@
     [self.promptContainerView addSubview:self.searchTextField];
     self.searchResultContainerView = [[UIView alloc] init];
     self.searchResultContainerView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:self.searchResultContainerView];
+    [self.view insertSubview:self.searchResultContainerView atIndex:0];
     self.queueButton = [[UIButton alloc] init];
     [self.queueButton setImage:queueIconImage forState:UIControlStateNormal];
     [self.queueButton addTarget:self action:@selector(presentQueue) forControlEvents:UIControlEventTouchUpInside];
     self.queueButton.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.queueButton];
     [NSLayoutConstraint activateConstraints:@[
+        [self.mediaPlayerView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant:-40],
+        [self.mediaPlayerView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
+        [self.mediaPlayerView.widthAnchor constraintEqualToConstant:380],
+        [self.mediaPlayerView.heightAnchor constraintEqualToConstant:75],
         [self.promptContainerView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
         [self.promptContainerView.bottomAnchor constraintEqualToAnchor:self.view.topAnchor constant:150],
         [self.promptContainerView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],

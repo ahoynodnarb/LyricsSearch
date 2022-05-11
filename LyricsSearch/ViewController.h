@@ -6,6 +6,8 @@
 
 
 #import <UIKit/UIKit.h>
+#import "LSMediaPlayerView.h"
+#import "LSPlayerModel.h"
 #import "LSSearchResultTableViewController.h"
 #import "LSQueueTableViewController.h"
 
