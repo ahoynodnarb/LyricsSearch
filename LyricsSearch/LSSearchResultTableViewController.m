@@ -26,25 +26,39 @@
 
 - (void)loadNewPage {
     self.currentPage = 1;
-    [self loadNextPage];
-    if([self.searchResults count] == 0) [self showErrorLabelWithMessage:@"No search results found"];
-    else self.errorMessageLabel.hidden = YES;
+    [self loadNextPageWithCompletion:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"%@", self.searchResults);
+            if([self.searchResults count] == 0) [self showErrorLabelWithMessage:@"No search results found"];
+            else {
+                self.errorMessageLabel.hidden = YES;
+                [self.tableView reloadData];
+            }
+        });
+    }];
 }
 
-- (void)loadNextPage {
-    NSArray *info = [LSDataManager infoForSearchTerm:self.searchTerm page:self.currentPage];
-    if(!self.searchResults) self.searchResults = info;
-    else self.searchResults = [self.searchResults arrayByAddingObjectsFromArray:info];
-    self.currentPage++;
+- (void)loadNextPageWithCompletion:(void(^)(void))completion {
+    [LSDataManager infoForSearchTerm:self.searchTerm page:self.currentPage completion:^(NSArray *info) {    
+        if(!self.searchResults) self.searchResults = info;
+        else self.searchResults = [self.searchResults arrayByAddingObjectsFromArray:info];
+        self.currentPage++;
+        completion();
+    }];
 }
 
 - (void)displayMoreResults {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self loadNextPage];
+    [self loadNextPageWithCompletion:^{
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });
-    });
+    }];
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        [self loadNextPage];
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [self.tableView reloadData];
+//        });
+//    });
 }
 
 - (void)showErrorLabelWithMessage:(NSString *)message {
@@ -102,9 +116,24 @@
     LSSearchResultTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     LSTrackQueue *sharedQueue = [LSTrackQueue sharedQueue];
     [sharedQueue setCurrentTrack:cell.trackItem];
-    if(!self.lyricsViewController) self.lyricsViewController = [[LSLyricsViewController alloc] initWithTrackItem:[sharedQueue currentTrack]];
-    [self.lyricsViewController setPlayingTrack:[sharedQueue currentTrack]];
-    [self presentViewController:self.lyricsViewController animated:YES completion:nil];
+    LSTrackItem *currentTrack = sharedQueue.currentTrack;
+    if(!self.lyricsViewController) {
+        [LSDataManager lyricsForSong:currentTrack.songName artist:currentTrack.artistName completion:^(NSArray *info) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSString *songName = currentTrack.songName;
+                NSString *artistName = currentTrack.artistName;
+                UIImage *artImage = currentTrack.artImage;
+                NSInteger duration = currentTrack.duration;
+                self.lyricsViewController = [[LSLyricsViewController alloc] initWithLyrics:info song:songName artist:artistName image:artImage duration:duration];
+                [[LSPlayerModel sharedPlayer] setCurrentItem:currentTrack];
+                [self presentViewController:self.lyricsViewController animated:YES completion:nil];
+            });
+        }];
+    }
+    else {
+        [self.lyricsViewController setPlayingTrack:currentTrack];
+        [self presentViewController:self.lyricsViewController animated:YES completion:nil];
+    }
 }
 
 @end

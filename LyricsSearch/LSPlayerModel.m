@@ -37,7 +37,7 @@
 - (void)beginTimer {
     self.shouldUpdate = YES;
     self.timer = [NSTimer timerWithTimeInterval:0.01 target:self selector:@selector(timerFired) userInfo:nil repeats:YES];
-    [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+    [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
 }
 - (void)resetTimer {
     self.shouldUpdate = NO;

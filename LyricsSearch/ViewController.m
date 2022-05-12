@@ -36,6 +36,8 @@
     self.mediaPlayerView.layer.cornerRadius = 10;
     self.mediaPlayerView.layer.masksToBounds = YES;
     [self.view addSubview:self.mediaPlayerView];
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mediaPlayerTapped)];
+    [self.mediaPlayerView addGestureRecognizer:tapGesture];
     [self.mediaPlayerView beginObserving];
     self.promptContainerView = [[UIView alloc] init];
     self.promptContainerView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -75,7 +77,7 @@
         [self.mediaPlayerView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant:-40],
         [self.mediaPlayerView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
         [self.mediaPlayerView.widthAnchor constraintEqualToConstant:380],
-        [self.mediaPlayerView.heightAnchor constraintEqualToConstant:75],
+        [self.mediaPlayerView.heightAnchor constraintEqualToConstant:60],
         [self.promptContainerView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
         [self.promptContainerView.bottomAnchor constraintEqualToAnchor:self.view.topAnchor constant:150],
         [self.promptContainerView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
@@ -99,6 +101,12 @@
     ]];
 }
 
+- (void)mediaPlayerTapped {
+    if([[LSPlayerModel sharedPlayer] currentItem]) {
+        [self.searchResultTableViewController presentViewController:self.searchResultTableViewController.lyricsViewController animated:YES completion:nil];
+    }
+}
+
 - (void)presentQueue {
     LSQueueTableViewController *queueTableViewController = [[LSQueueTableViewController alloc] init];
     [self presentViewController:queueTableViewController animated:YES completion:nil];
@@ -116,7 +124,6 @@
         [self.searchResultTableViewController didMoveToParentViewController:self];
     }
     [self.searchResultTableViewController loadNewPage];
-    [self.searchResultTableViewController.tableView reloadData];
 }
 
 @end

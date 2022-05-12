@@ -8,8 +8,8 @@
 #import <Foundation/Foundation.h>
 
 @interface LSDataManager : NSObject
-+ (NSArray *)infoForSearchTerm:(NSString *)searchTerm page:(NSInteger)page pageSize:(NSInteger)pageSize;
-+ (NSArray *)infoForSearchTerm:(NSString *)searchTerm page:(NSInteger)page;
-+ (NSArray *)infoForSearchTerm:(NSString *)name;
-+ (NSArray *)lyricsForSong:(NSString *)song artist:(NSString *)artist;
++ (void)infoForSearchTerm:(NSString *)searchTerm page:(NSInteger)page pageSize:(NSInteger)pageSize completion:(void (^)(NSArray *info))completion;
++ (void)infoForSearchTerm:(NSString *)searchTerm page:(NSInteger)page completion:(void (^)(NSArray *info))completion;
++ (void)infoForSearchTerm:(NSString *)name completion:(void (^)(NSArray *info))completion;
++ (void)lyricsForSong:(NSString *)song artist:(NSString *)artist completion:(void (^)(NSArray *info))completion;
 @end

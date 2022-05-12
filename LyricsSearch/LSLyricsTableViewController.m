@@ -31,18 +31,6 @@
     [self.tableView registerClass:[LSLyricsTableViewCell class] forCellReuseIdentifier:@"Cell"];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    self.nextSection = 0;
-    if([self.lyricsArray count] == 0) return;
-    NSIndexPath *top = [NSIndexPath indexPathForRow:0 inSection:0];
-    [self.tableView scrollToRowAtIndexPath:top atScrollPosition:UITableViewScrollPositionTop animated:YES];
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     self.nextSection = [indexPath section] + 1;
     self.nextTimestamp = [self.lyricsArray[self.nextSection][@"time"][@"total"] floatValue] * 1000;
@@ -107,14 +95,22 @@
     }
 }
 
-- (void)setPlayingTrack:(LSTrackItem *)track {
-    self.lyricsArray = [LSDataManager lyricsForSong:track.songName artist:track.artistName];
+- (void)reloadLyrics {
     [self.tableView reloadData];
     if([self.lyricsArray count] == 0) return;
     NSIndexPath *top = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.tableView scrollToRowAtIndexPath:top atScrollPosition:UITableViewScrollPositionTop animated:YES];
     self.nextSection = 0;
     self.nextTimestamp = [self.lyricsArray[self.nextSection][@"time"][@"total"] floatValue] * 1000;
+}
+
+- (void)setPlayingTrack:(LSTrackItem *)track {
+    [LSDataManager lyricsForSong:track.songName artist:track.artistName completion:^(NSArray *info) {
+        self.lyricsArray = info;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self reloadLyrics];
+        });
+    }];
 }
 
 @end

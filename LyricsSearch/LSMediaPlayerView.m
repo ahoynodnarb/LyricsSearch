@@ -8,12 +8,13 @@
 #import "LSMediaPlayerView.h"
 
 @interface LSMediaPlayerView ()
+@property (nonatomic, strong) NSString *artist;
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) UIImage *artwork;
 @property (nonatomic, assign) NSInteger elapsedTime;
 @property (nonatomic, assign) NSInteger duration;
 @property (nonatomic, strong) UIView *contentContainerView;
-@property (nonatomic, strong) UIView *controlsContainerView;
+@property (nonatomic, strong) MarqueeLabel *artistLabel;
 @property (nonatomic, strong) MarqueeLabel *titleLabel;
 @property (nonatomic, strong) UIImageView *artworkImageView;
 @property (nonatomic, strong) UIProgressView *progressBar;
@@ -24,10 +25,6 @@
 
 - (instancetype)init {
     if(self = [super init]) {
-        self.title = @"ahwiugjaoiwgnuiahwgiouansguihaiosugnaosjgfouahsgoaushguaonsgoausgbaousgasbgiaosgb";
-        NSURL *placeholderImageURL = [NSURL URLWithString:@"https://lh3.googleusercontent.com/2hDpuTi-0AMKvoZJGd-yKWvK4tKdQr_kLIpB_qSeMau2TNGCNidAosMEvrEXFO9G6tmlFlPQplpwiqirgrIPWnCKMvElaYgI-HiVvXc=w600"];
-        NSData *placeholderImageData = [NSData dataWithContentsOfURL:placeholderImageURL];
-        self.artwork = [UIImage imageWithData:placeholderImageData];
         [self setupSubviews];
     }
     return self;
@@ -43,25 +40,24 @@
 - (void)updateConstraints {
     [super updateConstraints];
     [NSLayoutConstraint activateConstraints:@[
-        [self.contentContainerView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
-        [self.contentContainerView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-        [self.contentContainerView.topAnchor constraintEqualToAnchor:self.topAnchor],
-        [self.contentContainerView.bottomAnchor constraintEqualToAnchor:self.progressBar.topAnchor constant:-2],
-        [self.artworkImageView.leadingAnchor constraintEqualToAnchor:self.contentContainerView.leadingAnchor],
-        [self.artworkImageView.topAnchor constraintEqualToAnchor:self.contentContainerView.topAnchor],
-        [self.artworkImageView.bottomAnchor constraintEqualToAnchor:self.contentContainerView.bottomAnchor],
+        [self.contentContainerView.leadingAnchor constraintEqualToAnchor:self.artworkImageView.trailingAnchor constant:10],
+        [self.contentContainerView.trailingAnchor constraintEqualToAnchor:self.pauseButton.leadingAnchor],
+        [self.contentContainerView.heightAnchor constraintEqualToConstant:40],
+        [self.contentContainerView.centerYAnchor constraintEqualToAnchor:self.centerYAnchor],
+        [self.artworkImageView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:8],
+        [self.artworkImageView.topAnchor constraintEqualToAnchor:self.topAnchor constant:8],
+        [self.artworkImageView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-8],
         [self.artworkImageView.widthAnchor constraintEqualToAnchor:self.artworkImageView.heightAnchor],
         [self.progressBar.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
         [self.progressBar.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
         [self.progressBar.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
-        [self.progressBar.heightAnchor constraintEqualToConstant:5],
-        [self.controlsContainerView.leadingAnchor constraintEqualToAnchor:self.artworkImageView.trailingAnchor constant:10],
-        [self.controlsContainerView.trailingAnchor constraintEqualToAnchor:self.pauseButton.leadingAnchor constant:-10],
-        [self.controlsContainerView.topAnchor constraintEqualToAnchor:self.contentContainerView.topAnchor],
-        [self.controlsContainerView.bottomAnchor constraintEqualToAnchor:self.contentContainerView.bottomAnchor],
-        [self.titleLabel.leadingAnchor constraintEqualToAnchor:self.controlsContainerView.leadingAnchor],
-        [self.titleLabel.trailingAnchor constraintEqualToAnchor:self.controlsContainerView.trailingAnchor],
-        [self.titleLabel.centerYAnchor constraintEqualToAnchor:self.controlsContainerView.centerYAnchor],
+        [self.progressBar.heightAnchor constraintEqualToConstant:3],
+        [self.artistLabel.leadingAnchor constraintEqualToAnchor:self.contentContainerView.leadingAnchor],
+        [self.artistLabel.trailingAnchor constraintEqualToAnchor:self.contentContainerView.trailingAnchor],
+        [self.artistLabel.bottomAnchor constraintEqualToAnchor:self.contentContainerView.bottomAnchor],
+        [self.titleLabel.leadingAnchor constraintEqualToAnchor:self.contentContainerView.leadingAnchor],
+        [self.titleLabel.trailingAnchor constraintEqualToAnchor:self.contentContainerView.trailingAnchor],
+        [self.titleLabel.topAnchor constraintEqualToAnchor:self.contentContainerView.topAnchor],
         [self.pauseButton.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-10],
         [self.pauseButton.centerYAnchor constraintEqualToAnchor:self.centerYAnchor],
         [self.pauseButton.widthAnchor constraintEqualToAnchor:self.pauseButton.heightAnchor],
@@ -70,17 +66,19 @@
 }
 
 - (void)setCurrentItem:(LSTrackItem *)currentItem {
+    self.artist = currentItem.artistName;
     self.title = currentItem.songName;
     self.artwork = currentItem.artImage;
     self.duration = currentItem.duration;
     self.elapsedTime = 0;
+    [self updateSubviews];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
     id item = change[@"new"];
     if([keyPath isEqualToString:@"elapsedTime"]) {
         self.elapsedTime = [item intValue];
-        self.progressBar.progress = self.elapsedTime / self.duration;
+        self.progressBar.progress = (double)self.elapsedTime / (self.duration * 1000);
     }
     if([keyPath isEqualToString:@"currentItem"]) {
         self.currentItem = [[LSPlayerModel sharedPlayer] currentItem];
@@ -92,6 +90,12 @@
     LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
     [sharedPlayer removeObserver:self forKeyPath:@"elapsedTime"];
     [sharedPlayer removeObserver:self forKeyPath:@"currentItem"];
+}
+
+- (void)updateSubviews {
+    self.artistLabel.text = self.artist;
+    self.titleLabel.text = self.title;
+    self.artworkImageView.image = self.artwork;
 }
 
 - (void)pauseButtonPressed {
@@ -110,33 +114,37 @@
     self.contentContainerView = [[UIView alloc] init];
     self.contentContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:self.contentContainerView];
-    self.controlsContainerView = [[UIView alloc] init];
-    self.controlsContainerView.backgroundColor = [UIColor redColor];
-    self.controlsContainerView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.contentContainerView addSubview:self.controlsContainerView];
-    self.progressBar = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
-    self.progressBar.translatesAutoresizingMaskIntoConstraints = NO;
-    self.progressBar.progressTintColor = [UIColor whiteColor];
-    [self addSubview:self.progressBar];
     self.titleLabel = [[MarqueeLabel alloc] init];
-    self.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:25];
+    self.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:20];
     self.titleLabel.textColor = [UIColor whiteColor];
     self.titleLabel.text = self.title;
     self.titleLabel.marqueeType = MLLeftRight;
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.controlsContainerView addSubview:self.titleLabel];
+    [self.contentContainerView addSubview:self.titleLabel];
+    self.artistLabel = [[MarqueeLabel alloc] init];
+    self.artistLabel.font = [UIFont fontWithName:@"Helvetica" size:13];
+    self.artistLabel.textColor = [UIColor grayColor];
+    self.artistLabel.text = self.artist;
+    self.artistLabel.marqueeType = MLLeftRight;
+    self.artistLabel.textAlignment = NSTextAlignmentLeft;
+    self.artistLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.contentContainerView addSubview:self.artistLabel];
     self.artworkImageView = [[UIImageView alloc] initWithImage:self.artwork];
     self.artworkImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.artworkImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.artworkImageView.clipsToBounds = YES;
     self.artworkImageView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.contentContainerView addSubview:self.artworkImageView];
+    [self addSubview:self.artworkImageView];
     self.pauseButton = [[UIButton alloc] init];
     [self.pauseButton addTarget:self action:@selector(pauseButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [self.pauseButton setImage:[UIImage imageNamed:@"PauseIcon"] forState:UIControlStateNormal];
     self.pauseButton.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:self.pauseButton];
+    self.progressBar = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
+    self.progressBar.translatesAutoresizingMaskIntoConstraints = NO;
+    self.progressBar.progressTintColor = [UIColor whiteColor];
+    [self addSubview:self.progressBar];
 }
 
 - (void)beginObserving {

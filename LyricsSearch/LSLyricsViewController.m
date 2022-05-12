@@ -25,7 +25,7 @@
 @property (nonatomic, strong) UISlider *timeSlider;
 @property (nonatomic, strong) UILabel *elapsedTimeLabel;
 @property (nonatomic, strong) UILabel *durationLabel;
-@property (nonatomic, strong) NSDate *dismissalDate;
+@property (nonatomic, strong) NSArray *nextTrackLyrics;
 @end
 
 @implementation LSLyricsViewController
@@ -37,26 +37,12 @@
         self.artist = artist;
         self.backgroundImage = image;
         self.duration = duration;
-        LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
-        [sharedPlayer addObserver:self forKeyPath:@"elapsedTime" options:NSKeyValueObservingOptionNew context:nil];
-        [sharedPlayer addObserver:self forKeyPath:@"currentItem" options:NSKeyValueObservingOptionNew context:nil];
     }
     return self;
 }
 
-- (instancetype)initWithTrackItem:(LSTrackItem *)trackItem {
-    NSArray *lyrics = [LSDataManager lyricsForSong:trackItem.songName artist:trackItem.artistName];
-    NSString *song = trackItem.songName;
-    NSString *artist = trackItem.artistName;
-    UIImage *image = trackItem.artImage;
-    NSInteger duration = trackItem.duration;
-    return [self initWithLyrics:lyrics song:song artist:artist image:image duration:duration];
-}
-
 - (void)dealloc {
-    LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
-    [sharedPlayer removeObserver:self forKeyPath:@"elapsedTime"];
-    [sharedPlayer removeObserver:self forKeyPath:@"currentItem"];
+    [self stopObserving];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
@@ -65,8 +51,9 @@
         NSInteger elapsedTime = [item intValue];
         [self updateElapsedTime:elapsedTime];
     }
-    if([keyPath isEqualToString:@"currentitem"]) {
-        if([item isEqualToString:@"<null>"]) [self trackEnded];
+    if([keyPath isEqualToString:@"currentItem"]) {
+        NSLog(@"currentItem %@", item);
+        if([item isEqual:[NSNull null]]) [self trackEnded];
     }
 }
 
@@ -190,6 +177,18 @@
     ]];
 }
 
+- (void)beginObserving {
+    LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
+    [sharedPlayer addObserver:self forKeyPath:@"elapsedTime" options:NSKeyValueObservingOptionNew context:nil];
+    [sharedPlayer addObserver:self forKeyPath:@"currentItem" options:NSKeyValueObservingOptionNew context:nil];
+}
+
+- (void)stopObserving {
+    LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
+    [sharedPlayer removeObserver:self forKeyPath:@"elapsedTime"];
+    [sharedPlayer removeObserver:self forKeyPath:@"currentItem"];
+}
+
 - (void)updateElapsedTime:(NSInteger)elapsedTime {
     [self.tableViewController updateElapsedTime:elapsedTime];
     NSInteger seconds = elapsedTime / 1000;
@@ -199,22 +198,12 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
-    if(sharedPlayer.currentItem) {
-        sharedPlayer.shouldUpdate = NO;
-        self.dismissalDate = [NSDate now];
-    }
+    [self stopObserving];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if(self.dismissalDate) {
-        LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
-        NSInteger diff = self.dismissalDate.timeIntervalSinceNow * 1000;
-        sharedPlayer.elapsedTime += diff;
-        sharedPlayer.shouldUpdate = YES;
-        self.dismissalDate = nil;
-    }
+    [self beginObserving];
 }
 
 - (void)updateElapsedTimeLabel:(NSInteger)time {
@@ -245,7 +234,8 @@
 }
 
 - (void)trackEnded {
-    [self playNextTrack];
+    if([[[LSTrackQueue sharedQueue] nextTracks] count] == 0) [self dismissLyricsView];
+    else [self playNextTrack];
 }
 
 - (void)displayContentController:(UIViewController *)content {
@@ -256,20 +246,20 @@
 }
 
 - (void)dismissLyricsView {
-    [[LSPlayerModel sharedPlayer] setCurrentItem:nil];
     [[LSTrackQueue sharedQueue] increment];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)setPlayingTrack:(LSTrackItem *)track {
+
+- (void)setPlayingTrack:(LSTrackItem *)track usingCache:(BOOL)usingCache {
     LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
-    [sharedPlayer setCurrentItem:track];
     [self.pauseButton setImage:[UIImage imageNamed:@"PauseIcon"] forState:UIControlStateNormal];
     if(!track) {
         [self dismissLyricsView];
         return;
     }
-    self.dismissalDate = nil;
+    [sharedPlayer setCurrentItem:track];
+    [self downloadNextTrackInfo];
     self.duration = track.duration;
     self.timeSlider.maximumValue = self.duration;
     self.durationLabel.text = [NSString stringWithFormat:@"%ld:%02ld", self.duration / 60, self.duration % 60];
@@ -277,23 +267,43 @@
     self.artistLabel.text = track.artistName;
     self.songLabel.text = track.songName;
     self.elapsedTimeLabel.text = @"0:00";
-    [self.tableViewController setPlayingTrack:track];
+    if(!self.nextTrackLyrics || !usingCache) [self.tableViewController setPlayingTrack:track];
+    else if(self.nextTrackLyrics) {
+        self.tableViewController.lyricsArray = self.nextTrackLyrics;
+        [self.tableViewController reloadLyrics];
+    }
+}
+
+- (void)setPlayingTrack:(LSTrackItem *)track {
+    [self setPlayingTrack:track usingCache:NO];
+}
+
+- (void)downloadNextTrackInfo {
+    LSTrackQueue *sharedQueue = [LSTrackQueue sharedQueue];
+    if(sharedQueue.nextTracks && [sharedQueue.nextTracks count] != 0) {
+        LSTrackItem *nextItem = sharedQueue.nextTracks[0];
+        [LSDataManager lyricsForSong:nextItem.songName artist:nextItem.artistName completion:^(NSArray *info) {
+            self.nextTrackLyrics = info;
+        }];
+    }
 }
 
 - (void)playNextTrack {
     LSTrackQueue *sharedQueue = [LSTrackQueue sharedQueue];
     if([sharedQueue.nextTracks count] == 0) {
+        [[LSPlayerModel sharedPlayer] setCurrentItem:nil];
         [self dismissLyricsView];
         return;
     }
     [sharedQueue increment];
     LSTrackItem *nextItem = [sharedQueue currentTrack];
-    [self setPlayingTrack:nextItem];
+    [self setPlayingTrack:nextItem usingCache:YES];
 }
 
 - (void)playPreviousTrack {
     LSTrackQueue *sharedQueue = [LSTrackQueue sharedQueue];
     if([sharedQueue.previousTracks count] == 0) {
+        [[LSPlayerModel sharedPlayer] setCurrentItem:nil];
         [self dismissLyricsView];
         return;
     }

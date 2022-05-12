@@ -17,4 +17,5 @@
 - (void)updateTimestampForTime:(NSInteger)time;
 - (void)updateElapsedTime:(NSInteger)elapsedTime;
 - (void)setPlayingTrack:(LSTrackItem *)track;
+- (void)reloadLyrics;
 @end

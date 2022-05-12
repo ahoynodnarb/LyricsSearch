@@ -17,6 +17,5 @@
 @property (nonatomic, strong) UILabel *errorMessageLabel;
 @property (nonatomic, strong) LSLyricsViewController *lyricsViewController;
 - (instancetype)initWithSearchTerm:(NSString *)searchTerm;
-- (void)loadNextPage;
 - (void)loadNewPage;
 @end
