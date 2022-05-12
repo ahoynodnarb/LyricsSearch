@@ -81,6 +81,7 @@
         self.progressBar.progress = (double)self.elapsedTime / (self.duration * 1000);
     }
     if([keyPath isEqualToString:@"currentItem"]) {
+        NSLog(@"setting current item");
         self.currentItem = [[LSPlayerModel sharedPlayer] currentItem];
     }
 }

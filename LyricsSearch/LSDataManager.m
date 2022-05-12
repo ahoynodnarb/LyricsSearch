@@ -62,7 +62,10 @@
     NSString *URLString = [NSString stringWithFormat:@"%@&q_track=%@&q_artist=%@/", baseURL, song, artist];
     URLString = [URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSURL *URL = [NSURL URLWithString:URLString];
-    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    config.requestCachePolicy = NSURLRequestUseProtocolCachePolicy;
+    config.URLCache = [NSURLCache sharedURLCache];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
     [[session dataTaskWithURL:URL completionHandler:^(NSData *data,NSURLResponse *response, NSError *error) {
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         NSInteger statusCode = [dict[@"message"][@"header"][@"status_code"] longValue];

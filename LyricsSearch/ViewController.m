@@ -1,7 +1,6 @@
-// TODO: Keep playing song in background when viewcontroller closed
-// TODO: Load more songs when scrolling to bottom
-// TODO: Download next song's lyrics while current song playing
+// TODO: Cache lyrics for all songs in queue
 // TODO: Spotify integration
+// TODO: Refactor everything
 // TODO: Add option to modify queue manually
 // TODO: Optimize downloading and maybe persistent cache
 

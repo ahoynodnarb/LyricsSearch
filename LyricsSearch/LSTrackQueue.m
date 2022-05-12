@@ -25,27 +25,29 @@
 - (void)setCurrentTrack:(LSTrackItem *)track {
     if(self.currentTrack) [self.nextTracks insertObject:self.currentTrack atIndex:0];
     _currentTrack = track;
+    NSLog(@"%@ %@ %@", self.previousTracks, self.currentTrack, self.nextTracks);
 }
 - (void)enqueue:(LSTrackItem *)item {
     [self.nextTracks addObject:item];
+    NSLog(@"%@ %@ %@", self.previousTracks, self.currentTrack, self.nextTracks);
 }
 - (void)decrement {
-    if(self.currentTrack) [self.nextTracks addObject:self.currentTrack];
+    if(self.currentTrack) [self.nextTracks insertObject:self.currentTrack atIndex:0];
     if([self.previousTracks count] == 0) _currentTrack = nil;
     else {
-        NSInteger lastIndex = self.previousTracks.count - 1;
-        _currentTrack = self.previousTracks[lastIndex];
-        [self.previousTracks removeObjectAtIndex:lastIndex];
+        _currentTrack = self.previousTracks[self.previousTracks.count - 1];
+        [self.previousTracks removeLastObject];
     }
+    NSLog(@"%@ %@ %@", self.previousTracks, self.currentTrack, self.nextTracks);
 }
 - (void)increment {
     if(self.currentTrack) [self.previousTracks addObject:self.currentTrack];
     if([self.nextTracks count] == 0) _currentTrack = nil;
     else {
-        NSLog(@"removing");
         _currentTrack = self.nextTracks[0];
         [self.nextTracks removeObjectAtIndex:0];
     }
+    NSLog(@"%@ %@ %@", self.previousTracks, self.currentTrack, self.nextTracks);
 }
 - (NSInteger)size {
     return [self.previousTracks count] + [self.nextTracks count] + 1;

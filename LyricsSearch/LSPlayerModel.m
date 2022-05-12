@@ -60,5 +60,6 @@
 - (void)trackEnded {
     [self resetTimer];
     self.currentItem = nil;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"trackEnded" object:nil];
 }
 @end
