@@ -1,6 +1,6 @@
-// TODO: Cache lyrics for all songs in queue
 // TODO: Spotify integration
 // TODO: Add option to modify queue manually
+// TODO: Cache lyrics for all songs in queue
 // TODO: Optimize downloading and maybe persistent cache
 
 //

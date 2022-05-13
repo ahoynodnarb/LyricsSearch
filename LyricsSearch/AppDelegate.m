@@ -51,4 +51,12 @@
 }
 
 
+- (void)sessionManager:(nonnull SPTSessionManager *)manager didFailWithError:(nonnull NSError *)error {
+    
+}
+
+- (void)sessionManager:(nonnull SPTSessionManager *)manager didInitiateSession:(nonnull SPTSession *)session {
+    
+}
+
 @end
