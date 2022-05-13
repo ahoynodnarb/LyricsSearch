@@ -23,16 +23,10 @@
 
 @implementation LSMediaPlayerView
 
-- (instancetype)init {
+- (instancetype)initWithPlayerModel:(LSPlayerModel *)playerModel {
     if(self = [super init]) {
+        self.playerModel = playerModel;
         [self setupSubviews];
-    }
-    return self;
-}
-
-- (instancetype)initWithTrackItem:(LSTrackItem *)item {
-    if(self = [super init]) {
-        self.currentItem = item;
     }
     return self;
 }
@@ -82,15 +76,13 @@
     }
     if([keyPath isEqualToString:@"currentItem"]) {
         NSLog(@"setting current item");
-        self.currentItem = [[LSPlayerModel sharedPlayer] currentItem];
+        self.currentItem = [self.playerModel currentItem];
     }
 }
 
-
 - (void)dealloc {
-    LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
-    [sharedPlayer removeObserver:self forKeyPath:@"elapsedTime"];
-    [sharedPlayer removeObserver:self forKeyPath:@"currentItem"];
+    [self.playerModel removeObserver:self forKeyPath:@"elapsedTime"];
+    [self.playerModel removeObserver:self forKeyPath:@"currentItem"];
 }
 
 - (void)updateSubviews {
@@ -100,14 +92,13 @@
 }
 
 - (void)pauseButtonPressed {
-    LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
-    if(sharedPlayer.paused) {
+    if(self.playerModel.paused) {
         [self.pauseButton setImage:[UIImage imageNamed:@"PauseIcon"] forState:UIControlStateNormal];
-        sharedPlayer.paused = NO;
+        self.playerModel.paused = NO;
     }
     else {
         [self.pauseButton setImage:[UIImage imageNamed:@"PlayIcon"] forState:UIControlStateNormal];
-        sharedPlayer.paused = YES;
+        self.playerModel.paused = YES;
     }
 }
 
@@ -149,9 +140,8 @@
 }
 
 - (void)beginObserving {
-    LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
-    [sharedPlayer addObserver:self forKeyPath:@"elapsedTime" options:NSKeyValueObservingOptionNew context:nil];
-    [sharedPlayer addObserver:self forKeyPath:@"currentItem" options:NSKeyValueObservingOptionNew context:nil];
+    [self.playerModel addObserver:self forKeyPath:@"elapsedTime" options:NSKeyValueObservingOptionNew context:nil];
+    [self.playerModel addObserver:self forKeyPath:@"currentItem" options:NSKeyValueObservingOptionNew context:nil];
 }
 /*
 // Only override drawRect: if you perform custom drawing.

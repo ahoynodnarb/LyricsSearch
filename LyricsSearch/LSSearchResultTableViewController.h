@@ -11,6 +11,7 @@
 #import "LSSearchResultTableViewCell.h"
 
 @interface LSSearchResultTableViewController : UITableViewController
+@property (nonatomic, strong) LSPlayerModel *playerModel;
 @property (nonatomic, assign) NSInteger currentPage;
 @property (nonatomic, strong) NSArray *searchResults;
 @property (nonatomic, strong) NSString *searchTerm;

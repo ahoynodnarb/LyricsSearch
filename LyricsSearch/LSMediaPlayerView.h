@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LSMediaPlayerView : UIView
 @property (nonatomic, strong) LSTrackItem *currentItem;
+@property (nonatomic, strong) LSPlayerModel *playerModel;
+- (instancetype)initWithPlayerModel:(LSPlayerModel *)playerModel;
 - (void)beginObserving;
 @end
 

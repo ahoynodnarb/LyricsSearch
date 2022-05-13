@@ -8,18 +8,31 @@
 #import "LSPlayerModel.h"
 
 @interface LSPlayerModel ()
+@property (nonatomic, strong) LSTrackQueue *trackQueue;
 @property (nonatomic, assign) NSInteger trackDuration;
 @property (nonatomic, strong) NSTimer *timer;
 @end
 
 @implementation LSPlayerModel
-+ (instancetype)sharedPlayer {
-    static dispatch_once_t pred = 0;
-    static LSPlayerModel *_sharedPlayer = nil;
-    dispatch_once(&pred, ^{
-        _sharedPlayer = [[self alloc] init];
-    });
-    return _sharedPlayer;
+//+ (instancetype)sharedPlayer {
+//    static dispatch_once_t pred = 0;
+//    static LSPlayerModel *_sharedPlayer = nil;
+//    dispatch_once(&pred, ^{
+//        _sharedPlayer = [[self alloc] init];
+//    });
+//    return _sharedPlayer;
+//}
+- (instancetype)initWithTrackQueue:(LSTrackQueue *)trackQueue {
+    if(self = [super init]) {
+        self.trackQueue = trackQueue;
+    }
+    return self;
+}
+- (NSArray *)nextTracks {
+    return [self.trackQueue.nextTracks copy];
+}
+- (NSArray *)previousTracks {
+    return [self.trackQueue.previousTracks copy];
 }
 - (void)setPaused:(BOOL)paused {
     _paused = paused;
@@ -48,18 +61,34 @@
     [self resetTimer];
     [self beginTimer];
 }
+- (LSTrackItem *)currentItem {
+    return self.trackQueue.currentTrack;
+}
 - (void)setCurrentItem:(LSTrackItem *)currentItem {
-    _currentItem = currentItem;
-    if(!currentItem) {
+    self.trackQueue.currentTrack = currentItem;
+    [self resetPlayerForTrack:currentItem];
+}
+- (void)resetPlayerForTrack:(LSTrackItem *)track {
+    if(!track) {
         [self resetTimer];
         return;
     }
-    self.trackDuration = currentItem.duration * 1000;
     [self restartTimer];
+    self.trackDuration = track.duration * 1000;
+}
+- (void)enqueue:(LSTrackItem *)trackItem {
+    [self.trackQueue enqueue:trackItem];
 }
 - (void)trackEnded {
-    [self resetTimer];
-    self.currentItem = nil;
+    [self playNextTrack];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"trackEnded" object:nil];
+}
+- (void)playNextTrack {
+    [self.trackQueue increment];
+    [self resetPlayerForTrack:self.currentItem];
+}
+- (void)playPreviousTrack {
+    [self.trackQueue decrement];
+    [self resetPlayerForTrack:self.currentItem];
 }
 @end

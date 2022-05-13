@@ -1,3 +1,4 @@
+// TODO: Move logic for queue and player all into LSPlayerModel
 // TODO: Cache lyrics for all songs in queue
 // TODO: Spotify integration
 // TODO: Refactor everything
@@ -14,6 +15,7 @@
 #import "ViewController.h"
 
 @interface ViewController ()
+@property (nonatomic, strong) LSPlayerModel *playerModel;
 @property (nonatomic, strong) LSMediaPlayerView *mediaPlayerView;
 @property (nonatomic, strong) UIView *searchResultContainerView;
 @property (nonatomic, strong) UIView *promptContainerView;
@@ -28,8 +30,10 @@
     [super viewDidLoad];
     UIImage *searchIconImage = [UIImage imageNamed:@"SearchIcon"];
     UIImage *queueIconImage = [UIImage imageNamed:@"QueueIcon"];
+    LSTrackQueue *playerQueue = [[LSTrackQueue alloc] init];
+    self.playerModel = [[LSPlayerModel alloc] initWithTrackQueue:playerQueue];
     self.view.backgroundColor = [UIColor colorWithWhite:0.12f alpha:1.0f];
-    self.mediaPlayerView = [[LSMediaPlayerView alloc] init];
+    self.mediaPlayerView = [[LSMediaPlayerView alloc] initWithPlayerModel:self.playerModel];
     self.mediaPlayerView.backgroundColor = [UIColor blackColor];
     self.mediaPlayerView.translatesAutoresizingMaskIntoConstraints = NO;
     self.mediaPlayerView.layer.cornerRadius = 10;
@@ -101,7 +105,7 @@
 }
 
 - (void)mediaPlayerTapped {
-    if([[LSPlayerModel sharedPlayer] currentItem]) {
+    if([self.playerModel currentItem]) {
         [self.searchResultTableViewController presentViewController:self.searchResultTableViewController.lyricsViewController animated:YES completion:nil];
     }
 }
@@ -117,6 +121,7 @@
     if(self.searchResultTableViewController) self.searchResultTableViewController.searchTerm = searchTerm;
     else {
         self.searchResultTableViewController = [[LSSearchResultTableViewController alloc] initWithSearchTerm:searchTerm];
+        self.searchResultTableViewController.playerModel = self.playerModel;
         [self addChildViewController:self.searchResultTableViewController];
         [self.searchResultContainerView addSubview:self.searchResultTableViewController.view];
         self.searchResultTableViewController.view.frame = self.searchResultContainerView.bounds;

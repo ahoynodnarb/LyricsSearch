@@ -30,21 +30,22 @@
 
 @implementation LSLyricsViewController
 
-- (instancetype)initWithLyrics:(NSArray *)lyrics song:(NSString *)song artist:(NSString *)artist image:(UIImage *)image duration:(NSInteger)duration {
+- (instancetype)initWithLyrics:(NSArray *)lyrics song:(NSString *)song artist:(NSString *)artist image:(UIImage *)image duration:(NSInteger)duration playerModel:(LSPlayerModel *)playerModel {
     if(self = [super init]) {
         self.lyrics = lyrics;
         self.song = song;
         self.artist = artist;
         self.backgroundImage = image;
         self.duration = duration;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackEnded) name:@"trackEnded" object:nil];
+        self.playerModel = playerModel;
+//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackEnded) name:@"trackEnded" object:nil];
     }
     return self;
 }
 
 - (void)dealloc {
     [self stopObserving];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
@@ -52,6 +53,10 @@
     if([keyPath isEqualToString:@"elapsedTime"]) {
         NSInteger elapsedTime = [item intValue];
         [self updateElapsedTime:elapsedTime];
+    }
+    else if([keyPath isEqualToString:@"currentItem"]) {
+        if([item isEqual:[NSNull null]]) [self trackEnded];
+        else [self setPlayingTrack:[self.playerModel currentItem]];
     }
 //    if([keyPath isEqualToString:@"currentItem"]) {
 //        if([item isEqual:[NSNull null]]) [self trackEnded];
@@ -179,15 +184,16 @@
 }
 
 - (void)beginObserving {
-    LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
-    [sharedPlayer addObserver:self forKeyPath:@"elapsedTime" options:NSKeyValueObservingOptionNew context:nil];
+//    LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
+    [self.playerModel addObserver:self forKeyPath:@"elapsedTime" options:NSKeyValueObservingOptionNew context:nil];
+    [self.playerModel addObserver:self forKeyPath:@"currentItem" options:NSKeyValueObservingOptionNew context:nil];
 //    [sharedPlayer addObserver:self forKeyPath:@"currentItem" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)stopObserving {
-    LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
-    [sharedPlayer removeObserver:self forKeyPath:@"elapsedTime"];
-//    [sharedPlayer removeObserver:self forKeyPath:@"currentItem"];
+//    LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
+    [self.playerModel removeObserver:self forKeyPath:@"elapsedTime"];
+    [self.playerModel removeObserver:self forKeyPath:@"currentItem"];
 }
 
 - (void)updateElapsedTime:(NSInteger)elapsedTime {
@@ -217,17 +223,16 @@
 - (void)sliderDragged:(UISlider *)slider forEvent:(UIEvent *)event {
     UITouch *touch = [[event allTouches] anyObject];
     NSInteger selectedTime = slider.value * 1000;
-    LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
     switch (touch.phase) {
         case UITouchPhaseBegan:
-            sharedPlayer.shouldUpdate = NO;
+            self.playerModel.shouldUpdate = NO;
             break;
         case UITouchPhaseMoved:
             [self.tableViewController updateTimestampForTime:selectedTime];
-            sharedPlayer.elapsedTime = selectedTime;
+            self.playerModel.elapsedTime = selectedTime;
             break;
         case UITouchPhaseEnded:
-            sharedPlayer.shouldUpdate = YES;
+            self.playerModel.shouldUpdate = YES;
             break;
         default:
             break;
@@ -236,11 +241,12 @@
 
 - (void)trackEnded {
     NSLog(@"track ended called");
-    if([[[LSTrackQueue sharedQueue] nextTracks] count] == 0) {
-        [[LSTrackQueue sharedQueue] increment];
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
-    else [self playNextTrack];
+    if(!self.playerModel.currentItem) [self dismissViewControllerAnimated:YES completion:nil];
+//    if([[[LSTrackQueue sharedQueue] nextTracks] count] == 0) {
+//        [[LSTrackQueue sharedQueue] increment];
+//        [self dismissViewControllerAnimated:YES completion:nil];
+//    }
+//    else [self playNextTrack];
 }
 
 - (void)displayContentController:(UIViewController *)content {
@@ -251,13 +257,12 @@
 }
 
 - (void)setPlayingTrack:(LSTrackItem *)track usingCache:(BOOL)usingCache {
-    LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
     [self.pauseButton setImage:[UIImage imageNamed:@"PauseIcon"] forState:UIControlStateNormal];
     if(!track) {
         [self dismissViewControllerAnimated:YES completion:nil];
         return;
     }
-    [sharedPlayer setCurrentItem:track];
+//    [sharedPlayer setCurrentItem:track];
     [self downloadNextTrackInfo];
     self.duration = track.duration;
     self.timeSlider.maximumValue = self.duration;
@@ -278,50 +283,58 @@
 }
 
 - (void)downloadNextTrackInfo {
-    LSTrackQueue *sharedQueue = [LSTrackQueue sharedQueue];
-    if(sharedQueue.nextTracks && [sharedQueue.nextTracks count] != 0) {
-        LSTrackItem *nextItem = sharedQueue.nextTracks[0];
+    NSArray *nextTracks = [self.playerModel nextTracks];
+    if(nextTracks && [nextTracks count] != 0) {
+        LSTrackItem *nextItem = nextTracks[0];
         [LSDataManager lyricsForSong:nextItem.songName artist:nextItem.artistName completion:^(NSArray *info) {
             self.nextTrackLyrics = info;
         }];
     }
+//    LSTrackQueue *sharedQueue = [LSTrackQueue sharedQueue];
+//    if(sharedQueue.nextTracks && [sharedQueue.nextTracks count] != 0) {
+//        LSTrackItem *nextItem = sharedQueue.nextTracks[0];
+//        [LSDataManager lyricsForSong:nextItem.songName artist:nextItem.artistName completion:^(NSArray *info) {
+//            self.nextTrackLyrics = info;
+//        }];
+//    }
 }
 
 - (void)playNextTrack {
-    LSTrackQueue *sharedQueue = [LSTrackQueue sharedQueue];
-    if([sharedQueue.nextTracks count] == 0) {
-        [sharedQueue increment];
-        [[LSPlayerModel sharedPlayer] setCurrentItem:nil];
-        [self dismissViewControllerAnimated:YES completion:nil];
-        return;
-    }
-    [sharedQueue increment];
-    LSTrackItem *nextItem = [sharedQueue currentTrack];
-    [self setPlayingTrack:nextItem usingCache:YES];
+//    LSTrackQueue *sharedQueue = [LSTrackQueue sharedQueue];
+//    if([sharedQueue.nextTracks count] == 0) {
+//        [sharedQueue increment];
+//        [[LSPlayerModel sharedPlayer] setCurrentItem:nil];
+//        [self dismissViewControllerAnimated:YES completion:nil];
+//        return;
+//    }
+//    [sharedQueue increment];
+//    LSTrackItem *nextItem = [sharedQueue currentTrack];
+//    [self setPlayingTrack:nextItem usingCache:YES];
+    [self.playerModel playNextTrack];
 }
 
 - (void)playPreviousTrack {
-    LSTrackQueue *sharedQueue = [LSTrackQueue sharedQueue];
-    if([sharedQueue.previousTracks count] == 0) {
-        [sharedQueue decrement];
-        [[LSPlayerModel sharedPlayer] setCurrentItem:nil];
-        [self dismissViewControllerAnimated:YES completion:nil];
-        return;
-    }
-    [sharedQueue decrement];
-    LSTrackItem *previousItem = [sharedQueue currentTrack];
-    [self setPlayingTrack:previousItem];
+//    LSTrackQueue *sharedQueue = [LSTrackQueue sharedQueue];
+//    if([sharedQueue.previousTracks count] == 0) {
+//        [sharedQueue decrement];
+//        [[LSPlayerModel sharedPlayer] setCurrentItem:nil];
+//        [self dismissViewControllerAnimated:YES completion:nil];
+//        return;
+//    }
+//    [sharedQueue decrement];
+//    LSTrackItem *previousItem = [sharedQueue currentTrack];
+//    [self setPlayingTrack:previousItem];
+    [self.playerModel playPreviousTrack];
 }
 
 - (void)pauseButtonPressed {
-    LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
-    if(sharedPlayer.paused) {
+    if(self.playerModel.paused) {
         [self.pauseButton setImage:[UIImage imageNamed:@"PauseIcon"] forState:UIControlStateNormal];
-        sharedPlayer.paused = NO;
+        self.playerModel.paused = NO;
     }
     else {
         [self.pauseButton setImage:[UIImage imageNamed:@"PlayIcon"] forState:UIControlStateNormal];
-        sharedPlayer.paused = YES;
+        self.playerModel.paused = YES;
     }
 }
 @end

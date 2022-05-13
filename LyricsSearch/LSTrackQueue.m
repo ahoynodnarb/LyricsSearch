@@ -12,15 +12,22 @@
 @end
 
 @implementation LSTrackQueue
-+ (instancetype)sharedQueue {
-    static dispatch_once_t pred = 0;
-    static LSTrackQueue *_sharedQueue = nil;
-    dispatch_once(&pred, ^{
-        _sharedQueue = [[self alloc] init];
-        _sharedQueue.previousTracks = [[NSMutableArray alloc] init];
-        _sharedQueue.nextTracks = [[NSMutableArray alloc] init];
-    });
-    return _sharedQueue;
+//+ (instancetype)sharedQueue {
+//    static dispatch_once_t pred = 0;
+//    static LSTrackQueue *_sharedQueue = nil;
+//    dispatch_once(&pred, ^{
+//        _sharedQueue = [[self alloc] init];
+//        _sharedQueue.previousTracks = [[NSMutableArray alloc] init];
+//        _sharedQueue.nextTracks = [[NSMutableArray alloc] init];
+//    });
+//    return _sharedQueue;
+//}
+- (instancetype)init {
+    if(self = [super init]) {
+        self.previousTracks = [[NSMutableArray alloc] init];
+        self.nextTracks = [[NSMutableArray alloc] init];
+    }
+    return self;
 }
 - (void)setCurrentTrack:(LSTrackItem *)track {
     if(self.currentTrack) [self.nextTracks insertObject:self.currentTrack atIndex:0];

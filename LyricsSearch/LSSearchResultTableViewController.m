@@ -8,6 +8,7 @@
 #import "LSSearchResultTableViewController.h"
 
 @interface LSSearchResultTableViewController ()
+
 @end
 
 @implementation LSSearchResultTableViewController
@@ -114,9 +115,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     LSSearchResultTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    LSTrackQueue *sharedQueue = [LSTrackQueue sharedQueue];
-    [sharedQueue setCurrentTrack:cell.trackItem];
-    LSTrackItem *currentTrack = sharedQueue.currentTrack;
+    self.playerModel.currentItem = cell.trackItem;
+    LSTrackItem *currentTrack = self.playerModel.currentItem;
     if(!self.lyricsViewController) {
         [LSDataManager lyricsForSong:currentTrack.songName artist:currentTrack.artistName completion:^(NSArray *info) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -125,7 +125,6 @@
                 UIImage *artImage = currentTrack.artImage;
                 NSInteger duration = currentTrack.duration;
                 self.lyricsViewController = [[LSLyricsViewController alloc] initWithLyrics:info song:songName artist:artistName image:artImage duration:duration];
-                [[LSPlayerModel sharedPlayer] setCurrentItem:currentTrack];
                 [self presentViewController:self.lyricsViewController animated:YES completion:nil];
             });
         }];

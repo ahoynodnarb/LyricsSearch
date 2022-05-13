@@ -14,7 +14,7 @@
 #import "LSTrackQueue.h"
 
 @interface LSLyricsViewController : UIViewController
-- (instancetype)initWithLyrics:(NSArray *)lyrics song:(NSString *)song artist:(NSString *)artist image:(UIImage *)image duration:(NSInteger)duration;
-//- (instancetype)initWithTrackItem:(LSTrackItem *)trackItem;
+@property (nonatomic, strong) LSPlayerModel *playerModel;
+- (instancetype)initWithLyrics:(NSArray *)lyrics song:(NSString *)song artist:(NSString *)artist image:(UIImage *)image duration:(NSInteger)duration playerModel:(LSPlayerModel *)playerModel;
 - (void)setPlayingTrack:(LSTrackItem *)track;
 @end
