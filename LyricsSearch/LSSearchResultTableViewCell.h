@@ -18,4 +18,5 @@
 @property (nonatomic, strong) NSString *song;
 @property (nonatomic, strong) NSString *artist;
 @property (nonatomic, assign) NSInteger duration;
+- (void)animatePan:(UIPanGestureRecognizer *)recognizer;
 @end

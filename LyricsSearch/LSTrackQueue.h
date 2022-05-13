@@ -13,7 +13,4 @@
 @property (nonatomic, strong) NSMutableArray *nextTracks;
 @property (nonatomic, strong) LSTrackItem *currentTrack;
 - (void)enqueue:(LSTrackItem *)item;
-- (void)decrement;
-- (void)increment;
-- (NSInteger)size;
 @end

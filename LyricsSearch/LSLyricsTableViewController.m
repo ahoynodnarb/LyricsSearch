@@ -14,9 +14,10 @@
 
 @implementation LSLyricsTableViewController
 
-- (instancetype)initWithLyrics:(NSArray *)lyrics {
+- (instancetype)initWithLyrics:(NSArray *)lyrics playerModel:(LSPlayerModel *)playerModel {
     if(self = [super init]) {
         _lyricsArray = lyrics;
+        self.playerModel = playerModel;
         self.nextTimestamp = [self.lyricsArray[self.nextSection][@"time"][@"total"] floatValue] * 1000;
     }
     return self;
@@ -35,8 +36,7 @@
     self.nextSection = [indexPath section] + 1;
     self.nextTimestamp = [self.lyricsArray[self.nextSection][@"time"][@"total"] floatValue] * 1000;
     NSInteger selectedTimestamp = self.nextSection == 0 ? 0 : [self.lyricsArray[self.nextSection - 1][@"time"][@"total"] floatValue] * 1000;
-    LSPlayerModel *sharedPlayer = [LSPlayerModel sharedPlayer];
-    sharedPlayer.elapsedTime = selectedTimestamp;
+    self.playerModel.elapsedTime = selectedTimestamp;
     [tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 

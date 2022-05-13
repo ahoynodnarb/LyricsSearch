@@ -74,15 +74,14 @@
         self.elapsedTime = [item intValue];
         self.progressBar.progress = (double)self.elapsedTime / (self.duration * 1000);
     }
-    if([keyPath isEqualToString:@"currentItem"]) {
-        NSLog(@"setting current item");
-        self.currentItem = [self.playerModel currentItem];
+    else if([keyPath isEqualToString:@"paused"]) {
+        BOOL paused = [item boolValue];
+        [self updatePauseButton:paused];
     }
 }
 
 - (void)dealloc {
-    [self.playerModel removeObserver:self forKeyPath:@"elapsedTime"];
-    [self.playerModel removeObserver:self forKeyPath:@"currentItem"];
+    [self stopObserving];
 }
 
 - (void)updateSubviews {
@@ -92,14 +91,8 @@
 }
 
 - (void)pauseButtonPressed {
-    if(self.playerModel.paused) {
-        [self.pauseButton setImage:[UIImage imageNamed:@"PauseIcon"] forState:UIControlStateNormal];
-        self.playerModel.paused = NO;
-    }
-    else {
-        [self.pauseButton setImage:[UIImage imageNamed:@"PlayIcon"] forState:UIControlStateNormal];
-        self.playerModel.paused = YES;
-    }
+    if(!self.playerModel.currentItem) return;
+    self.playerModel.paused = !self.playerModel.paused;
 }
 
 - (void)setupSubviews {
@@ -139,18 +132,30 @@
     [self addSubview:self.progressBar];
 }
 
+- (void)updatePauseButton:(BOOL)paused {
+    NSString *imageName = paused ? @"PauseIcon" : @"PlayIcon";
+    [self.pauseButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+}
+
+- (void)playbackEnded {
+    self.currentItem = nil;
+}
+
+- (void)trackChanged {
+    self.currentItem = [self.playerModel currentItem];
+}
+
 - (void)beginObserving {
     [self.playerModel addObserver:self forKeyPath:@"elapsedTime" options:NSKeyValueObservingOptionNew context:nil];
-    [self.playerModel addObserver:self forKeyPath:@"currentItem" options:NSKeyValueObservingOptionNew context:nil];
+    [self.playerModel addObserver:self forKeyPath:@"paused" options:NSKeyValueObservingOptionNew context:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackEnded) name:@"playbackEnded" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackChanged) name:@"trackChanged" object:nil];
 }
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+
+- (void)stopObserving {
+    [self.playerModel removeObserver:self forKeyPath:@"elapsedTime"];
+    [self.playerModel removeObserver:self forKeyPath:@"paused"];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-*/
-
-
 
 @end

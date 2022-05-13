@@ -14,14 +14,6 @@
 @end
 
 @implementation LSPlayerModel
-//+ (instancetype)sharedPlayer {
-//    static dispatch_once_t pred = 0;
-//    static LSPlayerModel *_sharedPlayer = nil;
-//    dispatch_once(&pred, ^{
-//        _sharedPlayer = [[self alloc] init];
-//    });
-//    return _sharedPlayer;
-//}
 - (instancetype)initWithTrackQueue:(LSTrackQueue *)trackQueue {
     if(self = [super init]) {
         self.trackQueue = trackQueue;
@@ -36,6 +28,7 @@
 }
 - (void)setPaused:(BOOL)paused {
     _paused = paused;
+    if(!self.trackQueue.currentTrack) return;
     if(paused) [self.timer invalidate];
     else [self beginTimer];
 }
@@ -43,7 +36,7 @@
     if(!self.shouldUpdate) return;
     self.elapsedTime += 10;
     if(self.elapsedTime >= self.trackDuration) {
-        [self trackEnded];
+        [self playNextTrack];
         return;
     }
 }
@@ -61,12 +54,12 @@
     [self resetTimer];
     [self beginTimer];
 }
-- (LSTrackItem *)currentItem {
-    return self.trackQueue.currentTrack;
-}
 - (void)setCurrentItem:(LSTrackItem *)currentItem {
+    _currentItem = currentItem;
     self.trackQueue.currentTrack = currentItem;
     [self resetPlayerForTrack:currentItem];
+    if(_currentItem) [[NSNotificationCenter defaultCenter] postNotificationName:@"trackChanged" object:nil userInfo:@{@"playingNextTrack": @(NO)}];
+    else [[NSNotificationCenter defaultCenter] postNotificationName:@"playbackEnded" object:nil];
 }
 - (void)resetPlayerForTrack:(LSTrackItem *)track {
     if(!track) {
@@ -79,16 +72,20 @@
 - (void)enqueue:(LSTrackItem *)trackItem {
     [self.trackQueue enqueue:trackItem];
 }
-- (void)trackEnded {
-    [self playNextTrack];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"trackEnded" object:nil];
-}
 - (void)playNextTrack {
-    [self.trackQueue increment];
-    [self resetPlayerForTrack:self.currentItem];
+    if(self.trackQueue.currentTrack) [self.trackQueue.previousTracks addObject:self.trackQueue.currentTrack];
+    if([self.trackQueue.nextTracks count] == 0) self.currentItem = nil;
+    else {
+        self.currentItem = self.trackQueue.nextTracks[0];
+        [self.trackQueue.nextTracks removeObjectAtIndex:0];
+    }
 }
 - (void)playPreviousTrack {
-    [self.trackQueue decrement];
-    [self resetPlayerForTrack:self.currentItem];
+    if(self.trackQueue.currentTrack) [self.trackQueue.nextTracks insertObject:self.trackQueue.currentTrack atIndex:0];
+    if([self.trackQueue.previousTracks count] == 0) self.currentItem = nil;
+    else {
+        self.currentItem = self.trackQueue.previousTracks[[self.trackQueue.previousTracks count] - 1];
+        [self.trackQueue.previousTracks removeLastObject];
+    }
 }
 @end

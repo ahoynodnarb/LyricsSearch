@@ -26,7 +26,6 @@
     [[session dataTaskWithURL:URL completionHandler:^(NSData *data,NSURLResponse *response, NSError *error) {
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         NSInteger statusCode = [dict[@"message"][@"header"][@"status_code"] longValue];
-        NSLog(@"%ld", (long)statusCode);
         if(statusCode != 200) return;
         NSArray *allResults = dict[@"message"][@"body"][@"track_list"];
         NSMutableArray *info = [[NSMutableArray alloc] init];
@@ -56,7 +55,6 @@
 }
 
 + (void)lyricsForSong:(NSString *)song artist:(NSString *)artist completion:(void (^)(NSArray *info))completion {
-    NSLog(@"%@ %@", song, artist);
     NSString *const userToken = [LSDataManager getUserToken];
     NSString *const baseURL = [@"https://apic-desktop.musixmatch.com/ws/1.1/matcher.subtitle.get?app_id=web-desktop-app-v1.0&f_subtitle_length_max_deviation=1&namespace=lyrics_synched&subtitle_format=mxm&usertoken=" stringByAppendingString:userToken];
     NSString *URLString = [NSString stringWithFormat:@"%@&q_track=%@&q_artist=%@/", baseURL, song, artist];
@@ -69,7 +67,6 @@
     [[session dataTaskWithURL:URL completionHandler:^(NSData *data,NSURLResponse *response, NSError *error) {
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         NSInteger statusCode = [dict[@"message"][@"header"][@"status_code"] longValue];
-        NSLog(@"%ld %@", (long)statusCode, URLString);
         if(statusCode != 200) return;
         NSString *lyricsJSON = dict[@"message"][@"body"][@"subtitle"][@"subtitle_body"];
         NSData *lyricsData = [lyricsJSON dataUsingEncoding:NSUTF8StringEncoding];

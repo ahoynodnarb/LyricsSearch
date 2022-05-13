@@ -1,7 +1,5 @@
-// TODO: Move logic for queue and player all into LSPlayerModel
 // TODO: Cache lyrics for all songs in queue
 // TODO: Spotify integration
-// TODO: Refactor everything
 // TODO: Add option to modify queue manually
 // TODO: Optimize downloading and maybe persistent cache
 
@@ -18,7 +16,6 @@
 @property (nonatomic, strong) LSPlayerModel *playerModel;
 @property (nonatomic, strong) LSMediaPlayerView *mediaPlayerView;
 @property (nonatomic, strong) UIView *searchResultContainerView;
-@property (nonatomic, strong) UIView *promptContainerView;
 @property (nonatomic, strong) UITextField *searchTextField;
 @property (nonatomic, strong) UIButton *queueButton;
 @property (nonatomic, strong) LSSearchResultTableViewController *searchResultTableViewController;
@@ -42,9 +39,9 @@
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mediaPlayerTapped)];
     [self.mediaPlayerView addGestureRecognizer:tapGesture];
     [self.mediaPlayerView beginObserving];
-    self.promptContainerView = [[UIView alloc] init];
-    self.promptContainerView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:self.promptContainerView];
+    UIView *promptContainerView = [[UIView alloc] init];
+    promptContainerView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:promptContainerView];
     self.searchTextField = [[UITextField alloc] init];
     // have to use attributed string to make placeholder text black
     self.searchTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Song Name" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor]}];
@@ -67,7 +64,7 @@
     [searchButton setImage:searchIconImage forState:UIControlStateNormal];
     searchButton.translatesAutoresizingMaskIntoConstraints = NO;
     [searchContainerView addSubview:searchButton];
-    [self.promptContainerView addSubview:self.searchTextField];
+    [promptContainerView addSubview:self.searchTextField];
     self.searchResultContainerView = [[UIView alloc] init];
     self.searchResultContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view insertSubview:self.searchResultContainerView atIndex:0];
@@ -81,18 +78,18 @@
         [self.mediaPlayerView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
         [self.mediaPlayerView.widthAnchor constraintEqualToConstant:380],
         [self.mediaPlayerView.heightAnchor constraintEqualToConstant:60],
-        [self.promptContainerView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
-        [self.promptContainerView.bottomAnchor constraintEqualToAnchor:self.view.topAnchor constant:150],
-        [self.promptContainerView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-        [self.promptContainerView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
-        [self.searchResultContainerView.topAnchor constraintEqualToAnchor:self.promptContainerView.bottomAnchor],
+        [promptContainerView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+        [promptContainerView.bottomAnchor constraintEqualToAnchor:self.view.topAnchor constant:150],
+        [promptContainerView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+        [promptContainerView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+        [self.searchResultContainerView.topAnchor constraintEqualToAnchor:promptContainerView.bottomAnchor],
         [self.searchResultContainerView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
         [self.searchResultContainerView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
         [self.searchResultContainerView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
         [self.searchTextField.widthAnchor constraintEqualToConstant:300],
         [self.searchTextField.heightAnchor constraintEqualToConstant:40],
-        [self.searchTextField.bottomAnchor constraintEqualToAnchor:self.promptContainerView.bottomAnchor constant:-10],
-        [self.searchTextField.centerXAnchor constraintEqualToAnchor:self.promptContainerView.centerXAnchor constant:-20],
+        [self.searchTextField.bottomAnchor constraintEqualToAnchor:promptContainerView.bottomAnchor constant:-10],
+        [self.searchTextField.centerXAnchor constraintEqualToAnchor:promptContainerView.centerXAnchor constant:-20],
         [searchButton.topAnchor constraintEqualToAnchor:searchContainerView.topAnchor],
         [searchButton.leftAnchor constraintEqualToAnchor:searchContainerView.leftAnchor],
         [searchButton.bottomAnchor constraintEqualToAnchor:searchContainerView.bottomAnchor],

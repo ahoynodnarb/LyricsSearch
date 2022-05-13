@@ -55,9 +55,6 @@
             [self.artistLabel.leadingAnchor constraintEqualToAnchor:self.artImageView.trailingAnchor constant:10],
             [self.artistLabel.trailingAnchor constraintEqualToAnchor:self.containerView.trailingAnchor constant:-10],
         ]];
-        UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(animatePan:)];
-        recognizer.delegate = self;
-        [self addGestureRecognizer:recognizer];
     }
     return self;
 }
@@ -127,7 +124,6 @@
         [UIView animateWithDuration:0.35f delay:0.0f usingSpringWithDamping:0.5f initialSpringVelocity:0.4f options:UIViewAnimationOptionCurveEaseIn animations:^{
             [self resetSlidingView];
         } completion:nil];
-//        [[LSTrackQueue sharedQueue] enqueue:[self trackItem]];
     }
 }
 

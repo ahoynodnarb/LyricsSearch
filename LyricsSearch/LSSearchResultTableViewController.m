@@ -29,7 +29,6 @@
     self.currentPage = 1;
     [self loadNextPageWithCompletion:^{
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"%@", self.searchResults);
             if([self.searchResults count] == 0) [self showErrorLabelWithMessage:@"No search results found"];
             else {
                 self.errorMessageLabel.hidden = YES;
@@ -54,12 +53,6 @@
             [self.tableView reloadData];
         });
     }];
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//        [self loadNextPage];
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [self.tableView reloadData];
-//        });
-//    });
 }
 
 - (void)showErrorLabelWithMessage:(NSString *)message {
@@ -100,6 +93,11 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if(scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.frame.size.height) [self displayMoreResults];
 }
+- (void)handlePanGesture:(UIPanGestureRecognizer *)recognizer {
+    LSSearchResultTableViewCell *cell = (LSSearchResultTableViewCell *)recognizer.view;
+    [cell animatePan:recognizer];
+    if(recognizer.state == UIGestureRecognizerStateEnded) [self.playerModel enqueue:[cell trackItem]];
+}
 
 - (LSSearchResultTableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     LSSearchResultTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
@@ -110,6 +108,9 @@
     cell.artist = [result objectForKey:@"artistName"];
     cell.duration = [[result objectForKey:@"duration"] longValue];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
+    recognizer.delegate = cell;
+    [cell addGestureRecognizer:recognizer];
     return cell;
 }
 
@@ -124,7 +125,7 @@
                 NSString *artistName = currentTrack.artistName;
                 UIImage *artImage = currentTrack.artImage;
                 NSInteger duration = currentTrack.duration;
-                self.lyricsViewController = [[LSLyricsViewController alloc] initWithLyrics:info song:songName artist:artistName image:artImage duration:duration];
+                self.lyricsViewController = [[LSLyricsViewController alloc] initWithLyrics:info song:songName artist:artistName image:artImage duration:duration playerModel:self.playerModel];
                 [self presentViewController:self.lyricsViewController animated:YES completion:nil];
             });
         }];

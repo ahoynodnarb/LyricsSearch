@@ -22,8 +22,6 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-//    LSTrackQueue *sharedQueue = [LSTrackQueue sharedQueue];
-//    return [sharedQueue size];
     return 0;
 }
 
