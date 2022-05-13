@@ -40,5 +40,15 @@
     // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
 }
 
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+    NSLog(@"entered background");
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"enteredBackground" object:nil];
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    NSLog(@"entered foreground");
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"becameActive" object:nil];
+}
+
 
 @end
