@@ -293,7 +293,7 @@
 }
 
 - (void)updatePauseButton:(BOOL)paused {
-    NSString *imageName = paused ? @"PauseIcon" : @"PlayIcon";
+    NSString *imageName = paused ? @"PlayIcon" : @"PauseIcon";
     [self.pauseButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
 }
 
