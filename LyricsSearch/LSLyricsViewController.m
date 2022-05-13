@@ -206,6 +206,14 @@
     [self beginObserving];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self.tableViewController.tableView beginUpdates];
+    [self.tableViewController updateTimestampForTime:[self.playerModel elapsedTime]];
+    [self.tableViewController.tableView setNeedsDisplay];
+    [self.tableViewController.tableView endUpdates];
+}
+
 - (void)updateElapsedTimeLabel:(NSInteger)time {
     NSInteger minutes = time / 60;
     NSInteger seconds = time % 60;
