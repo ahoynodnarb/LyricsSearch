@@ -6,11 +6,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <SpotifyiOS/SpotifyiOS.h>
 #import "LSTrackItem.h"
 #import "LSTrackQueue.h"
-#import <SpotifyiOS/SpotifyiOS.h>
+#import "LSTrackPresenter.h"
 
 @interface LSPlayerModel : NSObject <SPTAppRemoteDelegate, SPTAppRemotePlayerStateDelegate>
+@property (nonatomic, weak) id<LSTrackPresenter> trackPresenter;
 @property (nonatomic, strong) SPTAppRemote *appRemote;
 @property (nonatomic, assign) BOOL shouldUpdate;
 @property (nonatomic, assign) BOOL paused;

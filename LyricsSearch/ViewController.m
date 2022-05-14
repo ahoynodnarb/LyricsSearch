@@ -13,12 +13,7 @@
 #import "ViewController.h"
 
 @interface ViewController ()
-@property (nonatomic, strong) LSPlayerModel *playerModel;
-@property (nonatomic, strong) LSMediaPlayerView *mediaPlayerView;
-@property (nonatomic, strong) UIView *searchResultContainerView;
-@property (nonatomic, strong) UITextField *searchTextField;
-@property (nonatomic, strong) UIButton *queueButton;
-@property (nonatomic, strong) LSSearchResultTableViewController *searchResultTableViewController;
+
 @end
 
 @implementation ViewController
@@ -29,6 +24,7 @@
     UIImage *queueIconImage = [UIImage imageNamed:@"QueueIcon"];
     LSTrackQueue *playerQueue = [[LSTrackQueue alloc] init];
     self.playerModel = [[LSPlayerModel alloc] initWithTrackQueue:playerQueue];
+    self.playerModel.trackPresenter = self;
     self.view.backgroundColor = [UIColor colorWithWhite:0.12f alpha:1.0f];
     self.mediaPlayerView = [[LSMediaPlayerView alloc] initWithPlayerModel:self.playerModel];
     self.mediaPlayerView.backgroundColor = [UIColor blackColor];
@@ -104,7 +100,8 @@
 
 - (void)mediaPlayerTapped {
     if([self.playerModel currentItem]) {
-        [self.searchResultTableViewController presentViewController:self.searchResultTableViewController.lyricsViewController animated:YES completion:nil];
+        if(self.lyricsViewController) [self presentViewController:self.lyricsViewController animated:YES completion:nil];
+        else [self presentTrack:[self.playerModel currentItem]];
     }
 }
 
@@ -149,4 +146,21 @@
     });
 }
 
+- (void)presentTrack:(LSTrackItem *)track { 
+    if(!self.lyricsViewController) {
+        [LSDataManager lyricsForSong:track.songName artist:track.artistName completion:^(NSArray *info) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSString *songName = track.songName;
+                NSString *artistName = track.artistName;
+                UIImage *artImage = track.artImage;
+                NSInteger duration = track.duration;
+                self.lyricsViewController = [[LSLyricsViewController alloc] initWithLyrics:info song:songName artist:artistName image:artImage duration:duration playerModel:self.playerModel];
+                [self presentViewController:self.lyricsViewController animated:YES completion:nil];
+            });
+        }];
+        return;
+    }
+    [self.lyricsViewController setPlayingTrack:track];
+    [self presentViewController:self.lyricsViewController animated:YES completion:nil];
+}
 @end

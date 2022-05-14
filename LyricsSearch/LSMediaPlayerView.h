@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "LSTrackItem.h"
 #import "LSPlayerModel.h"
+#import "LSTrackPresenter.h"
 
 @interface LSMediaPlayerView : UIView
 @property (nonatomic, strong) LSTrackItem *currentItem;

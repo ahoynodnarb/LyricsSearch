@@ -110,7 +110,7 @@
     [self.controlsView addSubview:self.elapsedTimeLabel];
     self.durationLabel = [[UILabel alloc] init];
     self.durationLabel.textColor = [UIColor grayColor];
-    self.durationLabel.text = [NSString stringWithFormat:@"%ld:%02ld", self.duration / 60, self.duration % 60];
+    self.durationLabel.text = [NSString stringWithFormat:@"%ld:%02ld", (self.duration / 1000) / 60, (self.duration / 1000) % 60];
     self.durationLabel.font = [UIFont fontWithName:@"Helvetica" size:11];
     self.durationLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [self.controlsView addSubview:self.durationLabel];
@@ -191,9 +191,8 @@
 
 - (void)updateElapsedTime:(NSInteger)elapsedTime {
     [self.tableViewController updateElapsedTime:elapsedTime];
-    NSInteger seconds = elapsedTime / 1000;
-    [self updateElapsedTimeLabel:seconds];
-    if(!self.timeSlider.isHighlighted) [self.timeSlider setValue:seconds animated:NO];
+    [self updateElapsedTimeLabel:elapsedTime];
+    if(!self.timeSlider.isHighlighted) [self.timeSlider setValue:elapsedTime animated:NO];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -215,15 +214,15 @@
 }
 
 - (void)updateElapsedTimeLabel:(NSInteger)time {
-    NSInteger minutes = time / 60;
-    NSInteger seconds = time % 60;
+    NSInteger minutes = (time / 1000) / 60;
+    NSInteger seconds = (time / 1000) % 60;
     NSString *timeString = [NSString stringWithFormat:@"%ld:%02ld", minutes, seconds];
     self.elapsedTimeLabel.text = timeString;
 }
 
 - (void)sliderDragged:(UISlider *)slider forEvent:(UIEvent *)event {
     UITouch *touch = [[event allTouches] anyObject];
-    NSInteger selectedTime = slider.value * 1000;
+    NSInteger selectedTime = slider.value;
     switch (touch.phase) {
         case UITouchPhaseBegan:
             self.playerModel.shouldUpdate = NO;
@@ -266,7 +265,7 @@
     [self downloadNextTrackInfo];
     self.duration = track.duration;
     self.timeSlider.maximumValue = self.duration;
-    self.durationLabel.text = [NSString stringWithFormat:@"%ld:%02ld", self.duration / 60, self.duration % 60];
+    self.durationLabel.text = [NSString stringWithFormat:@"%ld:%02ld", (self.duration / 1000) / 60, (self.duration / 1000) % 60];
     self.backgroundImageView.image = track.artImage;
     self.artistLabel.text = track.artistName;
     self.songLabel.text = track.songName;

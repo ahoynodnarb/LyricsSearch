@@ -132,7 +132,7 @@
         return;
     }
     [self restartTimer];
-    self.trackDuration = track.duration * 1000;
+    self.trackDuration = track.duration;
 }
 
 - (void)enqueue:(LSTrackItem *)trackItem {

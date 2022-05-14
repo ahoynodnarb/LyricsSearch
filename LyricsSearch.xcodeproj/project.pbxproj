@@ -45,6 +45,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		08825528282FBC240001379C /* LSTrackPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSTrackPresenter.h; sourceTree = "<group>"; };
 		088917932810A9A2003E620A /* LSLyricsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSLyricsViewController.h; sourceTree = "<group>"; };
 		088917942810A9A2003E620A /* LSLyricsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSLyricsViewController.m; sourceTree = "<group>"; };
 		08891796281249B7003E620A /* LSDataManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSDataManager.h; sourceTree = "<group>"; };
@@ -123,6 +124,7 @@
 				08892338278BE3B600BBBA41 /* AppDelegate.m */,
 				0889233A278BE3B600BBBA41 /* SceneDelegate.h */,
 				0889233B278BE3B600BBBA41 /* SceneDelegate.m */,
+				08825528282FBC240001379C /* LSTrackPresenter.h */,
 				0889233D278BE3B600BBBA41 /* ViewController.h */,
 				0889233E278BE3B600BBBA41 /* ViewController.m */,
 				08D1A9D8282C539500DC8EB3 /* LSMediaPlayerView.h */,

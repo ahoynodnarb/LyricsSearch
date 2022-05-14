@@ -119,22 +119,23 @@
     LSSearchResultTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     self.playerModel.currentItem = cell.trackItem;
     LSTrackItem *currentTrack = self.playerModel.currentItem;
-    if(!self.lyricsViewController) {
-        [LSDataManager lyricsForSong:currentTrack.songName artist:currentTrack.artistName completion:^(NSArray *info) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSString *songName = currentTrack.songName;
-                NSString *artistName = currentTrack.artistName;
-                UIImage *artImage = currentTrack.artImage;
-                NSInteger duration = currentTrack.duration;
-                self.lyricsViewController = [[LSLyricsViewController alloc] initWithLyrics:info song:songName artist:artistName image:artImage duration:duration playerModel:self.playerModel];
-                [self presentViewController:self.lyricsViewController animated:YES completion:nil];
-            });
-        }];
-    }
-    else {
-        [self.lyricsViewController setPlayingTrack:currentTrack];
-        [self presentViewController:self.lyricsViewController animated:YES completion:nil];
-    }
+    [self.playerModel.trackPresenter presentTrack:currentTrack];
+//    if(!self.lyricsViewController) {
+//        [LSDataManager lyricsForSong:currentTrack.songName artist:currentTrack.artistName completion:^(NSArray *info) {
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                NSString *songName = currentTrack.songName;
+//                NSString *artistName = currentTrack.artistName;
+//                UIImage *artImage = currentTrack.artImage;
+//                NSInteger duration = currentTrack.duration;
+//                self.lyricsViewController = [[LSLyricsViewController alloc] initWithLyrics:info song:songName artist:artistName image:artImage duration:duration playerModel:self.playerModel];
+//                [self presentViewController:self.lyricsViewController animated:YES completion:nil];
+//            });
+//        }];
+//    }
+//    else {
+//        [self.lyricsViewController setPlayingTrack:currentTrack];
+//        [self presentViewController:self.lyricsViewController animated:YES completion:nil];
+//    }
 }
 
 @end

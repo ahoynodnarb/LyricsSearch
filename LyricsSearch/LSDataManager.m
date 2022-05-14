@@ -33,7 +33,7 @@
             NSDictionary *trackInfo = result[@"track"];
             NSString *artistName = trackInfo[@"artist_name"];
             NSString *songName = trackInfo[@"track_name"];
-            NSInteger duration = [trackInfo[@"track_length"] longValue];
+            NSInteger duration = [trackInfo[@"track_length"] longValue] * 1000;
             NSString *URI = [@"spotify:track:" stringByAppendingString:trackInfo[@"track_spotify_id"]];
             // sometimes the URL uses http and the app shits itself
             NSURLComponents *components = [NSURLComponents componentsWithURL:[NSURL URLWithString:trackInfo[@"album_coverart_100x100"]] resolvingAgainstBaseURL:YES];
