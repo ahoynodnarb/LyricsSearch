@@ -10,6 +10,7 @@
 @interface LSLyricsTableViewController ()
 @property (nonatomic, assign) float nextTimestamp;
 @property (nonatomic, assign) NSInteger nextSection;
+@property (nonatomic, assign) NSInteger previousTime;
 @end
 
 @implementation LSLyricsTableViewController
@@ -89,7 +90,9 @@
 }
 
 - (void)updateElapsedTime:(NSInteger)elapsedTime {
-    if(elapsedTime > self.nextTimestamp) {
+    // bad
+    if(self.previousTime > elapsedTime) [self updateTimestampForTime:elapsedTime];
+    else if(elapsedTime > self.nextTimestamp) {
         if(self.nextSection < [self.lyricsArray count] - 1) {
             NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:self.nextSection];
             [self.tableView selectRowAtIndexPath:selectedIndexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
@@ -98,6 +101,7 @@
         }
         else [self.tableView selectRowAtIndexPath:nil animated:YES scrollPosition:UITableViewScrollPositionTop];
     }
+    self.previousTime = elapsedTime;
 }
 
 - (void)reloadLyrics {

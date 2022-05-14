@@ -15,6 +15,8 @@
 @property (nonatomic, strong) LSTrackItem *currentItem;
 @property (nonatomic, strong) LSPlayerModel *playerModel;
 - (instancetype)initWithPlayerModel:(LSPlayerModel *)playerModel;
+- (void)connectedToSpotify;
+- (void)disconnectedFromSpotify;
 - (void)beginObserving;
 - (void)stopObserving;
 @end

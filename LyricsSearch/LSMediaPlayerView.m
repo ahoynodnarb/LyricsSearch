@@ -71,7 +71,12 @@
     id item = change[@"new"];
     if([keyPath isEqualToString:@"elapsedTime"]) {
         NSInteger elapsedTime = [item intValue];
-        self.progressBar.progress = (double)elapsedTime / self.duration;
+        if(self.duration == 0) {
+            self.progressBar.progress = 0;
+            return;
+        }
+        double progress = (double)elapsedTime / self.duration;
+        self.progressBar.progress = progress;
     }
     else if([keyPath isEqualToString:@"paused"]) {
         BOOL paused = [item boolValue];
@@ -147,6 +152,8 @@
 - (void)beginObserving {
     [self.playerModel addObserver:self forKeyPath:@"elapsedTime" options:NSKeyValueObservingOptionNew context:nil];
     [self.playerModel addObserver:self forKeyPath:@"paused" options:NSKeyValueObservingOptionNew context:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(connectedToSpotify) name:@"spotifyConnected" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(disconnectedFromSpotify) name:@"spotifyDisconnected" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackEnded) name:@"playbackEnded" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackChanged) name:@"trackChanged" object:nil];
 }
@@ -155,6 +162,14 @@
     [self.playerModel removeObserver:self forKeyPath:@"elapsedTime"];
     [self.playerModel removeObserver:self forKeyPath:@"paused"];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)connectedToSpotify {
+    self.progressBar.progressTintColor = [UIColor colorWithRed:30.0f/255.0f green:215.0f/255.0f blue:96.0f/255.0f alpha:1.0f];
+}
+
+- (void)disconnectedFromSpotify {
+    self.progressBar.progressTintColor = [UIColor whiteColor];
 }
 
 @end

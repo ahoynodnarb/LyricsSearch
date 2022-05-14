@@ -43,6 +43,7 @@
 
 - (void)dealloc {
     [self stopObserving];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
@@ -186,7 +187,6 @@
 - (void)stopObserving {
     [self.playerModel removeObserver:self forKeyPath:@"elapsedTime"];
     [self.playerModel removeObserver:self forKeyPath:@"paused"];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)updateElapsedTime:(NSInteger)elapsedTime {
@@ -225,14 +225,14 @@
     NSInteger selectedTime = slider.value;
     switch (touch.phase) {
         case UITouchPhaseBegan:
-            self.playerModel.shouldUpdate = NO;
+            [self.playerModel pauseFiring];
             break;
         case UITouchPhaseMoved:
             [self.tableViewController updateTimestampForTime:selectedTime];
             [self.playerModel seek:selectedTime];
             break;
         case UITouchPhaseEnded:
-            self.playerModel.shouldUpdate = YES;
+            [self.playerModel resumeFiring];
             break;
         default:
             break;

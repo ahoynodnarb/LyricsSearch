@@ -57,6 +57,11 @@
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
+            key = "CLIENT_ID"
+            value = "7fd587c2774e4e08a144a3bf256cedaf"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
             key = "API_KEY"
             value = "a3454edb65483e706c127deaa11df69d"
             isEnabled = "YES">
