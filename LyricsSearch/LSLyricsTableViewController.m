@@ -41,14 +41,14 @@
     self.nextSection = [indexPath section] + 1;
     self.nextTimestamp = [self.lyricsArray[self.nextSection][@"time"][@"total"] floatValue] * 1000;
     NSInteger selectedTimestamp = self.nextSection == 0 ? 0 : [self.lyricsArray[self.nextSection - 1][@"time"][@"total"] floatValue] * 1000;
-    self.playerModel.elapsedTime = selectedTimestamp;
+    [self.playerModel seek:selectedTimestamp];
     [tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     NSString *text = self.lyricsArray[indexPath.section][@"text"];
-    cell.textLabel.text = [text length] == 0 ? @"..." : text;
+    cell.textLabel.text = [text length] == 0 ? @"♪" : text;
     cell.textLabel.numberOfLines = 0;
     cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
     cell.textLabel.font = [UIFont systemFontOfSize:40 weight:UIFontWeightHeavy];

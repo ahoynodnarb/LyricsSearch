@@ -25,8 +25,8 @@
 		08BE5A7D281CC1D800E7FE09 /* LSTrackQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 08BE5A7C281CC1D800E7FE09 /* LSTrackQueue.m */; };
 		08BE5A80281CC34D00E7FE09 /* LSTrackItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 08BE5A7F281CC34D00E7FE09 /* LSTrackItem.m */; };
 		08D1A9DA282C539500DC8EB3 /* LSMediaPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D1A9D9282C539500DC8EB3 /* LSMediaPlayerView.m */; };
-		08D80454282F016600AAB31A /* SpotifyiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08D80452282F014300AAB31A /* SpotifyiOS.framework */; };
-		08D80455282F016600AAB31A /* SpotifyiOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 08D80452282F014300AAB31A /* SpotifyiOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		08FAFE8D282F82EC00538E03 /* SpotifyiOS.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08FAFE8B282F82E300538E03 /* SpotifyiOS.xcframework */; };
+		08FAFE8E282F82EC00538E03 /* SpotifyiOS.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 08FAFE8B282F82E300538E03 /* SpotifyiOS.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E43E1040CBCA8E362828ADBC /* Pods_LyricsSearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8CD6B085BF94F38ABBFF8DC /* Pods_LyricsSearch.framework */; };
 /* End PBXBuildFile section */
 
@@ -37,7 +37,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				08D80455282F016600AAB31A /* SpotifyiOS.framework in Embed Frameworks */,
+				08FAFE8E282F82EC00538E03 /* SpotifyiOS.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -79,7 +79,7 @@
 		08BE5A7F281CC34D00E7FE09 /* LSTrackItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSTrackItem.m; sourceTree = "<group>"; };
 		08D1A9D8282C539500DC8EB3 /* LSMediaPlayerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSMediaPlayerView.h; sourceTree = "<group>"; };
 		08D1A9D9282C539500DC8EB3 /* LSMediaPlayerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSMediaPlayerView.m; sourceTree = "<group>"; };
-		08D80452282F014300AAB31A /* SpotifyiOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SpotifyiOS.framework; sourceTree = "<group>"; };
+		08FAFE8B282F82E300538E03 /* SpotifyiOS.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = SpotifyiOS.xcframework; sourceTree = "<group>"; };
 		742450C283FFA98D5F320085 /* Pods-LyricsSearch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LyricsSearch.debug.xcconfig"; path = "Target Support Files/Pods-LyricsSearch/Pods-LyricsSearch.debug.xcconfig"; sourceTree = "<group>"; };
 		93888344C1C4A32F376C679F /* Pods-LyricsSearch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LyricsSearch.release.xcconfig"; path = "Target Support Files/Pods-LyricsSearch/Pods-LyricsSearch.release.xcconfig"; sourceTree = "<group>"; };
 		C8CD6B085BF94F38ABBFF8DC /* Pods_LyricsSearch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LyricsSearch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -90,8 +90,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08FAFE8D282F82EC00538E03 /* SpotifyiOS.xcframework in Frameworks */,
 				E43E1040CBCA8E362828ADBC /* Pods_LyricsSearch.framework in Frameworks */,
-				08D80454282F016600AAB31A /* SpotifyiOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,7 +159,7 @@
 		247F14B58D43F70F54050469 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				08D80452282F014300AAB31A /* SpotifyiOS.framework */,
+				08FAFE8B282F82E300538E03 /* SpotifyiOS.xcframework */,
 				C8CD6B085BF94F38ABBFF8DC /* Pods_LyricsSearch.framework */,
 			);
 			name = Frameworks;
@@ -380,6 +380,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -433,6 +434,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;

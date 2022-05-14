@@ -75,7 +75,7 @@
 }
 
 - (LSTrackItem *)trackItem {
-    return [[LSTrackItem alloc] initWithArtImage:self.artImage songName:self.song artistName:self.artist duration:self.duration];
+    return [[LSTrackItem alloc] initWithArtImage:self.artImage songName:self.song artistName:self.artist duration:self.duration URI:self.URI];
 }
 
 - (void)resetSlidingView {

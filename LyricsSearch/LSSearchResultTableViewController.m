@@ -107,6 +107,7 @@
     cell.song = [result objectForKey:@"songName"];
     cell.artist = [result objectForKey:@"artistName"];
     cell.duration = [[result objectForKey:@"duration"] longValue];
+    cell.URI = [result objectForKey:@"URI"];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
     recognizer.delegate = cell;

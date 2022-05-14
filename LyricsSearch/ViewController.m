@@ -99,6 +99,7 @@
         [self.queueButton.heightAnchor constraintEqualToConstant:30],
         [self.queueButton.widthAnchor constraintEqualToAnchor:self.queueButton.heightAnchor]
     ]];
+    [self setupSpotify];
 }
 
 - (void)mediaPlayerTapped {
@@ -125,6 +126,27 @@
         [self.searchResultTableViewController didMoveToParentViewController:self];
     }
     [self.searchResultTableViewController loadNewPage];
+}
+
+- (void)setupSpotify {
+    SPTScope scope = SPTUserReadPlaybackStateScope | SPTUserReadCurrentlyPlayingScope | SPTAppRemoteControlScope | SPTStreamingScope;
+    self.configuration = [SPTConfiguration configurationWithClientID:@"7fd587c2774e4e08a144a3bf256cedaf" redirectURL:[NSURL URLWithString:@"lyricssearch://callback"]];
+    self.playerModel.appRemote = [[SPTAppRemote alloc] initWithConfiguration:self.configuration logLevel:SPTAppRemoteLogLevelError];
+    self.playerModel.appRemote.delegate = self.playerModel;
+    self.sessionManager = [SPTSessionManager sessionManagerWithConfiguration:self.configuration delegate:self];
+    [self.sessionManager initiateSessionWithScope:scope options:SPTDefaultAuthorizationOption];
+}
+
+- (void)sessionManager:(nonnull SPTSessionManager *)manager didFailWithError:(nonnull NSError *)error {
+    NSLog(@"authentication failed");
+}
+
+- (void)sessionManager:(nonnull SPTSessionManager *)manager didInitiateSession:(nonnull SPTSession *)session {
+    NSLog(@"authentication successful");
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.playerModel.appRemote.connectionParameters.accessToken = session.accessToken;
+        [self.playerModel.appRemote connect];
+    });
 }
 
 @end

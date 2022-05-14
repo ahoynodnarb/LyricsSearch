@@ -11,7 +11,6 @@
 @property (nonatomic, strong) NSString *artist;
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) UIImage *artwork;
-@property (nonatomic, assign) NSInteger elapsedTime;
 @property (nonatomic, assign) NSInteger duration;
 @property (nonatomic, strong) UIView *contentContainerView;
 @property (nonatomic, strong) MarqueeLabel *artistLabel;
@@ -64,15 +63,15 @@
     self.title = currentItem.songName;
     self.artwork = currentItem.artImage;
     self.duration = currentItem.duration;
-    self.elapsedTime = 0;
+    self.progressBar.progress = 0;
     [self updateSubviews];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
     id item = change[@"new"];
     if([keyPath isEqualToString:@"elapsedTime"]) {
-        self.elapsedTime = [item intValue];
-        self.progressBar.progress = (double)self.elapsedTime / (self.duration * 1000);
+        NSInteger elapsedTime = [item intValue];
+        self.progressBar.progress = (double)elapsedTime / self.duration;
     }
     else if([keyPath isEqualToString:@"paused"]) {
         BOOL paused = [item boolValue];

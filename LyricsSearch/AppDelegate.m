@@ -6,8 +6,11 @@
 //
 
 #import "AppDelegate.h"
+#import "ViewController.h"
 
 @interface AppDelegate ()
+
+@property(nonatomic, strong) ViewController *rootViewController;
 
 @end
 
@@ -23,6 +26,10 @@
     return YES;
 }
 
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+    [self.rootViewController.sessionManager application:app openURL:url options:options];
+    return YES;
+}
 
 #pragma mark - UISceneSession lifecycle
 
@@ -40,23 +47,16 @@
     // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
 }
 
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-    NSLog(@"entered background");
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"enteredBackground" object:nil];
+- (void)applicationWillResignActive:(UIApplication *)application {
+    if(self.rootViewController.appRemote.isConnected) {
+        [self.rootViewController.appRemote disconnect];
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    NSLog(@"entered foreground");
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"becameActive" object:nil];
-}
-
-
-- (void)sessionManager:(nonnull SPTSessionManager *)manager didFailWithError:(nonnull NSError *)error {
-    
-}
-
-- (void)sessionManager:(nonnull SPTSessionManager *)manager didInitiateSession:(nonnull SPTSession *)session {
-    
+    if(self.rootViewController.appRemote.connectionParameters.accessToken) {
+        [self.rootViewController.appRemote connect];
+    }
 }
 
 @end

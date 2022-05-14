@@ -8,6 +8,7 @@
 #import "LSPlayerModel.h"
 
 @interface LSPlayerModel ()
+@property (nonatomic, readonly) BOOL spotifyConnected;
 @property (nonatomic, assign) CFAbsoluteTime backgroundTime;
 @property (nonatomic, strong) LSTrackQueue *trackQueue;
 @property (nonatomic, assign) NSInteger trackDuration;
@@ -15,8 +16,22 @@
 @end
 
 @implementation LSPlayerModel
+
+- (void)seek:(NSInteger)position {
+    if([self spotifyConnected]) [self.appRemote.playerAPI seekToPosition:position callback:nil];
+    self.elapsedTime = position;
+}
+
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (BOOL)spotifyConnected {
+    return [self.appRemote isConnected];
+}
+
+- (void)setElapsedTime:(NSInteger)elapsedTime {
+    _elapsedTime = elapsedTime;
 }
 
 - (instancetype)initWithTrackQueue:(LSTrackQueue *)trackQueue {
@@ -37,13 +52,13 @@
 }
 
 - (void)pauseFiring {
-    if(!self.currentItem) return;
+    if([self spotifyConnected] || !self.currentItem) return;
     self.backgroundTime = CFAbsoluteTimeGetCurrent();
     [self.timer invalidate];
 }
 
 - (void)resumeFiring {
-    if(!self.currentItem) return;
+    if([self spotifyConnected] || !self.currentItem) return;
     CFTimeInterval offset = CFAbsoluteTimeGetCurrent() - self.backgroundTime;
     NSInteger ms = offset * 1000;
     self.elapsedTime += ms;
@@ -52,14 +67,26 @@
 }
 
 - (void)setPaused:(BOOL)paused {
+    if(!self.trackQueue.currentTrack || paused == _paused) return;
     _paused = paused;
-    if(!self.trackQueue.currentTrack) return;
-    if(paused) [self.timer invalidate];
-    else [self beginTimer];
+    if(paused) {
+        [self.timer invalidate];
+        [self.appRemote.playerAPI pause:nil];
+    }
+    else {
+        [self beginTimer];
+        [self.appRemote.playerAPI resume:nil];
+    }
 }
 
 - (void)timerFired {
     if(!self.shouldUpdate) return;
+    if([self spotifyConnected]) {
+        [self.appRemote.playerAPI getPlayerState:^(id<SPTAppRemotePlayerState> result, NSError *error){
+            self.elapsedTime = [result playbackPosition];
+        }];
+        return;
+    }
     self.elapsedTime += 10;
     if(self.elapsedTime >= self.trackDuration) {
         [self playNextTrack];
@@ -84,12 +111,19 @@
     [self beginTimer];
 }
 
-- (void)setCurrentItem:(LSTrackItem *)currentItem {
+- (void)setCurrentItem:(LSTrackItem *)currentItem useSpotify:(BOOL)useSpotify {
+    if([self spotifyConnected] && useSpotify) {
+        if(_currentItem) [self.appRemote.playerAPI play:currentItem.URI callback:nil];
+    }
+    else self.trackQueue.currentTrack = currentItem;
     _currentItem = currentItem;
-    self.trackQueue.currentTrack = currentItem;
     [self resetPlayerForTrack:currentItem];
     if(_currentItem) [[NSNotificationCenter defaultCenter] postNotificationName:@"trackChanged" object:nil userInfo:@{@"playingNextTrack": @(NO)}];
     else [[NSNotificationCenter defaultCenter] postNotificationName:@"playbackEnded" object:nil];
+}
+
+- (void)setCurrentItem:(LSTrackItem *)currentItem {
+    [self setCurrentItem:currentItem useSpotify:NO];
 }
 
 - (void)resetPlayerForTrack:(LSTrackItem *)track {
@@ -102,10 +136,18 @@
 }
 
 - (void)enqueue:(LSTrackItem *)trackItem {
+    if([self spotifyConnected]) {
+        [self.appRemote.playerAPI enqueueTrackUri:trackItem.URI callback:nil];
+        return;
+    }
     [self.trackQueue enqueue:trackItem];
 }
 
 - (void)playNextTrack {
+    if([self spotifyConnected]) {
+        [self.appRemote.playerAPI skipToNext:nil];
+        return;
+    }
     if(self.trackQueue.currentTrack) [self.trackQueue.previousTracks addObject:self.trackQueue.currentTrack];
     if([self.trackQueue.nextTracks count] == 0) self.currentItem = nil;
     else {
@@ -115,11 +157,42 @@
 }
 
 - (void)playPreviousTrack {
+    if([self spotifyConnected]) {
+        [self.appRemote.playerAPI skipToPrevious:nil];
+        return;
+    }
     if(self.trackQueue.currentTrack) [self.trackQueue.nextTracks insertObject:self.trackQueue.currentTrack atIndex:0];
     if([self.trackQueue.previousTracks count] == 0) self.currentItem = nil;
     else {
         self.currentItem = self.trackQueue.previousTracks[[self.trackQueue.previousTracks count] - 1];
         [self.trackQueue.previousTracks removeLastObject];
+    }
+}
+
+- (void)appRemote:(nonnull SPTAppRemote *)appRemote didDisconnectWithError:(nullable NSError *)error {
+    NSLog(@"disconnected");
+}
+
+- (void)appRemote:(nonnull SPTAppRemote *)appRemote didFailConnectionAttemptWithError:(nullable NSError *)error {
+    NSLog(@"failed");
+}
+
+- (void)appRemoteDidEstablishConnection:(nonnull SPTAppRemote *)appRemote {
+    NSLog(@"connected");
+    self.appRemote.playerAPI.delegate = self;
+    [self.appRemote.playerAPI subscribeToPlayerState:nil];
+}
+
+- (void)playerStateDidChange:(nonnull id<SPTAppRemotePlayerState>)playerState {
+    id<SPTAppRemoteTrack> track = playerState.track;
+    if(self.paused != playerState.paused) self.paused = playerState.paused;
+    if(self.elapsedTime != playerState.playbackPosition) self.elapsedTime = playerState.playbackPosition;
+    if(![track.URI isEqualToString:self.currentItem.URI]) {
+        [self.appRemote.imageAPI fetchImageForItem:track withSize:CGSizeMake(100,100) callback:^(UIImage *result, NSError *error) {
+            LSTrackItem *item = [[LSTrackItem alloc] initWithArtImage:result songName:track.name artistName:track.artist.name duration:track.duration URI:track.URI];
+            [self setCurrentItem:item useSpotify:NO];
+            self.trackDuration = track.duration;
+        }];
     }
 }
 

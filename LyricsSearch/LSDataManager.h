@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <SpotifyiOS/SpotifyiOS.h>
 
 @interface LSDataManager : NSObject
 + (void)infoForSearchTerm:(NSString *)searchTerm page:(NSInteger)page pageSize:(NSInteger)pageSize completion:(void (^)(NSArray *info))completion;

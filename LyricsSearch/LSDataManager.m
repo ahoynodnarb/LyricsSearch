@@ -34,12 +34,13 @@
             NSString *artistName = trackInfo[@"artist_name"];
             NSString *songName = trackInfo[@"track_name"];
             NSInteger duration = [trackInfo[@"track_length"] longValue];
+            NSString *URI = [@"spotify:track:" stringByAppendingString:trackInfo[@"track_spotify_id"]];
             // sometimes the URL uses http and the app shits itself
             NSURLComponents *components = [NSURLComponents componentsWithURL:[NSURL URLWithString:trackInfo[@"album_coverart_100x100"]] resolvingAgainstBaseURL:YES];
             components.scheme = @"https";
             NSURL *artURL = components.URL;
             NSData *artData = [NSData dataWithContentsOfURL:artURL];
-            NSDictionary *dict = @{@"artistName":artistName, @"songName":songName, @"artData":artData, @"duration": @(duration)};
+            NSDictionary *dict = @{@"artistName":artistName, @"songName":songName, @"artData":artData, @"duration": @(duration), @"URI": URI};
             [info addObject:dict];
         }
         completion(info);

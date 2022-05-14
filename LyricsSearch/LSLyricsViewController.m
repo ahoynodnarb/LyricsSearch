@@ -230,7 +230,7 @@
             break;
         case UITouchPhaseMoved:
             [self.tableViewController updateTimestampForTime:selectedTime];
-            self.playerModel.elapsedTime = selectedTime;
+            [self.playerModel seek:selectedTime];
             break;
         case UITouchPhaseEnded:
             self.playerModel.shouldUpdate = YES;
