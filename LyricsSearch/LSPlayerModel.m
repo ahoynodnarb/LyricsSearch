@@ -185,7 +185,6 @@
 - (void)playerStateDidChange:(nonnull id<SPTAppRemotePlayerState>)playerState {
     id<SPTAppRemoteTrack> track = playerState.track;
     if(![track.URI isEqualToString:self.currentItem.URI]) {
-        NSLog(@"%@ %@", track.URI, self.currentItem.URI);
         LSTrackItem *item = [[LSTrackItem alloc] initWithArtImage:nil songName:track.name artistName:track.artist.name duration:track.duration URI:track.URI];
         [self setCurrentItem:item useSpotify:NO];
         self.trackDuration = track.duration;

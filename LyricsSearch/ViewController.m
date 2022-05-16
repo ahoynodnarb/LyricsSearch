@@ -1,4 +1,3 @@
-// TODO: Spotify integration
 // TODO: Add option to modify queue manually
 // TODO: Cache lyrics for all songs in queue
 // TODO: Optimize downloading and maybe persistent cache
@@ -147,7 +146,8 @@
     });
 }
 
-- (void)presentTrack:(LSTrackItem *)track { 
+- (void)presentTrack:(LSTrackItem *)track {
+    if([self.lyricsViewController isBeingPresented]) return;
     if(!self.lyricsViewController) {
         [LSDataManager lyricsForSong:track.songName artist:track.artistName completion:^(NSArray *info) {
             dispatch_async(dispatch_get_main_queue(), ^{

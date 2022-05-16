@@ -17,7 +17,7 @@
 }
 
 + (void)infoForSearchTerm:(NSString *)searchTerm page:(NSInteger)page pageSize:(NSInteger)pageSize completion:(void (^)(NSArray *info))completion {
-    NSString *const userToken = [LSDataManager getUserToken];
+    NSString *userToken = [LSDataManager getUserToken];
     NSString *const baseURL = [@"https://apic-desktop.musixmatch.com/ws/1.1/track.search?s_track_rating=desc&f_has_subtitle=1&namespace=lyrics_synched&app_id=web-desktop-app-v1.0&usertoken=" stringByAppendingString:userToken];
     NSString *URLString = [NSString stringWithFormat:@"%@&page=%ld&page_size=%ld&q=%@/", baseURL, (long)page, (long)pageSize, searchTerm];
     URLString = [URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
@@ -56,7 +56,7 @@
 }
 
 + (void)lyricsForSong:(NSString *)song artist:(NSString *)artist completion:(void (^)(NSArray *info))completion {
-    NSString *const userToken = [LSDataManager getUserToken];
+    NSString *userToken = [LSDataManager getUserToken];
     NSString *const baseURL = [@"https://apic-desktop.musixmatch.com/ws/1.1/matcher.subtitle.get?app_id=web-desktop-app-v1.0&f_subtitle_length_max_deviation=1&namespace=lyrics_synched&subtitle_format=mxm&usertoken=" stringByAppendingString:userToken];
     NSString *URLString = [NSString stringWithFormat:@"%@&q_track=%@&q_artist=%@/", baseURL, song, artist];
     URLString = [URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];

@@ -96,7 +96,7 @@
     UIImage *highlightedThumbImage = [UIImage imageNamed:@"ThumbImageHighlighted"];
     self.timeSlider = [[UISlider alloc] init];
     self.timeSlider.maximumValue = self.duration;
-    self.timeSlider.continuous = YES;
+    self.timeSlider.continuous = NO;
     self.timeSlider.translatesAutoresizingMaskIntoConstraints = NO;
     self.timeSlider.minimumTrackTintColor = [UIColor whiteColor];
     [self.timeSlider setThumbImage:normalThumbImage forState:UIControlStateNormal];
@@ -227,12 +227,10 @@
         case UITouchPhaseBegan:
             [self.playerModel pauseFiring];
             break;
-        case UITouchPhaseMoved:
-            [self.tableViewController updateTimestampForTime:selectedTime];
-            [self.playerModel seek:selectedTime];
-            break;
         case UITouchPhaseEnded:
             [self.playerModel resumeFiring];
+            [self.tableViewController updateTimestampForTime:selectedTime];
+            [self.playerModel seek:selectedTime];
             break;
         default:
             break;

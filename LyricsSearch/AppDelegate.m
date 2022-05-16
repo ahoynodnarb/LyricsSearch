@@ -47,16 +47,4 @@
     // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application {
-    if(self.rootViewController.appRemote.isConnected) {
-        [self.rootViewController.appRemote disconnect];
-    }
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application {
-    if(self.rootViewController.appRemote.connectionParameters.accessToken) {
-        [self.rootViewController.appRemote connect];
-    }
-}
-
 @end

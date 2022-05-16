@@ -19,13 +19,16 @@
     }
     return self;
 }
+
 - (void)enqueue:(LSTrackItem *)item {
     [self.nextTracks addObject:item];
 }
+
 - (NSString *)description {
     NSMutableArray *allItems = [self.previousTracks mutableCopy];
     [allItems addObject:self.currentTrack];
     [allItems addObjectsFromArray:self.nextTracks];
     return [allItems description];
 }
+
 @end

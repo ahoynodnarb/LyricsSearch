@@ -6,6 +6,7 @@
 //
 
 #import "SceneDelegate.h"
+#import "ViewController.h"
 
 @interface SceneDelegate ()
 
@@ -44,6 +45,9 @@
 - (void)sceneWillEnterForeground:(UIScene *)scene {
     // Called as the scene transitions from the background to the foreground.
     // Use this method to undo the changes made on entering the background.
+    ViewController *controller = (ViewController *)self.window.rootViewController;
+    LSPlayerModel *playerModel = controller.playerModel;
+    if(playerModel.appRemote.connectionParameters.accessToken) [playerModel.appRemote connect];
 }
 
 
@@ -51,6 +55,9 @@
     // Called as the scene transitions from the foreground to the background.
     // Use this method to save data, release shared resources, and store enough scene-specific state information
     // to restore the scene back to its current state.
+    ViewController *controller = (ViewController *)self.window.rootViewController;
+    LSPlayerModel *playerModel = controller.playerModel;
+    if(playerModel.appRemote.connectionParameters.accessToken) [playerModel.appRemote disconnect];
 }
 
 

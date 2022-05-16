@@ -17,7 +17,6 @@
 #import "LSTrackQueue.h"
 
 @interface ViewController : UIViewController <SPTSessionManagerDelegate, LSTrackPresenter>
-@property (nonatomic, strong) SPTAppRemote *appRemote;
 @property (nonatomic, strong) SPTSessionManager *sessionManager;
 @property (nonatomic, strong) SPTConfiguration *configuration;
 @property (nonatomic, strong) LSPlayerModel *playerModel;
