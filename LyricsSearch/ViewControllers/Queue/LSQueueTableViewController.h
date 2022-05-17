@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LSQueueTableViewController : UITableViewController
+@interface LSQueueTableViewController : UITableViewController <UITableViewDragDelegate>
 @property (nonatomic, strong) LSPlayerModel *playerModel;
 - (instancetype)initWithPlayerModel:(LSPlayerModel *)playerModel;
 @end
