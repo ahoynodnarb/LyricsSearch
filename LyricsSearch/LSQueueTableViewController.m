@@ -6,7 +6,6 @@
 //
 
 #import "LSQueueTableViewController.h"
-#import "LSQueueTableViewCell.h"
 
 @interface LSQueueTableViewController ()
 @end
@@ -22,57 +21,25 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.tableView.dragDelegate = self;
-    self.tableView.dragInteractionEnabled = YES;
-    self.tableView.contentInset = UIEdgeInsetsMake(30.0f, 0.0f, 0.0f, 0.0f);
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor blackColor];
-    [self.tableView registerClass:[LSQueueTableViewCell class] forCellReuseIdentifier:@"NextTrack"];
-    [self.tableView registerClass:[LSQueueTableViewCell class] forCellReuseIdentifier:@"CurrentTrack"];
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [self.playerModel.nextTracks count] + (self.playerModel.currentItem != nil);
+    return [self.playerModel count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 1;
 }
 
-- (NSArray *)getTracks {
-    NSMutableArray *allTracks = self.playerModel.nextTracks ? [self.playerModel.nextTracks mutableCopy] : [NSMutableArray array];
-    if(self.playerModel.currentItem) [allTracks insertObject:self.playerModel.currentItem atIndex:0];
-    return allTracks;
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSInteger section = [indexPath section];
-    NSArray *allTracks = [self getTracks];
-    LSTrackItem *item = allTracks[section];
-    LSQueueTableViewCell *cell;
-    if(section == 0 && self.playerModel.currentItem) {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"CurrentTrack" forIndexPath:indexPath];
-    }
-    else {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"NextTrack" forIndexPath:indexPath];
-    }
-    cell.backgroundColor = [UIColor clearColor];
-    cell.textLabel.textColor = [UIColor whiteColor];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.artist = item.artistName;
-    cell.song = item.songName;
-    cell.artwork = item.artImage;
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    cell.backgroundColor = [UIColor whiteColor];
     return cell;
-}
-
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    return true;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 70;
 }
 
 /*
@@ -118,11 +85,5 @@
     // Pass the selected object to the new view controller.
 }
 */
-
-
-// WIP
-- (nonnull NSArray<UIDragItem *> *)tableView:(nonnull UITableView *)tableView itemsForBeginningDragSession:(nonnull id<UIDragSession>)session atIndexPath:(nonnull NSIndexPath *)indexPath {
-    return [NSArray array];
-}
 
 @end

@@ -83,6 +83,7 @@
     if([self spotifyConnected]) {
         [self.appRemote.playerAPI getPlayerState:^(id<SPTAppRemotePlayerState> result, NSError *error) {
             self.elapsedTime = [result playbackPosition];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"updateElapsedTime" object:nil userInfo:@{@"elapsedTime": @(self.elapsedTime)}];
         }];
         return;
     }
@@ -200,7 +201,8 @@
 }
 
 - (NSUInteger)count {
-    return [self.previousTracks count] + [self.nextTracks count] + (self.currentItem != nil);
+    NSLog(@"%@", [self trackQueue]);
+    return [self.previousTracks count] + [self.nextTracks count] + (self.currentItem == nil);
 }
 
 @end

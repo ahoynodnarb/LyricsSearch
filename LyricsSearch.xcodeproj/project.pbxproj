@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		084A36822834404100D118C0 /* LSQueueTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 084A36812834404100D118C0 /* LSQueueTableViewCell.m */; };
 		088917952810A9A2003E620A /* LSLyricsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 088917942810A9A2003E620A /* LSLyricsViewController.m */; };
 		08891798281249B7003E620A /* LSDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08891797281249B7003E620A /* LSDataManager.m */; };
 		08892339278BE3B600BBBA41 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 08892338278BE3B600BBBA41 /* AppDelegate.m */; };
@@ -47,8 +46,6 @@
 
 /* Begin PBXFileReference section */
 		0849A4042832EBD4008614AB /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		084A36802834404100D118C0 /* LSQueueTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSQueueTableViewCell.h; sourceTree = "<group>"; };
-		084A36812834404100D118C0 /* LSQueueTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSQueueTableViewCell.m; sourceTree = "<group>"; };
 		08825528282FBC240001379C /* LSTrackPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSTrackPresenter.h; sourceTree = "<group>"; };
 		088917932810A9A2003E620A /* LSLyricsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSLyricsViewController.h; sourceTree = "<group>"; };
 		088917942810A9A2003E620A /* LSLyricsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSLyricsViewController.m; sourceTree = "<group>"; };
@@ -64,7 +61,7 @@
 		08892341278BE3B600BBBA41 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		08892343278BE3B700BBBA41 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		08892346278BE3B700BBBA41 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		08892348278BE3B700BBBA41 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = LyricsSearch/Support/Info.plist; sourceTree = SOURCE_ROOT; };
+		08892348278BE3B700BBBA41 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		08892349278BE3B700BBBA41 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0889236F278BEDD200BBBA41 /* LSLyricsTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSLyricsTableViewController.h; sourceTree = "<group>"; };
 		08892370278BEDD200BBBA41 /* LSLyricsTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSLyricsTableViewController.m; sourceTree = "<group>"; };
@@ -103,118 +100,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		084A36832834407000D118C0 /* Support */ = {
-			isa = PBXGroup;
-			children = (
-				08892337278BE3B600BBBA41 /* AppDelegate.h */,
-				08892338278BE3B600BBBA41 /* AppDelegate.m */,
-				0889233A278BE3B600BBBA41 /* SceneDelegate.h */,
-				0889233B278BE3B600BBBA41 /* SceneDelegate.m */,
-				08892340278BE3B600BBBA41 /* Main.storyboard */,
-				08892343278BE3B700BBBA41 /* Assets.xcassets */,
-				08892345278BE3B700BBBA41 /* LaunchScreen.storyboard */,
-				08892348278BE3B700BBBA41 /* Info.plist */,
-				08892349278BE3B700BBBA41 /* main.m */,
-			);
-			path = Support;
-			sourceTree = "<group>";
-		};
-		084A3684283440B700D118C0 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				0849A4042832EBD4008614AB /* Constants.h */,
-				08891796281249B7003E620A /* LSDataManager.h */,
-				08891797281249B7003E620A /* LSDataManager.m */,
-			);
-			path = Utils;
-			sourceTree = "<group>";
-		};
-		084A3685283440D800D118C0 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				08825528282FBC240001379C /* LSTrackPresenter.h */,
-				08B0D8122826F4C40017330D /* LSPlayerModel.h */,
-				08B0D8132826F4C40017330D /* LSPlayerModel.m */,
-				08BE5A7B281CC1D800E7FE09 /* LSTrackQueue.h */,
-				08BE5A7C281CC1D800E7FE09 /* LSTrackQueue.m */,
-				08BE5A7E281CC34D00E7FE09 /* LSTrackItem.h */,
-				08BE5A7F281CC34D00E7FE09 /* LSTrackItem.m */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		084A3686283440F000D118C0 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				08D1A9D8282C539500DC8EB3 /* LSMediaPlayerView.h */,
-				08D1A9D9282C539500DC8EB3 /* LSMediaPlayerView.m */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		084A368A2834414800D118C0 /* ViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-				084A368F2834423F00D118C0 /* Landing */,
-				084A368D2834420700D118C0 /* Lyrics */,
-				084A368E2834420B00D118C0 /* Queue */,
-				084A368C283441FF00D118C0 /* SearchResults */,
-				084A368B2834415D00D118C0 /* TableViewCells */,
-			);
-			path = ViewControllers;
-			sourceTree = "<group>";
-		};
-		084A368B2834415D00D118C0 /* TableViewCells */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = TableViewCells;
-			sourceTree = "<group>";
-		};
-		084A368C283441FF00D118C0 /* SearchResults */ = {
-			isa = PBXGroup;
-			children = (
-				088E82332813D8710017A073 /* LSSearchResultTableViewCell.h */,
-				088E82342813D8710017A073 /* LSSearchResultTableViewCell.m */,
-				088E822D281273E90017A073 /* LSSearchResultTableViewController.h */,
-				088E822E281273E90017A073 /* LSSearchResultTableViewController.m */,
-			);
-			path = SearchResults;
-			sourceTree = "<group>";
-		};
-		084A368D2834420700D118C0 /* Lyrics */ = {
-			isa = PBXGroup;
-			children = (
-				08A400932814F85B00CF6D1C /* LSLyricsTableViewCell.h */,
-				08A400942814F85B00CF6D1C /* LSLyricsTableViewCell.m */,
-				088917932810A9A2003E620A /* LSLyricsViewController.h */,
-				088917942810A9A2003E620A /* LSLyricsViewController.m */,
-				0889236F278BEDD200BBBA41 /* LSLyricsTableViewController.h */,
-				08892370278BEDD200BBBA41 /* LSLyricsTableViewController.m */,
-			);
-			path = Lyrics;
-			sourceTree = "<group>";
-		};
-		084A368E2834420B00D118C0 /* Queue */ = {
-			isa = PBXGroup;
-			children = (
-				084A36802834404100D118C0 /* LSQueueTableViewCell.h */,
-				084A36812834404100D118C0 /* LSQueueTableViewCell.m */,
-				08B0D8152828552A0017330D /* LSQueueTableViewController.h */,
-				08B0D8162828552A0017330D /* LSQueueTableViewController.m */,
-			);
-			path = Queue;
-			sourceTree = "<group>";
-		};
-		084A368F2834423F00D118C0 /* Landing */ = {
-			isa = PBXGroup;
-			children = (
-				0889233D278BE3B600BBBA41 /* ViewController.h */,
-				0889233E278BE3B600BBBA41 /* ViewController.m */,
-			);
-			path = Landing;
-			sourceTree = "<group>";
-		};
 		0889232B278BE3B600BBBA41 = {
 			isa = PBXGroup;
 			children = (
@@ -236,11 +121,41 @@
 		08892336278BE3B600BBBA41 /* LyricsSearch */ = {
 			isa = PBXGroup;
 			children = (
-				084A3686283440F000D118C0 /* Views */,
-				084A368A2834414800D118C0 /* ViewControllers */,
-				084A3685283440D800D118C0 /* Models */,
-				084A3684283440B700D118C0 /* Utils */,
-				084A36832834407000D118C0 /* Support */,
+				0849A4042832EBD4008614AB /* Constants.h */,
+				08892337278BE3B600BBBA41 /* AppDelegate.h */,
+				08892338278BE3B600BBBA41 /* AppDelegate.m */,
+				0889233A278BE3B600BBBA41 /* SceneDelegate.h */,
+				0889233B278BE3B600BBBA41 /* SceneDelegate.m */,
+				08825528282FBC240001379C /* LSTrackPresenter.h */,
+				0889233D278BE3B600BBBA41 /* ViewController.h */,
+				0889233E278BE3B600BBBA41 /* ViewController.m */,
+				08D1A9D8282C539500DC8EB3 /* LSMediaPlayerView.h */,
+				08D1A9D9282C539500DC8EB3 /* LSMediaPlayerView.m */,
+				08B0D8152828552A0017330D /* LSQueueTableViewController.h */,
+				08B0D8162828552A0017330D /* LSQueueTableViewController.m */,
+				088E822D281273E90017A073 /* LSSearchResultTableViewController.h */,
+				088E822E281273E90017A073 /* LSSearchResultTableViewController.m */,
+				088E82332813D8710017A073 /* LSSearchResultTableViewCell.h */,
+				088E82342813D8710017A073 /* LSSearchResultTableViewCell.m */,
+				088917932810A9A2003E620A /* LSLyricsViewController.h */,
+				088917942810A9A2003E620A /* LSLyricsViewController.m */,
+				0889236F278BEDD200BBBA41 /* LSLyricsTableViewController.h */,
+				08892370278BEDD200BBBA41 /* LSLyricsTableViewController.m */,
+				08A400932814F85B00CF6D1C /* LSLyricsTableViewCell.h */,
+				08A400942814F85B00CF6D1C /* LSLyricsTableViewCell.m */,
+				08B0D8122826F4C40017330D /* LSPlayerModel.h */,
+				08B0D8132826F4C40017330D /* LSPlayerModel.m */,
+				08BE5A7B281CC1D800E7FE09 /* LSTrackQueue.h */,
+				08BE5A7C281CC1D800E7FE09 /* LSTrackQueue.m */,
+				08BE5A7E281CC34D00E7FE09 /* LSTrackItem.h */,
+				08BE5A7F281CC34D00E7FE09 /* LSTrackItem.m */,
+				08891796281249B7003E620A /* LSDataManager.h */,
+				08891797281249B7003E620A /* LSDataManager.m */,
+				08892340278BE3B600BBBA41 /* Main.storyboard */,
+				08892343278BE3B700BBBA41 /* Assets.xcassets */,
+				08892345278BE3B700BBBA41 /* LaunchScreen.storyboard */,
+				08892348278BE3B700BBBA41 /* Info.plist */,
+				08892349278BE3B700BBBA41 /* main.m */,
 			);
 			path = LyricsSearch;
 			sourceTree = "<group>";
@@ -386,7 +301,6 @@
 				088E82352813D8710017A073 /* LSSearchResultTableViewCell.m in Sources */,
 				08892339278BE3B600BBBA41 /* AppDelegate.m in Sources */,
 				0889234A278BE3B700BBBA41 /* main.m in Sources */,
-				084A36822834404100D118C0 /* LSQueueTableViewCell.m in Sources */,
 				08891798281249B7003E620A /* LSDataManager.m in Sources */,
 				08A400952814F85B00CF6D1C /* LSLyricsTableViewCell.m in Sources */,
 				088E822F281273E90017A073 /* LSSearchResultTableViewController.m in Sources */,
@@ -548,7 +462,7 @@
 				);
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = LyricsSearch/Support/Info.plist;
+				INFOPLIST_FILE = LyricsSearch/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LyricsSearch;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -586,7 +500,7 @@
 				);
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = LyricsSearch/Support/Info.plist;
+				INFOPLIST_FILE = LyricsSearch/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LyricsSearch;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
