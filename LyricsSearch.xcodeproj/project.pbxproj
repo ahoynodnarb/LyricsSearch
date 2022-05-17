@@ -45,6 +45,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0849A4042832EBD4008614AB /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		08825528282FBC240001379C /* LSTrackPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSTrackPresenter.h; sourceTree = "<group>"; };
 		088917932810A9A2003E620A /* LSLyricsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSLyricsViewController.h; sourceTree = "<group>"; };
 		088917942810A9A2003E620A /* LSLyricsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSLyricsViewController.m; sourceTree = "<group>"; };
@@ -120,6 +121,7 @@
 		08892336278BE3B600BBBA41 /* LyricsSearch */ = {
 			isa = PBXGroup;
 			children = (
+				0849A4042832EBD4008614AB /* Constants.h */,
 				08892337278BE3B600BBBA41 /* AppDelegate.h */,
 				08892338278BE3B600BBBA41 /* AppDelegate.m */,
 				0889233A278BE3B600BBBA41 /* SceneDelegate.h */,

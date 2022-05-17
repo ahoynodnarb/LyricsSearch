@@ -6,6 +6,10 @@
 //
 
 #import "LSLyricsViewController.h"
+#import "LSDataManager.h"
+#import "LSLyricsTableViewController.h"
+#import "LSTrackItem.h"
+#import "LSTrackQueue.h"
 
 @interface LSLyricsViewController ()
 @property (nonatomic, strong) NSString *song;

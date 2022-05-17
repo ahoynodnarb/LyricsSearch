@@ -10,9 +10,23 @@
 //
 
 #import "ViewController.h"
+#import <SpotifyiOS/SpotifyiOS.h>
+#import "Constants.h"
+#import "LSDataManager.h"
+#import "LSLyricsViewController.h"
+#import "LSMediaPlayerView.h"
+#import "LSQueueTableViewController.h"
+#import "LSSearchResultTableViewController.h"
+#import "LSTrackItem.h"
+#import "LSTrackQueue.h"
 
 @interface ViewController ()
-
+@property (nonatomic, strong) LSMediaPlayerView *mediaPlayerView;
+@property (nonatomic, strong) UIView *searchResultContainerView;
+@property (nonatomic, strong) UITextField *searchTextField;
+@property (nonatomic, strong) UIButton *queueButton;
+@property (nonatomic, strong) LSSearchResultTableViewController *searchResultTableViewController;
+@property (nonatomic, strong) LSLyricsViewController *lyricsViewController;
 @end
 
 @implementation ViewController
@@ -105,7 +119,7 @@
 }
 
 - (void)presentQueue {
-    LSQueueTableViewController *queueTableViewController = [[LSQueueTableViewController alloc] init];
+    LSQueueTableViewController *queueTableViewController = [[LSQueueTableViewController alloc] initWithPlayerModel:self.playerModel];
     [self presentViewController:queueTableViewController animated:YES completion:nil];
 }
 
@@ -125,9 +139,9 @@
 }
 
 - (void)setupSpotify {
-    NSString *const clientID = [[[NSProcessInfo processInfo] environment] objectForKey:@"CLIENT_ID"];
+//    NSString *const clientID = [[[NSProcessInfo processInfo] environment] objectForKey:@"CLIENT_ID"];
     SPTScope scope = SPTUserReadPlaybackStateScope | SPTUserReadCurrentlyPlayingScope | SPTAppRemoteControlScope | SPTStreamingScope;
-    self.configuration = [SPTConfiguration configurationWithClientID:clientID redirectURL:[NSURL URLWithString:@"lyricssearch://callback"]];
+    self.configuration = [SPTConfiguration configurationWithClientID:CLIENT_ID redirectURL:[NSURL URLWithString:@"lyricssearch://callback"]];
     self.playerModel.appRemote = [[SPTAppRemote alloc] initWithConfiguration:self.configuration logLevel:SPTAppRemoteLogLevelError];
     self.playerModel.appRemote.delegate = self.playerModel;
     self.sessionManager = [SPTSessionManager sessionManagerWithConfiguration:self.configuration delegate:self];

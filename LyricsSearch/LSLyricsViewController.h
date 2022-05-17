@@ -7,11 +7,7 @@
 
 @import MarqueeLabel_ObjC;
 #import <UIKit/UIKit.h>
-#import "LSDataManager.h"
-#import "LSLyricsTableViewController.h"
 #import "LSPlayerModel.h"
-#import "LSTrackItem.h"
-#import "LSTrackQueue.h"
 
 @interface LSLyricsViewController : UIViewController
 @property (nonatomic, strong) LSPlayerModel *playerModel;

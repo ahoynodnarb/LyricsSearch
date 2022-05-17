@@ -6,9 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "LSDataManager.h"
-#import "LSLyricsViewController.h"
-#import "LSSearchResultTableViewCell.h"
+#import "LSPlayerModel.h"
 
 @interface LSSearchResultTableViewController : UITableViewController
 @property (nonatomic, strong) LSPlayerModel *playerModel;
@@ -16,7 +14,6 @@
 @property (nonatomic, strong) NSArray *searchResults;
 @property (nonatomic, strong) NSString *searchTerm;
 @property (nonatomic, strong) UILabel *errorMessageLabel;
-@property (nonatomic, strong) LSLyricsViewController *lyricsViewController;
 - (instancetype)initWithSearchTerm:(NSString *)searchTerm;
 - (void)loadNewPage;
 @end

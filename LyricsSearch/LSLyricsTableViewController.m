@@ -6,6 +6,8 @@
 //
 
 #import "LSLyricsTableViewController.h"
+#import "LSDataManager.h"
+#import "LSLyricsTableViewCell.h"
 
 @interface LSLyricsTableViewController ()
 @property (nonatomic, assign) float nextTimestamp;
@@ -91,6 +93,7 @@
 
 - (void)updateElapsedTime:(NSInteger)elapsedTime {
     // bad
+    if([self.playerModel paused]) return;
     if(self.previousTime > elapsedTime) [self updateTimestampForTime:elapsedTime];
     else if(elapsedTime > self.nextTimestamp) {
         if(self.nextSection < [self.lyricsArray count] - 1) {

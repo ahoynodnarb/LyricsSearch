@@ -12,6 +12,14 @@
 
 @implementation LSQueueTableViewController
 
+- (instancetype)initWithPlayerModel:(LSPlayerModel *)playerModel {
+    if(self = [super init]) {
+        NSLog(@"%@", NSStringFromSelector(_cmd));
+        self.playerModel = playerModel;
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -22,7 +30,8 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 0;
+    NSLog(@"%@", NSStringFromSelector(_cmd));
+    return [self.playerModel count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

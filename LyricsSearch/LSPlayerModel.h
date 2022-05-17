@@ -27,4 +27,5 @@
 - (void)seek:(NSInteger)position;
 - (void)resumeFiring;
 - (void)pauseFiring;
+- (NSUInteger)count;
 @end

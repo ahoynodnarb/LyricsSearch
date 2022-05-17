@@ -25,9 +25,10 @@
 }
 
 - (NSString *)description {
-    NSMutableArray *allItems = [self.previousTracks mutableCopy];
-    [allItems addObject:self.currentTrack];
-    [allItems addObjectsFromArray:self.nextTracks];
+    NSMutableArray *allItems = [[NSMutableArray alloc] init];
+    if(self.previousTracks) [allItems addObjectsFromArray:self.previousTracks];
+    if(self.currentTrack) [allItems addObject:self.currentTrack];
+    if(self.nextTracks) [allItems addObjectsFromArray:self.nextTracks];
     return [allItems description];
 }
 

@@ -6,8 +6,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "LSDataManager.h"
-#import "LSLyricsTableViewCell.h"
 #import "LSPlayerModel.h"
 #import "LSTrackItem.h"
 

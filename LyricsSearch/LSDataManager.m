@@ -6,13 +6,12 @@
 //
 
 #import "LSDataManager.h"
+#import "Constants.h"
 
 @implementation LSDataManager
 
 + (NSString *)getUserToken {
-    NSInteger index = arc4random_uniform(4);
-    NSString *tokenID = [NSString stringWithFormat:@"USER_TOKEN%ld", index];
-    NSString *token = [[[NSProcessInfo processInfo] environment] objectForKey:tokenID];
+    NSString *token = USER_TOKENS[arc4random_uniform(4)];
     return token;
 }
 

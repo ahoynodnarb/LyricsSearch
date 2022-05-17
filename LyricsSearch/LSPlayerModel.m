@@ -66,7 +66,7 @@
 }
 
 - (void)setPaused:(BOOL)paused {
-    if(!self.trackQueue.currentTrack || paused == _paused) return;
+    if(!self.currentItem || paused == _paused) return;
     _paused = paused;
     if(paused) {
         [self.timer invalidate];
@@ -82,6 +82,7 @@
     if([self spotifyConnected]) {
         [self.appRemote.playerAPI getPlayerState:^(id<SPTAppRemotePlayerState> result, NSError *error){
             self.elapsedTime = [result playbackPosition];
+            NSLog(@"%ld", (long)self.elapsedTime);
         }];
         return;
     }
@@ -108,8 +109,8 @@
 }
 
 - (void)setCurrentItem:(LSTrackItem *)currentItem useSpotify:(BOOL)useSpotify {
-    if([self spotifyConnected] && useSpotify) {
-        if(_currentItem) [self.appRemote.playerAPI play:currentItem.URI callback:nil];
+    if([self spotifyConnected]) {
+        if(_currentItem && useSpotify) [self.appRemote.playerAPI play:currentItem.URI callback:nil];
     }
     else self.trackQueue.currentTrack = currentItem;
     _currentItem = currentItem;
@@ -195,6 +196,11 @@
     }
     if(self.paused != playerState.paused) self.paused = playerState.paused;
     if(self.elapsedTime != playerState.playbackPosition) self.elapsedTime = playerState.playbackPosition;
+}
+
+- (NSUInteger)count {
+    NSLog(@"%@", [self trackQueue]);
+    return [self.previousTracks count] + [self.nextTracks count] + (self.currentItem == nil);
 }
 
 @end

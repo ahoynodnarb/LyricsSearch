@@ -7,6 +7,7 @@
 
 #import "SceneDelegate.h"
 #import "ViewController.h"
+#import "LSPlayerModel.h"
 
 @interface SceneDelegate ()
 
