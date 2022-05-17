@@ -46,20 +46,7 @@
 }
 
 - (void)dealloc {
-    [self stopObserving];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
-    id item = change[@"new"];
-    if([keyPath isEqualToString:@"elapsedTime"]) {
-        NSInteger elapsedTime = [item intValue];
-        [self updateElapsedTime:elapsedTime];
-    }
-    else if([keyPath isEqual:@"paused"]) {
-        BOOL paused = [item boolValue];
-        [self updatePauseButton:paused];
-    }
 }
 
 - (void)viewDidLoad {
@@ -182,18 +169,26 @@
 }
 
 - (void)beginObserving {
-    [self.playerModel addObserver:self forKeyPath:@"elapsedTime" options:NSKeyValueObservingOptionNew context:nil];
-    [self.playerModel addObserver:self forKeyPath:@"paused" options:NSKeyValueObservingOptionNew context:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePlayerState:) name:@"stateChanged" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateElapsedTime:) name:@"updateElapsedTime" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(lyricsDismissed) name:@"playbackEnded" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackChanged:) name:@"trackChanged" object:nil];
 }
 
 - (void)stopObserving {
-    [self.playerModel removeObserver:self forKeyPath:@"elapsedTime"];
-    [self.playerModel removeObserver:self forKeyPath:@"paused"];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"updateElapsedTime" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"stateUpdated" object:nil];
 }
 
-- (void)updateElapsedTime:(NSInteger)elapsedTime {
+- (void)updatePlayerState:(NSNotification *)note {
+    NSDictionary *userInfo = [note userInfo];
+    BOOL paused = [userInfo[@"paused"] boolValue];
+    [self updatePauseButton:paused];
+}
+
+- (void)updateElapsedTime:(NSNotification *)note {
+    NSDictionary *userInfo = [note userInfo];
+    NSInteger elapsedTime = [userInfo[@"elapsedTime"] intValue];
     [self.tableViewController updateElapsedTime:elapsedTime];
     [self updateElapsedTimeLabel:elapsedTime];
     if(!self.timeSlider.isHighlighted) [self.timeSlider setValue:elapsedTime animated:NO];

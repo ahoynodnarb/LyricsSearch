@@ -139,7 +139,6 @@
 }
 
 - (void)setupSpotify {
-//    NSString *const clientID = [[[NSProcessInfo processInfo] environment] objectForKey:@"CLIENT_ID"];
     SPTScope scope = SPTUserReadPlaybackStateScope | SPTUserReadCurrentlyPlayingScope | SPTAppRemoteControlScope | SPTStreamingScope;
     self.configuration = [SPTConfiguration configurationWithClientID:CLIENT_ID redirectURL:[NSURL URLWithString:@"lyricssearch://callback"]];
     self.playerModel.appRemote = [[SPTAppRemote alloc] initWithConfiguration:self.configuration logLevel:SPTAppRemoteLogLevelError];
