@@ -33,6 +33,16 @@
     _elapsedTime = elapsedTime;
 }
 
+- (void)setNextTracks:(NSArray *)nextTracks {
+    if([self spotifyConnected]) return;
+    self.trackQueue.nextTracks = [nextTracks mutableCopy];
+}
+
+- (void)setPreviousTracks:(NSArray *)previousTracks {
+    if([self spotifyConnected]) return;
+    self.trackQueue.previousTracks = [previousTracks mutableCopy];
+}
+
 - (instancetype)initWithTrackQueue:(LSTrackQueue *)trackQueue {
     if(self = [super init]) {
         self.trackQueue = trackQueue;
@@ -62,6 +72,7 @@
     NSInteger ms = offset * 1000;
     self.elapsedTime += ms;
     self.backgroundTime = 0;
+    [self.timer invalidate];
     [self beginTimer];
 }
 
@@ -84,13 +95,12 @@
         [self.appRemote.playerAPI getPlayerState:^(id<SPTAppRemotePlayerState> result, NSError *error) {
             self.elapsedTime = [result playbackPosition];
         }];
-        return;
     }
-    self.elapsedTime += 10;
-    if(self.elapsedTime >= self.trackDuration) {
-        [self playNextTrack];
-        return;
+    else {    
+        self.elapsedTime += 10;
+        if(self.elapsedTime >= self.trackDuration) [self playNextTrack];
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateElapsedTime" object:nil userInfo:@{@"elapsedTime": @(self.elapsedTime)}];
 }
 
 - (void)beginTimer {

@@ -159,16 +159,8 @@
 				084A368D2834420700D118C0 /* Lyrics */,
 				084A368E2834420B00D118C0 /* Queue */,
 				084A368C283441FF00D118C0 /* SearchResults */,
-				084A368B2834415D00D118C0 /* TableViewCells */,
 			);
 			path = ViewControllers;
-			sourceTree = "<group>";
-		};
-		084A368B2834415D00D118C0 /* TableViewCells */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = TableViewCells;
 			sourceTree = "<group>";
 		};
 		084A368C283441FF00D118C0 /* SearchResults */ = {

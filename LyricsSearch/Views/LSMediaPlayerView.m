@@ -139,6 +139,7 @@
 
 - (void)playbackEnded {
     self.currentItem = nil;
+    self.progressBar.progress = 0.0f;
 }
 
 - (void)trackChanged {

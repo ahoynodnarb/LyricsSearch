@@ -15,8 +15,8 @@
 @property (nonatomic, assign) BOOL paused;
 @property (nonatomic, strong) SPTAppRemote *appRemote;
 @property (nonatomic, strong) LSTrackItem *currentItem;
-@property (nonatomic, readonly) NSArray *nextTracks;
-@property (nonatomic, readonly) NSArray *previousTracks;
+@property (nonatomic, strong) NSArray *nextTracks;
+@property (nonatomic, strong) NSArray *previousTracks;
 @property (nonatomic, readonly) BOOL spotifyConnected;
 @property (nonatomic, readonly) NSInteger elapsedTime;
 @property (nonatomic, weak) id<LSTrackPresenter> trackPresenter;
