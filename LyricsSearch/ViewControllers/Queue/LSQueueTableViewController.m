@@ -20,11 +20,15 @@
     return self;
 }
 
+- (NSArray *)displayedTracks {
+    NSMutableArray *tracks = [self.nextTracks mutableCopy];
+    if(self.playerModel.currentItem) [tracks insertObject:self.playerModel.currentItem atIndex:0];
+    return [NSArray arrayWithArray:tracks];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.nextTracks = self.playerModel.nextTracks ? [self.playerModel.nextTracks mutableCopy] : [NSMutableArray array];
-    self.displayedTracks = [self.nextTracks mutableCopy];
-    if(self.playerModel.currentItem) [self.displayedTracks insertObject:self.playerModel.currentItem atIndex:0];
     self.tableView.editing = YES;
     self.tableView.contentInset = UIEdgeInsetsMake(30.0f, 0.0f, 0.0f, 0.0f);
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -43,11 +47,35 @@
     return 1;
 }
 
+- (void)handlePanGesture:(UIPanGestureRecognizer *)recognizer {
+    LSQueueTableViewCell *cell = (LSQueueTableViewCell  *)recognizer.view;
+    [cell animatePan:recognizer completion:^(BOOL success) {
+        if(!success) return;
+        NSInteger index = [[self.tableView indexPathForCell:cell] section];
+        [self.nextTracks removeObjectAtIndex:index - (self.playerModel.currentItem != nil)];
+        [self.playerModel setNextTracks:self.nextTracks];
+        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:index];
+        [self.tableView deleteSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
+    }];
+//    if(recognizer.state == UIGestureRecognizerStateEnded) {
+//        NSInteger index = [[self.tableView indexPathForCell:cell] section];
+//        [self.nextTracks removeObjectAtIndex:index - (self.playerModel.currentItem != nil)];
+//        [self.playerModel setNextTracks:self.nextTracks];
+//        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:index];
+//        [self.tableView deleteSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
+//    }
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger section = [indexPath section];
     LSTrackItem *item = self.displayedTracks[section];
-    NSString *reuseIdentifier = section == 0 ? @"CurrentTrack" : @"NextTrack";
+    NSString *reuseIdentifier = section == 0 && self.playerModel.currentItem ? @"CurrentTrack" : @"NextTrack";
     LSQueueTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
+    if([reuseIdentifier isEqualToString:@"NextTrack"]) {
+        UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
+        recognizer.delegate = cell;
+        [cell addGestureRecognizer:recognizer];
+    }
     cell.backgroundColor = [UIColor clearColor];
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -81,8 +109,8 @@
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
-    NSInteger sourceIndex = [sourceIndexPath section] - 1;
-    NSInteger toIndex = [destinationIndexPath section] - 1;
+    NSInteger sourceIndex = [sourceIndexPath section] - (self.playerModel.currentItem != nil);
+    NSInteger toIndex = [destinationIndexPath section] - (self.playerModel.currentItem != nil);
     [self.nextTracks exchangeObjectAtIndex:sourceIndex withObjectAtIndex:toIndex];
     self.playerModel.nextTracks = self.nextTracks;
 }

@@ -15,4 +15,5 @@
 @property (nonatomic, assign) NSInteger duration;
 @property (nonatomic, strong) NSString *URI;
 - (instancetype)initWithArtImage:(UIImage *)artImage songName:(NSString *)songName artistName:(NSString *)artistName duration:(NSInteger)duration URI:(NSString *)URI;
+- (BOOL)isEqualToTrackItem:(LSTrackItem *)trackItem;
 @end

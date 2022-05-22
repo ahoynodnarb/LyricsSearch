@@ -24,12 +24,24 @@
     [self.nextTracks addObject:item];
 }
 
+- (NSArray *)allTracks {
+    NSMutableArray *allItems = [[NSMutableArray alloc] init];
+    if(self.previousTracks) [allItems addObjectsFromArray:self.previousTracks];
+    if(self.currentTrack) [allItems addObject:self.currentTrack];
+    if(self.nextTracks) [allItems addObjectsFromArray:self.nextTracks];
+    return [NSArray arrayWithArray:allItems];
+}
+
 - (NSString *)description {
     NSMutableArray *allItems = [[NSMutableArray alloc] init];
     if(self.previousTracks) [allItems addObjectsFromArray:self.previousTracks];
     if(self.currentTrack) [allItems addObject:self.currentTrack];
     if(self.nextTracks) [allItems addObjectsFromArray:self.nextTracks];
     return [allItems description];
+}
+
+- (NSInteger)currentTrackPosition {
+    return [self.previousTracks count];
 }
 
 @end

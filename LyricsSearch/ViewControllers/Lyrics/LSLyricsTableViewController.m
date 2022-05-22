@@ -71,7 +71,7 @@
 }
 
 - (void)updateTimestampForTime:(NSInteger)time {
-    for(int i = 0; i < [self.lyricsArray count]; i++) {
+    for(NSInteger i = 0; i < [self.lyricsArray count]; i++) {
         NSInteger next = [self.lyricsArray[i][@"time"][@"total"] floatValue] * 1000;
         if(next >= time) {
             if(i == self.nextSection) return;

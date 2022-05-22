@@ -28,7 +28,8 @@
 @property (nonatomic, strong) UISlider *timeSlider;
 @property (nonatomic, strong) UILabel *elapsedTimeLabel;
 @property (nonatomic, strong) UILabel *durationLabel;
-@property (nonatomic, strong) NSArray *nextTrackLyrics;
+@property (nonatomic, strong) NSMutableArray *cachedLyrics;
+@property (nonatomic, strong) UIVisualEffectView *blurEffectView;
 @end
 
 @implementation LSLyricsViewController
@@ -49,15 +50,14 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+- (void)setupSubviews {
     self.backgroundImageView = [[UIImageView alloc] initWithImage:self.backgroundImage];
     self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.backgroundImageView.translatesAutoresizingMaskIntoConstraints = NO;
-    UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
-    blurEffectView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.backgroundImageView addSubview:blurEffectView];
+    self.blurEffectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
+    self.blurEffectView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.backgroundImageView addSubview:self.blurEffectView];
     [self.view addSubview:self.backgroundImageView];
     self.containerView = [[UIView alloc] init];
     self.containerView.backgroundColor = [UIColor clearColor];
@@ -122,15 +122,18 @@
     self.pauseButton.translatesAutoresizingMaskIntoConstraints = NO;
     [self.controlsView addSubview:self.pauseButton];
     [self displayContentController:self.tableViewController];
+}
+
+- (void)setupConstraints {
     [NSLayoutConstraint activateConstraints:@[
         [self.backgroundImageView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
         [self.backgroundImageView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
         [self.backgroundImageView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
         [self.backgroundImageView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
-        [blurEffectView.topAnchor constraintEqualToAnchor:self.backgroundImageView.topAnchor],
-        [blurEffectView.bottomAnchor constraintEqualToAnchor:self.backgroundImageView.bottomAnchor],
-        [blurEffectView.leadingAnchor constraintEqualToAnchor:self.backgroundImageView.leadingAnchor],
-        [blurEffectView.trailingAnchor constraintEqualToAnchor:self.backgroundImageView.trailingAnchor],
+        [self.blurEffectView.topAnchor constraintEqualToAnchor:self.backgroundImageView.topAnchor],
+        [self.blurEffectView.bottomAnchor constraintEqualToAnchor:self.backgroundImageView.bottomAnchor],
+        [self.blurEffectView.leadingAnchor constraintEqualToAnchor:self.backgroundImageView.leadingAnchor],
+        [self.blurEffectView.trailingAnchor constraintEqualToAnchor:self.backgroundImageView.trailingAnchor],
         [self.containerView.topAnchor constraintEqualToAnchor:self.view.topAnchor constant:150],
         [self.containerView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant:-130],
         [self.containerView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:25],
@@ -168,11 +171,21 @@
     ]];
 }
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self setupSubviews];
+    [self setupConstraints];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self downloadTrackInfo];
+    });
+}
+
 - (void)beginObserving {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePlayerState:) name:@"stateChanged" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateElapsedTime:) name:@"updateElapsedTime" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(lyricsDismissed) name:@"playbackEnded" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackChanged:) name:@"trackChanged" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadTrackInfo) name:@"queueUpdated" object:nil];
 }
 
 - (void)stopObserving {
@@ -262,7 +275,6 @@
         [self dismissViewControllerAnimated:YES completion:nil];
         return;
     }
-    [self downloadNextTrackInfo];
     self.duration = track.duration;
     self.timeSlider.maximumValue = self.duration;
     self.durationLabel.text = [NSString stringWithFormat:@"%ld:%02ld", (self.duration / 1000) / 60, (self.duration / 1000) % 60];
@@ -270,23 +282,26 @@
     self.artistLabel.text = track.artistName;
     self.songLabel.text = track.songName;
     self.elapsedTimeLabel.text = @"0:00";
-    if(!self.nextTrackLyrics || !usingCache) [self.tableViewController setPlayingTrack:track];
-    else if(self.nextTrackLyrics) {
-        self.tableViewController.lyricsArray = self.nextTrackLyrics;
+    NSInteger index = [self.playerModel currentTrackPosition];
+    if(!usingCache) [self.tableViewController setPlayingTrack:track];
+    if([self.cachedLyrics count] >= index - 1) {
+        self.tableViewController.lyricsArray = self.cachedLyrics[index];
         [self.tableViewController reloadLyrics];
     }
+    else [self.tableViewController setPlayingTrack:track];
 }
 
 - (void)setPlayingTrack:(LSTrackItem *)track {
     [self setPlayingTrack:track usingCache:NO];
 }
 
-- (void)downloadNextTrackInfo {
-    NSArray *nextTracks = [self.playerModel nextTracks];
-    if(nextTracks && [nextTracks count] != 0) {
-        LSTrackItem *nextItem = nextTracks[0];
-        [LSDataManager lyricsForSong:nextItem.songName artist:nextItem.artistName completion:^(NSArray *info) {
-            self.nextTrackLyrics = info;
+- (void)downloadTrackInfo {
+    NSArray *allTracks = [self.playerModel allTracks];
+    self.cachedLyrics = [[NSMutableArray alloc] init];
+    for(NSInteger i = [self.playerModel currentTrackPosition]; i < [allTracks count]; i++) {
+        LSTrackItem *item = allTracks[i];
+        [LSDataManager lyricsForSong:item.songName artist:item.artistName completion:^(NSArray *info) {
+            [self.cachedLyrics addObject:info];
         }];
     }
 }

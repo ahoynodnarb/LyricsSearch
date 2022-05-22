@@ -19,6 +19,7 @@
 @property (nonatomic, strong) NSArray *previousTracks;
 @property (nonatomic, readonly) BOOL spotifyConnected;
 @property (nonatomic, readonly) NSInteger elapsedTime;
+@property (nonatomic, readonly) NSInteger currentTrackPosition;
 @property (nonatomic, weak) id<LSTrackPresenter> trackPresenter;
 - (instancetype)initWithTrackQueue:(LSTrackQueue *)trackQueue;
 - (void)enqueue:(LSTrackItem *)track;
@@ -28,4 +29,5 @@
 - (void)resumeFiring;
 - (void)pauseFiring;
 - (NSUInteger)count;
+- (NSArray *)allTracks;
 @end

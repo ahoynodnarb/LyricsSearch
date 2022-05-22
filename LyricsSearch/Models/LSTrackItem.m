@@ -22,4 +22,11 @@
 - (NSString *)description {
     return [NSString stringWithFormat:@"songName: %@ artistName: %@ duration: %ld", self.songName, self.artistName, (long)self.duration];
 }
+
+- (BOOL)isEqualToTrackItem:(LSTrackItem *)trackItem {
+    BOOL songNameEqual = [self.songName isEqualToString:trackItem.songName];
+    BOOL artistNameEqual = [self.artistName isEqualToString:trackItem.artistName];
+    BOOL durationEqual = self.duration == trackItem.duration;
+    return songNameEqual && artistNameEqual && durationEqual;
+}
 @end

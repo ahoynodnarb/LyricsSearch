@@ -36,11 +36,21 @@
 - (void)setNextTracks:(NSArray *)nextTracks {
     if([self spotifyConnected]) return;
     self.trackQueue.nextTracks = [nextTracks mutableCopy];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"queueUpdated" object:nil];
 }
 
 - (void)setPreviousTracks:(NSArray *)previousTracks {
     if([self spotifyConnected]) return;
     self.trackQueue.previousTracks = [previousTracks mutableCopy];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"queueUpdated" object:nil];
+}
+
+- (NSInteger)currentTrackPosition {
+    return self.trackQueue.currentTrackPosition;
+}
+
+- (NSArray *)allTracks {
+    return [self.trackQueue allTracks];
 }
 
 - (instancetype)initWithTrackQueue:(LSTrackQueue *)trackQueue {
@@ -118,15 +128,19 @@
     [self beginTimer];
 }
 
-- (void)setCurrentItem:(LSTrackItem *)currentItem useSpotify:(BOOL)useSpotify {
+- (void)setCurrentItem:(LSTrackItem *)currentItem useSpotify:(BOOL)useSpotify useCache:(BOOL)useCache {
     if([self spotifyConnected]) {
         if(_currentItem && useSpotify) [self.appRemote.playerAPI play:currentItem.URI callback:nil];
     }
     else self.trackQueue.currentTrack = currentItem;
     _currentItem = currentItem;
     [self resetPlayerForTrack:currentItem];
-    if(_currentItem) [[NSNotificationCenter defaultCenter] postNotificationName:@"trackChanged" object:nil userInfo:@{@"playingNextTrack": @(NO)}];
+    if(_currentItem) [[NSNotificationCenter defaultCenter] postNotificationName:@"trackChanged" object:nil userInfo:@{@"playingNextTrack": @(useCache)}];
     else [[NSNotificationCenter defaultCenter] postNotificationName:@"playbackEnded" object:nil];
+}
+
+- (void)setCurrentItem:(LSTrackItem *)currentItem useSpotify:(BOOL)useSpotify {
+    [self setCurrentItem:currentItem useSpotify:useSpotify useCache:NO];
 }
 
 - (void)setCurrentItem:(LSTrackItem *)currentItem {
@@ -148,6 +162,7 @@
         return;
     }
     [self.trackQueue enqueue:trackItem];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"queueUpdated" object:nil];
 }
 
 - (void)playNextTrack {
@@ -158,7 +173,7 @@
     if(self.trackQueue.currentTrack) [self.trackQueue.previousTracks addObject:self.trackQueue.currentTrack];
     if([self.trackQueue.nextTracks count] == 0) self.currentItem = nil;
     else {
-        self.currentItem = self.trackQueue.nextTracks[0];
+        [self setCurrentItem:self.trackQueue.nextTracks[0] useSpotify:NO useCache:YES];
         [self.trackQueue.nextTracks removeObjectAtIndex:0];
     }
 }

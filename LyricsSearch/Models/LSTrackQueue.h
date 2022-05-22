@@ -12,5 +12,7 @@
 @property (nonatomic, strong) NSMutableArray *previousTracks;
 @property (nonatomic, strong) NSMutableArray *nextTracks;
 @property (nonatomic, strong) LSTrackItem *currentTrack;
+@property (nonatomic, readonly) NSInteger currentTrackPosition;
 - (void)enqueue:(LSTrackItem *)item;
+- (NSArray *)allTracks;
 @end

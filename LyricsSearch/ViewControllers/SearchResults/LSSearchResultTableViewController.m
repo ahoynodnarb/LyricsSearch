@@ -44,9 +44,9 @@
     [LSDataManager infoForSearchTerm:self.searchTerm page:self.currentPage completion:^(NSArray *info) {    
         if(!self.searchResults) self.searchResults = info;
         else self.searchResults = [self.searchResults arrayByAddingObjectsFromArray:info];
-        self.currentPage++;
         completion();
     }];
+    self.currentPage++;
 }
 
 - (void)displayMoreResults {
@@ -95,6 +95,7 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if(scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.frame.size.height) [self displayMoreResults];
 }
+
 - (void)handlePanGesture:(UIPanGestureRecognizer *)recognizer {
     LSSearchResultTableViewCell *cell = (LSSearchResultTableViewCell *)recognizer.view;
     [cell animatePan:recognizer];
