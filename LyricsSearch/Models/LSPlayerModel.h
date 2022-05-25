@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import <SpotifyiOS/SpotifyiOS.h>
+#import "LSPlayerDelegate.h"
 #import "LSTrackItem.h"
 #import "LSTrackQueue.h"
 #import "LSTrackPresenter.h"
@@ -21,6 +22,7 @@
 @property (nonatomic, readonly) NSInteger elapsedTime;
 @property (nonatomic, readonly) NSInteger currentTrackPosition;
 @property (nonatomic, weak) id<LSTrackPresenter> trackPresenter;
+@property (nonatomic, weak) id<LSPlayerDelegate> delegate;
 - (instancetype)initWithTrackQueue:(LSTrackQueue *)trackQueue;
 - (void)enqueue:(LSTrackItem *)track;
 - (void)playNextTrack;

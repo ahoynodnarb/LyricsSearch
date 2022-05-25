@@ -49,6 +49,7 @@
 		0849A4042832EBD4008614AB /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		084A36802834404100D118C0 /* LSQueueTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSQueueTableViewCell.h; sourceTree = "<group>"; };
 		084A36812834404100D118C0 /* LSQueueTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSQueueTableViewCell.m; sourceTree = "<group>"; };
+		087BCEC9283C2DBF009E5F92 /* LSPlayerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSPlayerDelegate.h; sourceTree = "<group>"; };
 		08825528282FBC240001379C /* LSTrackPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSTrackPresenter.h; sourceTree = "<group>"; };
 		088917932810A9A2003E620A /* LSLyricsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSLyricsViewController.h; sourceTree = "<group>"; };
 		088917942810A9A2003E620A /* LSLyricsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSLyricsViewController.m; sourceTree = "<group>"; };
@@ -133,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				08825528282FBC240001379C /* LSTrackPresenter.h */,
+				087BCEC9283C2DBF009E5F92 /* LSPlayerDelegate.h */,
 				08B0D8122826F4C40017330D /* LSPlayerModel.h */,
 				08B0D8132826F4C40017330D /* LSPlayerModel.m */,
 				08BE5A7B281CC1D800E7FE09 /* LSTrackQueue.h */,

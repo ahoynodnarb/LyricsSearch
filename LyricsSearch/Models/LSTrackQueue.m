@@ -13,35 +13,41 @@
 
 @implementation LSTrackQueue
 - (instancetype)init {
-    if(self = [super init]) {
-        self.previousTracks = [[NSMutableArray alloc] init];
-        self.nextTracks = [[NSMutableArray alloc] init];
-    }
+    if(self = [super init]) self.allTracks = [[NSMutableArray alloc] init];
     return self;
 }
 
 - (void)enqueue:(LSTrackItem *)item {
-    [self.nextTracks addObject:item];
+    [self.allTracks addObject:item];
 }
 
-- (NSArray *)allTracks {
-    NSMutableArray *allItems = [[NSMutableArray alloc] init];
-    if(self.previousTracks) [allItems addObjectsFromArray:self.previousTracks];
-    if(self.currentTrack) [allItems addObject:self.currentTrack];
-    if(self.nextTracks) [allItems addObjectsFromArray:self.nextTracks];
-    return [NSArray arrayWithArray:allItems];
+- (void)moveTrackAtIndex:(NSInteger)from toIndex:(NSInteger)to {
+    if(0 > from || [self.allTracks count] <= from) return;
+    if(0 > to || [self.allTracks count] <= to) return;
+    [self.allTracks exchangeObjectAtIndex:from withObjectAtIndex:to];
 }
 
-- (NSString *)description {
-    NSMutableArray *allItems = [[NSMutableArray alloc] init];
-    if(self.previousTracks) [allItems addObjectsFromArray:self.previousTracks];
-    if(self.currentTrack) [allItems addObject:self.currentTrack];
-    if(self.nextTracks) [allItems addObjectsFromArray:self.nextTracks];
-    return [allItems description];
+- (void)removeTrackAtIndex:(NSInteger)index {
+    if(0 > index || [self.allTracks count] <= index) return;
+    [self.allTracks removeObjectAtIndex:index];
 }
 
-- (NSInteger)currentTrackPosition {
-    return [self.previousTracks count];
+- (void)playNextTrack {
+    if(self.currentTrackPosition >= [self.allTracks count]) return;
+    self.currentTrackPosition++;
+}
+
+- (void)playPreviousTrack {
+    if(self.currentTrackPosition < 0) return;
+    self.currentTrackPosition--;
+}
+
+- (void)setCurrentTrack:(LSTrackItem *)currentTrack {
+    [self.allTracks replaceObjectAtIndex:[self currentTrackPosition] withObject:currentTrack];
+}
+
+- (LSTrackItem *)currentTrack {
+    return -1 < self.currentTrackPosition < [self.allTracks count] ? self.allTracks[self.currentTrackPosition] : nil;
 }
 
 @end

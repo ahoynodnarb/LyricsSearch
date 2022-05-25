@@ -31,18 +31,7 @@
 
 - (void)setElapsedTime:(NSInteger)elapsedTime {
     _elapsedTime = elapsedTime;
-}
-
-- (void)setNextTracks:(NSArray *)nextTracks {
-    if([self spotifyConnected]) return;
-    self.trackQueue.nextTracks = [nextTracks mutableCopy];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"queueUpdated" object:nil];
-}
-
-- (void)setPreviousTracks:(NSArray *)previousTracks {
-    if([self spotifyConnected]) return;
-    self.trackQueue.previousTracks = [previousTracks mutableCopy];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"queueUpdated" object:nil];
+    [self.delegate elapsedTimeChanged];
 }
 
 - (NSInteger)currentTrackPosition {
@@ -60,14 +49,6 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resumeFiring) name:UIApplicationWillEnterForegroundNotification object:nil];
     }
     return self;
-}
-
-- (NSArray *)nextTracks {
-    return [self.trackQueue.nextTracks copy];
-}
-
-- (NSArray *)previousTracks {
-    return [self.trackQueue.previousTracks copy];
 }
 
 - (void)pauseFiring {
@@ -97,7 +78,7 @@
         [self beginTimer];
         [self.appRemote.playerAPI resume:nil];
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"stateChanged" object:nil userInfo:@{@"paused": @(paused)}];
+    [self.delegate playbackStateChanged];
 }
 
 - (void)timerFired {
@@ -105,12 +86,10 @@
         [self.appRemote.playerAPI getPlayerState:^(id<SPTAppRemotePlayerState> result, NSError *error) {
             self.elapsedTime = [result playbackPosition];
         }];
+        return;
     }
-    else {    
-        self.elapsedTime += 10;
-        if(self.elapsedTime >= self.trackDuration) [self playNextTrack];
-    }
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateElapsedTime" object:nil userInfo:@{@"elapsedTime": @(self.elapsedTime)}];
+    self.elapsedTime += 10;
+    if(self.elapsedTime >= self.trackDuration) [self playNextTrack];
 }
 
 - (void)beginTimer {
@@ -135,8 +114,9 @@
     else self.trackQueue.currentTrack = currentItem;
     _currentItem = currentItem;
     [self resetPlayerForTrack:currentItem];
-    if(_currentItem) [[NSNotificationCenter defaultCenter] postNotificationName:@"trackChanged" object:nil userInfo:@{@"playingNextTrack": @(useCache)}];
-    else [[NSNotificationCenter defaultCenter] postNotificationName:@"playbackEnded" object:nil];
+    if(currentItem) [self.delegate currentTrackChanged];
+    else [self.delegate playbackEnded];
+    [self.delegate currentTrackChanged];
 }
 
 - (void)setCurrentItem:(LSTrackItem *)currentItem useSpotify:(BOOL)useSpotify {
@@ -162,7 +142,17 @@
         return;
     }
     [self.trackQueue enqueue:trackItem];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"queueUpdated" object:nil];
+    [self.delegate enqueuedTrack];
+}
+
+- (void)moveTrackAtIndex:(NSInteger)from toIndex:(NSInteger)to {
+    [self.trackQueue moveTrackAtIndex:from toIndex:to];
+    [self.delegate movedTrackAtIndex:from toIndex:to];
+}
+
+- (void)removeTrackAtIndex:(NSInteger)index {
+    [self.trackQueue removeTrackAtIndex:index];
+    [self.delegate removedTrackAtIndex:index];
 }
 
 - (void)playNextTrack {
@@ -170,12 +160,8 @@
         [self.appRemote.playerAPI skipToNext:nil];
         return;
     }
-    if(self.trackQueue.currentTrack) [self.trackQueue.previousTracks addObject:self.trackQueue.currentTrack];
-    if([self.trackQueue.nextTracks count] == 0) self.currentItem = nil;
-    else {
-        [self setCurrentItem:self.trackQueue.nextTracks[0] useSpotify:NO useCache:YES];
-        [self.trackQueue.nextTracks removeObjectAtIndex:0];
-    }
+    [self.trackQueue playNextTrack];
+    self.currentItem = [self.trackQueue currentTrack];
 }
 
 - (void)playPreviousTrack {
@@ -183,12 +169,8 @@
         [self.appRemote.playerAPI skipToPrevious:nil];
         return;
     }
-    if(self.trackQueue.currentTrack) [self.trackQueue.nextTracks insertObject:self.trackQueue.currentTrack atIndex:0];
-    if([self.trackQueue.previousTracks count] == 0) self.currentItem = nil;
-    else {
-        self.currentItem = self.trackQueue.previousTracks[[self.trackQueue.previousTracks count] - 1];
-        [self.trackQueue.previousTracks removeLastObject];
-    }
+    [self.trackQueue playPreviousTrack];
+    self.currentItem = [self.trackQueue currentTrack];
 }
 
 - (void)appRemote:(nonnull SPTAppRemote *)appRemote didDisconnectWithError:(nullable NSError *)error {
