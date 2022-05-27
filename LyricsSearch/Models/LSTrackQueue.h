@@ -9,9 +9,11 @@
 #import "LSTrackItem.h"
 
 @interface LSTrackQueue : NSObject
-@property (nonatomic, strong) NSMutableArray *allTracks;
+@property (nonatomic, strong) NSMutableArray *previousTracks;
+@property (nonatomic, strong) NSMutableArray *nextTracks;
 @property (nonatomic, strong) LSTrackItem *currentTrack;
-@property (nonatomic, assign) NSInteger currentTrackPosition;
+@property (nonatomic, readonly) NSArray *allTracks;
+@property (nonatomic, readonly) NSInteger currentTrackPosition;
 - (void)enqueue:(LSTrackItem *)item;
 - (void)moveTrackAtIndex:(NSInteger)from toIndex:(NSInteger)to;
 - (void)removeTrackAtIndex:(NSInteger)index;

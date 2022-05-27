@@ -141,6 +141,7 @@
         [self.appRemote.playerAPI enqueueTrackUri:trackItem.URI callback:nil];
         return;
     }
+    NSLog(@"enqueueing");
     [self.trackQueue enqueue:trackItem];
     if(self.delegate) [self.delegate enqueuedTrack:trackItem];
 }
