@@ -13,7 +13,7 @@
 
 @implementation LSTrackQueue
 - (instancetype)init {
-    if(self = [super init]) self.allTracks = [[NSMutableArray alloc] init];
+    if(self = [super init]) self.allTracks = [[NSMutableArray alloc] initWithCapacity:1];
     return self;
 }
 
@@ -33,21 +33,31 @@
 }
 
 - (void)playNextTrack {
-    if(self.currentTrackPosition >= [self.allTracks count]) return;
+//    if(self.currentTrackPosition >= [self.allTracks count]) return;
+    if(self.currentTrackPosition == [self.allTracks count] - 1) {
+        self.currentTrack = nil;
+        return;
+    }
     self.currentTrackPosition++;
 }
 
 - (void)playPreviousTrack {
-    if(self.currentTrackPosition < 0) return;
+//    if(self.currentTrackPosition < 0) return;
+    if(self.currentTrackPosition == 0) {
+        self.currentTrack = nil;
+        return;
+    }
     self.currentTrackPosition--;
 }
 
 - (void)setCurrentTrack:(LSTrackItem *)currentTrack {
-    [self.allTracks replaceObjectAtIndex:[self currentTrackPosition] withObject:currentTrack];
+    _currentTrack = currentTrack;
+    if(!currentTrack) return;
+    [self.allTracks replaceObjectAtIndex:self.currentTrackPosition withObject:currentTrack];
 }
 
-- (LSTrackItem *)currentTrack {
-    return -1 < self.currentTrackPosition < [self.allTracks count] ? self.allTracks[self.currentTrackPosition] : nil;
-}
+//- (LSTrackItem *)currentTrack {
+//    return -1 < self.currentTrackPosition < [self.allTracks count] ? self.allTracks[self.currentTrackPosition] : nil;
+//}
 
 @end

@@ -17,6 +17,11 @@
 - (instancetype)initWithPlayerModel:(LSPlayerModel *)playerModel;
 - (void)connectedToSpotify;
 - (void)disconnectedFromSpotify;
-- (void)beginObserving;
-- (void)stopObserving;
+- (void)setCurrentItem:(LSTrackItem *)currentItem;
+- (void)setElapsedTime:(NSInteger)elapsedTime;
+- (void)setPlaybackState:(BOOL)paused;
+- (void)playbackEnded;
+- (void)trackChanged;
+//- (void)beginObserving;
+//- (void)stopObserving;
 @end

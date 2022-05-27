@@ -40,6 +40,7 @@
     LSTrackQueue *playerQueue = [[LSTrackQueue alloc] init];
     self.playerModel = [[LSPlayerModel alloc] initWithTrackQueue:playerQueue];
     self.playerModel.trackPresenter = self;
+    self.playerModel.delegate = self;
     self.view.backgroundColor = [UIColor colorWithWhite:0.12f alpha:1.0f];
     self.mediaPlayerView = [[LSMediaPlayerView alloc] initWithPlayerModel:self.playerModel];
     self.mediaPlayerView.backgroundColor = [UIColor blackColor];
@@ -49,7 +50,7 @@
     [self.view addSubview:self.mediaPlayerView];
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mediaPlayerTapped)];
     [self.mediaPlayerView addGestureRecognizer:tapGesture];
-    [self.mediaPlayerView beginObserving];
+//    [self.mediaPlayerView beginObserving];
     UIView *promptContainerView = [[UIView alloc] init];
     promptContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:promptContainerView];
@@ -179,4 +180,45 @@
     [self.lyricsViewController setPlayingTrack:track];
     [self presentViewController:self.lyricsViewController animated:YES completion:nil];
 }
+
+- (void)connectedToSpotify {
+    [self.mediaPlayerView connectedToSpotify];
+}
+
+- (void)disconnectedFromSpotify {
+    [self.mediaPlayerView disconnectedFromSpotify];
+}
+
+- (void)currentTrackChanged:(LSTrackItem *)currentTrack playingNextTrack:(BOOL)playingNextTrack {
+    [self.mediaPlayerView trackChanged];
+    [self.lyricsViewController setPlayingTrack:currentTrack usingCache:playingNextTrack];
+}
+
+- (void)playbackEnded {
+    [self.mediaPlayerView playbackEnded];
+    [self.lyricsViewController dismissLyrics];
+}
+
+- (void)elapsedTimeChanged:(NSInteger)elapsedTime {
+    [self.mediaPlayerView setElapsedTime:elapsedTime];
+    [self.lyricsViewController setElapsedTime:elapsedTime];
+}
+
+- (void)playbackStateChanged:(BOOL)state {
+    [self.mediaPlayerView setPlaybackState:state];
+    [self.lyricsViewController setPlaybackState:state];
+}
+
+- (void)enqueuedTrack:(LSTrackItem *)track {
+    
+}
+
+- (void)movedTrackAtIndex:(NSInteger)from toIndex:(NSInteger)to {
+    
+}
+
+- (void)removedTrackAtIndex:(NSInteger)index {
+    
+}
+
 @end

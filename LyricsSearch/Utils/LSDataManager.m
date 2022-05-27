@@ -25,7 +25,10 @@
     [[session dataTaskWithURL:URL completionHandler:^(NSData *data,NSURLResponse *response, NSError *error) {
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         NSInteger statusCode = [dict[@"message"][@"header"][@"status_code"] longValue];
-        if(statusCode != 200) return;
+        if(statusCode != 200) {
+            NSLog(@"%@ failed with status code: %ld", NSStringFromSelector(_cmd), (long)statusCode);
+            return;
+        }
         NSArray *allResults = dict[@"message"][@"body"][@"track_list"];
         NSMutableArray *info = [[NSMutableArray alloc] init];
         for(NSDictionary *result in allResults) {
@@ -67,7 +70,10 @@
     [[session dataTaskWithURL:URL completionHandler:^(NSData *data,NSURLResponse *response, NSError *error) {
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         NSInteger statusCode = [dict[@"message"][@"header"][@"status_code"] longValue];
-        if(statusCode != 200) return;
+        if(statusCode != 200) {
+            NSLog(@"%@ failed with status code: %ld", NSStringFromSelector(_cmd), (long)statusCode);
+            return;
+        }
         NSString *lyricsJSON = dict[@"message"][@"body"][@"subtitle"][@"subtitle_body"];
         NSData *lyricsData = [lyricsJSON dataUsingEncoding:NSUTF8StringEncoding];
         completion(lyricsData ? [NSJSONSerialization JSONObjectWithData:lyricsData options:0 error:nil] : nil);

@@ -67,21 +67,13 @@
     [self updateSubviews];
 }
 
-- (void)updateElapsedTime:(NSNotification *)note {
-    NSDictionary *userInfo = [note userInfo];
-    NSInteger elapsedTime = [userInfo[@"elapsedTime"] intValue];
+- (void)setElapsedTime:(NSInteger)elapsedTime {
     double progress = (double)elapsedTime / self.duration;
     self.progressBar.progress = progress;
 }
 
-- (void)updatePlayerState:(NSNotification *)note {
-    NSDictionary *userInfo = [note userInfo];
-    BOOL paused = [userInfo[@"paused"] boolValue];
+- (void)setPlaybackState:(BOOL)paused {
     [self updatePauseButton:paused];
-}
-
-- (void)dealloc {
-    [self stopObserving];
 }
 
 - (void)updateSubviews {
@@ -146,18 +138,18 @@
     self.currentItem = [self.playerModel currentItem];
 }
 
-- (void)beginObserving {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePlayerState:) name:@"stateChanged" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateElapsedTime:) name:@"updateElapsedTime" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(connectedToSpotify) name:@"spotifyConnected" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(disconnectedFromSpotify) name:@"spotifyDisconnected" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackEnded) name:@"playbackEnded" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackChanged) name:@"trackChanged" object:nil];
-}
+//- (void)beginObserving {
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePlayerState:) name:@"stateChanged" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateElapsedTime:) name:@"updateElapsedTime" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(connectedToSpotify) name:@"spotifyConnected" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(disconnectedFromSpotify) name:@"spotifyDisconnected" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackEnded) name:@"playbackEnded" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackChanged) name:@"trackChanged" object:nil];
+//}
 
-- (void)stopObserving {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
+//- (void)stopObserving {
+//    [[NSNotificationCenter defaultCenter] removeObserver:self];
+//}
 
 - (void)connectedToSpotify {
     self.progressBar.progressTintColor = [UIColor colorWithRed:30.0f/255.0f green:215.0f/255.0f blue:96.0f/255.0f alpha:1.0f];

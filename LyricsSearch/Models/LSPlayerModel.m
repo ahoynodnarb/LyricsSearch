@@ -31,7 +31,7 @@
 
 - (void)setElapsedTime:(NSInteger)elapsedTime {
     _elapsedTime = elapsedTime;
-    [self.delegate elapsedTimeChanged];
+    [self.delegate elapsedTimeChanged:elapsedTime];
 }
 
 - (NSInteger)currentTrackPosition {
@@ -78,7 +78,7 @@
         [self beginTimer];
         [self.appRemote.playerAPI resume:nil];
     }
-    [self.delegate playbackStateChanged];
+    if(self.delegate) [self.delegate playbackStateChanged:paused];
 }
 
 - (void)timerFired {
@@ -114,9 +114,9 @@
     else self.trackQueue.currentTrack = currentItem;
     _currentItem = currentItem;
     [self resetPlayerForTrack:currentItem];
-    if(currentItem) [self.delegate currentTrackChanged];
+    if(!self.delegate) return;
+    if(currentItem) [self.delegate currentTrackChanged:currentItem playingNextTrack:useCache];
     else [self.delegate playbackEnded];
-    [self.delegate currentTrackChanged];
 }
 
 - (void)setCurrentItem:(LSTrackItem *)currentItem useSpotify:(BOOL)useSpotify {
@@ -142,17 +142,17 @@
         return;
     }
     [self.trackQueue enqueue:trackItem];
-    [self.delegate enqueuedTrack];
+    if(self.delegate) [self.delegate enqueuedTrack:trackItem];
 }
 
 - (void)moveTrackAtIndex:(NSInteger)from toIndex:(NSInteger)to {
     [self.trackQueue moveTrackAtIndex:from toIndex:to];
-    [self.delegate movedTrackAtIndex:from toIndex:to];
+    if(self.delegate) [self.delegate movedTrackAtIndex:from toIndex:to];
 }
 
 - (void)removeTrackAtIndex:(NSInteger)index {
     [self.trackQueue removeTrackAtIndex:index];
-    [self.delegate removedTrackAtIndex:index];
+    if(self.delegate) [self.delegate removedTrackAtIndex:index];
 }
 
 - (void)playNextTrack {
@@ -175,19 +175,22 @@
 
 - (void)appRemote:(nonnull SPTAppRemote *)appRemote didDisconnectWithError:(nullable NSError *)error {
     NSLog(@"disconnected");
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"spotifyDisconnected" object:nil];
+    if(self.delegate) [self.delegate disconnectedFromSpotify];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"spotifyDisconnected" object:nil];
 }
 
 - (void)appRemote:(nonnull SPTAppRemote *)appRemote didFailConnectionAttemptWithError:(nullable NSError *)error {
     NSLog(@"failed");
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"spotifyDisconnected" object:nil];
+    if(self.delegate) [self.delegate disconnectedFromSpotify];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"spotifyDisconnected" object:nil];
 }
 
 - (void)appRemoteDidEstablishConnection:(nonnull SPTAppRemote *)appRemote {
     NSLog(@"connected");
     self.appRemote.playerAPI.delegate = self;
     [self.appRemote.playerAPI subscribeToPlayerState:nil];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"spotifyConnected" object:nil];
+    if(self.delegate) [self.delegate connectedToSpotify];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"spotifyConnected" object:nil];
 }
 
 - (void)playerStateDidChange:(nonnull id<SPTAppRemotePlayerState>)playerState {
@@ -199,7 +202,8 @@
         self.elapsedTime = playerState.playbackPosition;
         [self.appRemote.imageAPI fetchImageForItem:track withSize:CGSizeMake(100,100) callback:^(UIImage *result, NSError *error) {
             self.currentItem.artImage = result;
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"trackChanged" object:nil userInfo:@{@"playingNextTrack": @(NO)}];
+            if(self.delegate) [self.delegate currentTrackChanged:item playingNextTrack:NO];
+//            [[NSNotificationCenter defaultCenter] postNotificationName:@"trackChanged" object:nil userInfo:@{@"playingNextTrack": @(NO)}];
         }];
     }
     if(self.paused != playerState.paused) self.paused = playerState.paused;
