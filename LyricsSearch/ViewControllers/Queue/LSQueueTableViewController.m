@@ -40,7 +40,7 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [self.playerModel.nextTracks count] + (self.playerModel.currentItem != nil);
+    return [[self.playerModel nextTracks] count] + 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -52,48 +52,47 @@
     [cell animatePan:recognizer completion:^(BOOL success) {
         if(!success) return;
         NSInteger index = [[self.tableView indexPathForCell:cell] section];
-        [self.nextTracks removeObjectAtIndex:index - (self.playerModel.currentItem != nil)];
-        [self.playerModel setNextTracks:self.nextTracks];
+        [self.nextTracks removeObjectAtIndex:index - 1];
+        [self.playerModel removeTrackAtIndex:[self.playerModel currentTrackPosition] + index];
         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:index];
         [self.tableView deleteSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
     }];
-//    if(recognizer.state == UIGestureRecognizerStateEnded) {
-//        NSInteger index = [[self.tableView indexPathForCell:cell] section];
-//        [self.nextTracks removeObjectAtIndex:index - (self.playerModel.currentItem != nil)];
-//        [self.playerModel setNextTracks:self.nextTracks];
-//        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:index];
-//        [self.tableView deleteSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
-//    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger section = [indexPath section];
-    LSTrackItem *item = self.displayedTracks[section];
-    NSString *reuseIdentifier = section == 0 && self.playerModel.currentItem ? @"CurrentTrack" : @"NextTrack";
+    NSString *reuseIdentifier = section == 0 ? @"CurrentTrack" : @"NextTrack";
     LSQueueTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
-    if([reuseIdentifier isEqualToString:@"NextTrack"]) {
-        UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
-        recognizer.delegate = cell;
-        [cell addGestureRecognizer:recognizer];
-    }
     cell.backgroundColor = [UIColor clearColor];
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.artist = item.artistName;
-    cell.song = item.songName;
-    cell.artwork = item.artImage;
+    if(section != 0) {
+        LSTrackItem *item = self.nextTracks[section - 1];
+        UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
+        recognizer.delegate = cell;
+        [cell addGestureRecognizer:recognizer];
+        cell.artist = item.artistName;
+        cell.song = item.songName;
+        cell.artwork = item.artImage;
+    }
+    else if ([self.playerModel currentItem]) {
+        LSTrackItem *item = [self.playerModel currentItem];
+        cell.artist = item.artistName;
+        cell.song = item.songName;
+        cell.artwork = item.artImage;
+    }
     return cell;
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath{
-    if (proposedDestinationIndexPath.row == 0 && self.playerModel.currentItem) {
+    if ([proposedDestinationIndexPath section] == 0) {
         return [NSIndexPath indexPathForRow:0 inSection:1];
     }
     return proposedDestinationIndexPath;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [indexPath section] != 0 || !self.playerModel.currentItem;
+    return [indexPath section] != 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -109,10 +108,10 @@
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
-    NSInteger sourceIndex = [sourceIndexPath section] - (self.playerModel.currentItem != nil);
-    NSInteger toIndex = [destinationIndexPath section] - (self.playerModel.currentItem != nil);
-    [self.nextTracks exchangeObjectAtIndex:sourceIndex withObjectAtIndex:toIndex];
-    self.playerModel.nextTracks = self.nextTracks;
+    NSInteger sourceIndex = [sourceIndexPath section];
+    NSInteger toIndex = [destinationIndexPath section];
+    [self.nextTracks exchangeObjectAtIndex:sourceIndex - 1 withObjectAtIndex:toIndex - 1];
+    [self.playerModel moveTrackAtIndex:sourceIndex + [self.playerModel currentTrackPosition] toIndex:toIndex + [self.playerModel currentTrackPosition]];
 }
 
 @end

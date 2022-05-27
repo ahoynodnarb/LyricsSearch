@@ -15,6 +15,7 @@
 @property (nonatomic, readonly) NSArray *allTracks;
 @property (nonatomic, readonly) NSInteger currentTrackPosition;
 - (void)enqueue:(LSTrackItem *)item;
+- (void)replaceTrackAtIndex:(NSInteger)index withTrack:(LSTrackItem *)track;
 - (void)moveTrackAtIndex:(NSInteger)from toIndex:(NSInteger)to;
 - (void)removeTrackAtIndex:(NSInteger)index;
 - (void)playNextTrack;

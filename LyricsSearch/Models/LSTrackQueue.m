@@ -56,6 +56,14 @@
     if([self.previousTracks count] != 0) [self.previousTracks removeLastObject];
 }
 
+- (void)replaceTrackAtIndex:(NSInteger)index withTrack:(LSTrackItem *)track {
+    if(![self indexInBounds:index]) return;
+    NSInteger position = [self currentTrackPosition];
+    if(index < position) [self.previousTracks replaceObjectAtIndex:index withObject:track];
+    else if (index > position) [self.nextTracks replaceObjectAtIndex:index withObject:track];
+    else self.currentTrack = track;
+}
+
 - (void)removeTrackAtIndex:(NSInteger)index {
     if(![self indexInBounds:index]) return;
     NSInteger position = [self currentTrackPosition];
@@ -69,7 +77,10 @@
 
 - (void)moveTrackAtIndex:(NSInteger)from toIndex:(NSInteger)to {
     if(![self indexInBounds:from] || ![self indexInBounds:to]) return;
-    
+    LSTrackItem *fromTrack = [self.allTracks objectAtIndex:from];
+    LSTrackItem *toTrack = [self.allTracks objectAtIndex:to];
+    [self replaceTrackAtIndex:from withTrack:toTrack];
+    [self replaceTrackAtIndex:to withTrack:fromTrack];
 }
 
 - (NSInteger)currentTrackPosition {

@@ -38,6 +38,14 @@
     return self.trackQueue.currentTrackPosition;
 }
 
+- (NSArray *)nextTracks {
+    return self.trackQueue.nextTracks;
+}
+
+- (NSArray *)previousTracks {
+    return self.trackQueue.previousTracks;
+}
+
 - (NSArray *)allTracks {
     return [self.trackQueue allTracks];
 }

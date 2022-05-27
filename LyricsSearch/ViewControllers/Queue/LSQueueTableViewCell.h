@@ -7,8 +7,6 @@
 
 #import <UIKit/UIKit.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface LSQueueTableViewCell : UITableViewCell {
     NSLayoutConstraint *containerLeading;
 }
@@ -17,5 +15,3 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UIImage *artwork;
 - (void)animatePan:(UIPanGestureRecognizer *)recognizer completion:(void (^)(BOOL success))completion;
 @end
-
-NS_ASSUME_NONNULL_END
