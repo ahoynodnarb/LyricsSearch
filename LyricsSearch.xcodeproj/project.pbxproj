@@ -1,0 +1,636 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		084A36822834404100D118C0 /* LSQueueTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 084A36812834404100D118C0 /* LSQueueTableViewCell.m */; };
+		087BBA202846EAC3003902B3 /* NSMutableArray+Move.m in Sources */ = {isa = PBXBuildFile; fileRef = 087BBA1F2846EAC3003902B3 /* NSMutableArray+Move.m */; };
+		088917952810A9A2003E620A /* LSLyricsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 088917942810A9A2003E620A /* LSLyricsViewController.m */; };
+		08891798281249B7003E620A /* LSDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08891797281249B7003E620A /* LSDataManager.m */; };
+		08892339278BE3B600BBBA41 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 08892338278BE3B600BBBA41 /* AppDelegate.m */; };
+		0889233C278BE3B600BBBA41 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0889233B278BE3B600BBBA41 /* SceneDelegate.m */; };
+		0889233F278BE3B600BBBA41 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0889233E278BE3B600BBBA41 /* ViewController.m */; };
+		08892342278BE3B600BBBA41 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08892340278BE3B600BBBA41 /* Main.storyboard */; };
+		08892344278BE3B700BBBA41 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08892343278BE3B700BBBA41 /* Assets.xcassets */; };
+		08892347278BE3B700BBBA41 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08892345278BE3B700BBBA41 /* LaunchScreen.storyboard */; };
+		0889234A278BE3B700BBBA41 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 08892349278BE3B700BBBA41 /* main.m */; };
+		08892371278BEDD200BBBA41 /* LSLyricsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08892370278BEDD200BBBA41 /* LSLyricsTableViewController.m */; };
+		088E822F281273E90017A073 /* LSSearchResultTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 088E822E281273E90017A073 /* LSSearchResultTableViewController.m */; };
+		088E82352813D8710017A073 /* LSSearchResultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 088E82342813D8710017A073 /* LSSearchResultTableViewCell.m */; };
+		08A400952814F85B00CF6D1C /* LSLyricsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A400942814F85B00CF6D1C /* LSLyricsTableViewCell.m */; };
+		08B0D8142826F4C40017330D /* LSPlayerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B0D8132826F4C40017330D /* LSPlayerModel.m */; };
+		08B0D8172828552A0017330D /* LSQueueTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B0D8162828552A0017330D /* LSQueueTableViewController.m */; };
+		08BE5A7D281CC1D800E7FE09 /* LSTrackQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 08BE5A7C281CC1D800E7FE09 /* LSTrackQueue.m */; };
+		08BE5A80281CC34D00E7FE09 /* LSTrackItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 08BE5A7F281CC34D00E7FE09 /* LSTrackItem.m */; };
+		08D1A9DA282C539500DC8EB3 /* LSMediaPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D1A9D9282C539500DC8EB3 /* LSMediaPlayerView.m */; };
+		08FAFE8D282F82EC00538E03 /* SpotifyiOS.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08FAFE8B282F82E300538E03 /* SpotifyiOS.xcframework */; };
+		08FAFE8E282F82EC00538E03 /* SpotifyiOS.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 08FAFE8B282F82E300538E03 /* SpotifyiOS.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E43E1040CBCA8E362828ADBC /* Pods_LyricsSearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8CD6B085BF94F38ABBFF8DC /* Pods_LyricsSearch.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		08D80456282F016700AAB31A /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				08FAFE8E282F82EC00538E03 /* SpotifyiOS.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0849A4042832EBD4008614AB /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		084A36802834404100D118C0 /* LSQueueTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSQueueTableViewCell.h; sourceTree = "<group>"; };
+		084A36812834404100D118C0 /* LSQueueTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSQueueTableViewCell.m; sourceTree = "<group>"; };
+		087BBA1E2846EA24003902B3 /* NSMutableArray+Move.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+Move.h"; sourceTree = "<group>"; };
+		087BBA1F2846EAC3003902B3 /* NSMutableArray+Move.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+Move.m"; sourceTree = "<group>"; };
+		087BCEC9283C2DBF009E5F92 /* LSPlayerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSPlayerDelegate.h; sourceTree = "<group>"; };
+		08825528282FBC240001379C /* LSTrackPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSTrackPresenter.h; sourceTree = "<group>"; };
+		088917932810A9A2003E620A /* LSLyricsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSLyricsViewController.h; sourceTree = "<group>"; };
+		088917942810A9A2003E620A /* LSLyricsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSLyricsViewController.m; sourceTree = "<group>"; };
+		08891796281249B7003E620A /* LSDataManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSDataManager.h; sourceTree = "<group>"; };
+		08891797281249B7003E620A /* LSDataManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSDataManager.m; sourceTree = "<group>"; };
+		08892334278BE3B600BBBA41 /* LyricsSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LyricsSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		08892337278BE3B600BBBA41 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		08892338278BE3B600BBBA41 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		0889233A278BE3B600BBBA41 /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
+		0889233B278BE3B600BBBA41 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
+		0889233D278BE3B600BBBA41 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		0889233E278BE3B600BBBA41 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		08892341278BE3B600BBBA41 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		08892343278BE3B700BBBA41 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		08892346278BE3B700BBBA41 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		08892348278BE3B700BBBA41 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = LyricsSearch/Support/Info.plist; sourceTree = SOURCE_ROOT; };
+		08892349278BE3B700BBBA41 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		0889236F278BEDD200BBBA41 /* LSLyricsTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSLyricsTableViewController.h; sourceTree = "<group>"; };
+		08892370278BEDD200BBBA41 /* LSLyricsTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSLyricsTableViewController.m; sourceTree = "<group>"; };
+		088E822D281273E90017A073 /* LSSearchResultTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSSearchResultTableViewController.h; sourceTree = "<group>"; };
+		088E822E281273E90017A073 /* LSSearchResultTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSSearchResultTableViewController.m; sourceTree = "<group>"; };
+		088E82332813D8710017A073 /* LSSearchResultTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSSearchResultTableViewCell.h; sourceTree = "<group>"; };
+		088E82342813D8710017A073 /* LSSearchResultTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSSearchResultTableViewCell.m; sourceTree = "<group>"; };
+		08A400932814F85B00CF6D1C /* LSLyricsTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSLyricsTableViewCell.h; sourceTree = "<group>"; };
+		08A400942814F85B00CF6D1C /* LSLyricsTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSLyricsTableViewCell.m; sourceTree = "<group>"; };
+		08B0D8122826F4C40017330D /* LSPlayerModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSPlayerModel.h; sourceTree = "<group>"; };
+		08B0D8132826F4C40017330D /* LSPlayerModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSPlayerModel.m; sourceTree = "<group>"; };
+		08B0D8152828552A0017330D /* LSQueueTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSQueueTableViewController.h; sourceTree = "<group>"; };
+		08B0D8162828552A0017330D /* LSQueueTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSQueueTableViewController.m; sourceTree = "<group>"; };
+		08BE5A7B281CC1D800E7FE09 /* LSTrackQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSTrackQueue.h; sourceTree = "<group>"; };
+		08BE5A7C281CC1D800E7FE09 /* LSTrackQueue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSTrackQueue.m; sourceTree = "<group>"; };
+		08BE5A7E281CC34D00E7FE09 /* LSTrackItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSTrackItem.h; sourceTree = "<group>"; };
+		08BE5A7F281CC34D00E7FE09 /* LSTrackItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSTrackItem.m; sourceTree = "<group>"; };
+		08D1A9D8282C539500DC8EB3 /* LSMediaPlayerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSMediaPlayerView.h; sourceTree = "<group>"; };
+		08D1A9D9282C539500DC8EB3 /* LSMediaPlayerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSMediaPlayerView.m; sourceTree = "<group>"; };
+		08FAFE8B282F82E300538E03 /* SpotifyiOS.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = SpotifyiOS.xcframework; sourceTree = "<group>"; };
+		742450C283FFA98D5F320085 /* Pods-LyricsSearch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LyricsSearch.debug.xcconfig"; path = "Target Support Files/Pods-LyricsSearch/Pods-LyricsSearch.debug.xcconfig"; sourceTree = "<group>"; };
+		93888344C1C4A32F376C679F /* Pods-LyricsSearch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LyricsSearch.release.xcconfig"; path = "Target Support Files/Pods-LyricsSearch/Pods-LyricsSearch.release.xcconfig"; sourceTree = "<group>"; };
+		C8CD6B085BF94F38ABBFF8DC /* Pods_LyricsSearch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LyricsSearch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		08892331278BE3B600BBBA41 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				08FAFE8D282F82EC00538E03 /* SpotifyiOS.xcframework in Frameworks */,
+				E43E1040CBCA8E362828ADBC /* Pods_LyricsSearch.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		084A36832834407000D118C0 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				08892337278BE3B600BBBA41 /* AppDelegate.h */,
+				08892338278BE3B600BBBA41 /* AppDelegate.m */,
+				0889233A278BE3B600BBBA41 /* SceneDelegate.h */,
+				0889233B278BE3B600BBBA41 /* SceneDelegate.m */,
+				08892340278BE3B600BBBA41 /* Main.storyboard */,
+				08892343278BE3B700BBBA41 /* Assets.xcassets */,
+				08892345278BE3B700BBBA41 /* LaunchScreen.storyboard */,
+				08892348278BE3B700BBBA41 /* Info.plist */,
+				08892349278BE3B700BBBA41 /* main.m */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		084A3684283440B700D118C0 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				0849A4042832EBD4008614AB /* Constants.h */,
+				087BBA1E2846EA24003902B3 /* NSMutableArray+Move.h */,
+				087BBA1F2846EAC3003902B3 /* NSMutableArray+Move.m */,
+				08891796281249B7003E620A /* LSDataManager.h */,
+				08891797281249B7003E620A /* LSDataManager.m */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		084A3685283440D800D118C0 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				08825528282FBC240001379C /* LSTrackPresenter.h */,
+				087BCEC9283C2DBF009E5F92 /* LSPlayerDelegate.h */,
+				08B0D8122826F4C40017330D /* LSPlayerModel.h */,
+				08B0D8132826F4C40017330D /* LSPlayerModel.m */,
+				08BE5A7B281CC1D800E7FE09 /* LSTrackQueue.h */,
+				08BE5A7C281CC1D800E7FE09 /* LSTrackQueue.m */,
+				08BE5A7E281CC34D00E7FE09 /* LSTrackItem.h */,
+				08BE5A7F281CC34D00E7FE09 /* LSTrackItem.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		084A3686283440F000D118C0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				08D1A9D8282C539500DC8EB3 /* LSMediaPlayerView.h */,
+				08D1A9D9282C539500DC8EB3 /* LSMediaPlayerView.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		084A368A2834414800D118C0 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				084A368F2834423F00D118C0 /* Landing */,
+				084A368D2834420700D118C0 /* Lyrics */,
+				084A368E2834420B00D118C0 /* Queue */,
+				084A368C283441FF00D118C0 /* SearchResults */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		084A368C283441FF00D118C0 /* SearchResults */ = {
+			isa = PBXGroup;
+			children = (
+				088E82332813D8710017A073 /* LSSearchResultTableViewCell.h */,
+				088E82342813D8710017A073 /* LSSearchResultTableViewCell.m */,
+				088E822D281273E90017A073 /* LSSearchResultTableViewController.h */,
+				088E822E281273E90017A073 /* LSSearchResultTableViewController.m */,
+			);
+			path = SearchResults;
+			sourceTree = "<group>";
+		};
+		084A368D2834420700D118C0 /* Lyrics */ = {
+			isa = PBXGroup;
+			children = (
+				08A400932814F85B00CF6D1C /* LSLyricsTableViewCell.h */,
+				08A400942814F85B00CF6D1C /* LSLyricsTableViewCell.m */,
+				088917932810A9A2003E620A /* LSLyricsViewController.h */,
+				088917942810A9A2003E620A /* LSLyricsViewController.m */,
+				0889236F278BEDD200BBBA41 /* LSLyricsTableViewController.h */,
+				08892370278BEDD200BBBA41 /* LSLyricsTableViewController.m */,
+			);
+			path = Lyrics;
+			sourceTree = "<group>";
+		};
+		084A368E2834420B00D118C0 /* Queue */ = {
+			isa = PBXGroup;
+			children = (
+				084A36802834404100D118C0 /* LSQueueTableViewCell.h */,
+				084A36812834404100D118C0 /* LSQueueTableViewCell.m */,
+				08B0D8152828552A0017330D /* LSQueueTableViewController.h */,
+				08B0D8162828552A0017330D /* LSQueueTableViewController.m */,
+			);
+			path = Queue;
+			sourceTree = "<group>";
+		};
+		084A368F2834423F00D118C0 /* Landing */ = {
+			isa = PBXGroup;
+			children = (
+				0889233D278BE3B600BBBA41 /* ViewController.h */,
+				0889233E278BE3B600BBBA41 /* ViewController.m */,
+			);
+			path = Landing;
+			sourceTree = "<group>";
+		};
+		0889232B278BE3B600BBBA41 = {
+			isa = PBXGroup;
+			children = (
+				08892336278BE3B600BBBA41 /* LyricsSearch */,
+				08892335278BE3B600BBBA41 /* Products */,
+				EE7FC24E7362C18F4F4642DB /* Pods */,
+				247F14B58D43F70F54050469 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		08892335278BE3B600BBBA41 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				08892334278BE3B600BBBA41 /* LyricsSearch.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		08892336278BE3B600BBBA41 /* LyricsSearch */ = {
+			isa = PBXGroup;
+			children = (
+				084A3686283440F000D118C0 /* Views */,
+				084A368A2834414800D118C0 /* ViewControllers */,
+				084A3685283440D800D118C0 /* Models */,
+				084A3684283440B700D118C0 /* Utils */,
+				084A36832834407000D118C0 /* Support */,
+			);
+			path = LyricsSearch;
+			sourceTree = "<group>";
+		};
+		247F14B58D43F70F54050469 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				08FAFE8B282F82E300538E03 /* SpotifyiOS.xcframework */,
+				C8CD6B085BF94F38ABBFF8DC /* Pods_LyricsSearch.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EE7FC24E7362C18F4F4642DB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				742450C283FFA98D5F320085 /* Pods-LyricsSearch.debug.xcconfig */,
+				93888344C1C4A32F376C679F /* Pods-LyricsSearch.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		08892333278BE3B600BBBA41 /* LyricsSearch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 08892363278BE3B700BBBA41 /* Build configuration list for PBXNativeTarget "LyricsSearch" */;
+			buildPhases = (
+				613A8501024ABB3BC60D5445 /* [CP] Check Pods Manifest.lock */,
+				08892330278BE3B600BBBA41 /* Sources */,
+				08892331278BE3B600BBBA41 /* Frameworks */,
+				08892332278BE3B600BBBA41 /* Resources */,
+				5F59CC222F70AF26C1E87464 /* [CP] Embed Pods Frameworks */,
+				08D80456282F016700AAB31A /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LyricsSearch;
+			productName = LyricsTester;
+			productReference = 08892334278BE3B600BBBA41 /* LyricsSearch.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0889232C278BE3B600BBBA41 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1310;
+				TargetAttributes = {
+					08892333278BE3B600BBBA41 = {
+						CreatedOnToolsVersion = 13.1;
+					};
+				};
+			};
+			buildConfigurationList = 0889232F278BE3B600BBBA41 /* Build configuration list for PBXProject "LyricsSearch" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 0889232B278BE3B600BBBA41;
+			productRefGroup = 08892335278BE3B600BBBA41 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				08892333278BE3B600BBBA41 /* LyricsSearch */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		08892332278BE3B600BBBA41 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				08892347278BE3B700BBBA41 /* LaunchScreen.storyboard in Resources */,
+				08892344278BE3B700BBBA41 /* Assets.xcassets in Resources */,
+				08892342278BE3B600BBBA41 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5F59CC222F70AF26C1E87464 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LyricsSearch/Pods-LyricsSearch-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LyricsSearch/Pods-LyricsSearch-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LyricsSearch/Pods-LyricsSearch-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		613A8501024ABB3BC60D5445 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-LyricsSearch-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		08892330278BE3B600BBBA41 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				08B0D8172828552A0017330D /* LSQueueTableViewController.m in Sources */,
+				08892371278BEDD200BBBA41 /* LSLyricsTableViewController.m in Sources */,
+				0889233F278BE3B600BBBA41 /* ViewController.m in Sources */,
+				088917952810A9A2003E620A /* LSLyricsViewController.m in Sources */,
+				08B0D8142826F4C40017330D /* LSPlayerModel.m in Sources */,
+				088E82352813D8710017A073 /* LSSearchResultTableViewCell.m in Sources */,
+				08892339278BE3B600BBBA41 /* AppDelegate.m in Sources */,
+				087BBA202846EAC3003902B3 /* NSMutableArray+Move.m in Sources */,
+				0889234A278BE3B700BBBA41 /* main.m in Sources */,
+				084A36822834404100D118C0 /* LSQueueTableViewCell.m in Sources */,
+				08891798281249B7003E620A /* LSDataManager.m in Sources */,
+				08A400952814F85B00CF6D1C /* LSLyricsTableViewCell.m in Sources */,
+				088E822F281273E90017A073 /* LSSearchResultTableViewController.m in Sources */,
+				08D1A9DA282C539500DC8EB3 /* LSMediaPlayerView.m in Sources */,
+				0889233C278BE3B600BBBA41 /* SceneDelegate.m in Sources */,
+				08BE5A7D281CC1D800E7FE09 /* LSTrackQueue.m in Sources */,
+				08BE5A80281CC34D00E7FE09 /* LSTrackItem.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		08892340278BE3B600BBBA41 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				08892341278BE3B600BBBA41 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		08892345278BE3B700BBBA41 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				08892346278BE3B700BBBA41 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		08892361278BE3B700BBBA41 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		08892362278BE3B700BBBA41 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		08892364278BE3B700BBBA41 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 742450C283FFA98D5F320085 /* Pods-LyricsSearch.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5TKTM6GU9T;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = LyricsSearch/Support/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LyricsSearch;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.popsicletreehouse.LyricsSearch;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		08892365278BE3B700BBBA41 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 93888344C1C4A32F376C679F /* Pods-LyricsSearch.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5TKTM6GU9T;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = LyricsSearch/Support/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LyricsSearch;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.popsicletreehouse.LyricsSearch;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0889232F278BE3B600BBBA41 /* Build configuration list for PBXProject "LyricsSearch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				08892361278BE3B700BBBA41 /* Debug */,
+				08892362278BE3B700BBBA41 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		08892363278BE3B700BBBA41 /* Build configuration list for PBXNativeTarget "LyricsSearch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				08892364278BE3B700BBBA41 /* Debug */,
+				08892365278BE3B700BBBA41 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0889232C278BE3B600BBBA41 /* Project object */;
+}

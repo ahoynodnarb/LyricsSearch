@@ -1,0 +1,16 @@
+PODS:
+  - MarqueeLabel-ObjC (3.3.0)
+
+DEPENDENCIES:
+  - MarqueeLabel-ObjC
+
+SPEC REPOS:
+  trunk:
+    - MarqueeLabel-ObjC
+
+SPEC CHECKSUMS:
+  MarqueeLabel-ObjC: 696eaa82e4fcc7fb53e4fdf37ac138f03bf022d6
+
+PODFILE CHECKSUM: c268c868d327145be3aed4c41caf1d6bc82ab3bd
+
+COCOAPODS: 1.11.3
