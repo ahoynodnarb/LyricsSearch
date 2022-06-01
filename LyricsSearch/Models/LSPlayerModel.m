@@ -185,13 +185,11 @@
 - (void)appRemote:(nonnull SPTAppRemote *)appRemote didDisconnectWithError:(nullable NSError *)error {
     NSLog(@"disconnected");
     if(self.delegate) [self.delegate disconnectedFromSpotify];
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"spotifyDisconnected" object:nil];
 }
 
 - (void)appRemote:(nonnull SPTAppRemote *)appRemote didFailConnectionAttemptWithError:(nullable NSError *)error {
     NSLog(@"failed");
     if(self.delegate) [self.delegate disconnectedFromSpotify];
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"spotifyDisconnected" object:nil];
 }
 
 - (void)appRemoteDidEstablishConnection:(nonnull SPTAppRemote *)appRemote {
@@ -199,7 +197,6 @@
     self.appRemote.playerAPI.delegate = self;
     [self.appRemote.playerAPI subscribeToPlayerState:nil];
     if(self.delegate) [self.delegate connectedToSpotify];
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"spotifyConnected" object:nil];
 }
 
 - (void)playerStateDidChange:(nonnull id<SPTAppRemotePlayerState>)playerState {
@@ -212,7 +209,6 @@
         [self.appRemote.imageAPI fetchImageForItem:track withSize:CGSizeMake(100,100) callback:^(UIImage *result, NSError *error) {
             self.currentItem.artImage = result;
             if(self.delegate) [self.delegate currentTrackChanged:item playingNextTrack:NO];
-//            [[NSNotificationCenter defaultCenter] postNotificationName:@"trackChanged" object:nil userInfo:@{@"playingNextTrack": @(NO)}];
         }];
     }
     if(self.paused != playerState.paused) self.paused = playerState.paused;

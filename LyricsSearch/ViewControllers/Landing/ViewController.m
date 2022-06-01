@@ -1,4 +1,3 @@
-// TODO: Add option to modify queue manually
 // TODO: Cache lyrics for all songs in queue
 // TODO: Optimize downloading and maybe persistent cache
 
@@ -51,7 +50,6 @@
     [self.view addSubview:self.mediaPlayerView];
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mediaPlayerTapped)];
     [self.mediaPlayerView addGestureRecognizer:tapGesture];
-//    [self.mediaPlayerView beginObserving];
     UIView *promptContainerView = [[UIView alloc] init];
     promptContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:promptContainerView];

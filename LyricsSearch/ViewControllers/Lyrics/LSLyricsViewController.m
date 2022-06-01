@@ -175,49 +175,17 @@
     [super viewDidLoad];
     [self setupSubviews];
     [self setupConstraints];
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        [self downloadTrackInfo];
-//    });
 }
 
-//- (void)beginObserving {
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePlayerState:) name:@"stateChanged" object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateElapsedTime:) name:@"updateElapsedTime" object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(lyricsDismissed) name:@"playbackEnded" object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(trackChanged:) name:@"trackChanged" object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadTrackInfo) name:@"queueUpdated" object:nil];
-//}
-
-//- (void)stopObserving {
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"updateElapsedTime" object:nil];
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"stateUpdated" object:nil];
-//}
-
 - (void)setPlaybackState:(BOOL)paused {
-//- (void)updatePlayerState:(NSNotification *)note {
-//    NSDictionary *userInfo = [note userInfo];
-//    BOOL paused = [userInfo[@"paused"] boolValue];
     [self updatePauseButton:paused];
 }
 
-//- (void)updateElapsedTime:(NSNotification *)note {
-//    NSDictionary *userInfo = [note userInfo];
-//    NSInteger elapsedTime = [userInfo[@"elapsedTime"] intValue];
 - (void)setElapsedTime:(NSInteger)elapsedTime {
     [self.tableViewController updateElapsedTime:elapsedTime];
     [self updateElapsedTimeLabel:elapsedTime];
     if(!self.timeSlider.isHighlighted) [self.timeSlider setValue:elapsedTime animated:NO];
 }
-
-//- (void)viewDidDisappear:(BOOL)animated {
-//    [super viewDidDisappear:animated];
-//    [self stopObserving];
-//}
-
-//- (void)viewWillAppear:(BOOL)animated {
-//    [super viewWillAppear:animated];
-//    [self beginObserving];
-//}
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -258,8 +226,6 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-//- (void)trackChanged:(NSNotification *)note {
-//    NSDictionary *userInfo = [note userInfo];
 - (void)trackChanged:(BOOL)shouldUseCache {
     [self setPlayingTrack:[self.playerModel currentItem] usingCache:shouldUseCache];
 }
@@ -309,17 +275,6 @@
 - (void)setPlayingTrack:(LSTrackItem *)track {
     [self setPlayingTrack:track usingCache:NO];
 }
-
-//- (void)downloadTrackInfo {
-//    NSArray *allTracks = [self.playerModel allTracks];
-//    self.cachedLyrics = [[NSMutableArray alloc] init];
-//    for(NSInteger i = [self.playerModel currentTrackPosition]; i < [allTracks count]; i++) {
-//        LSTrackItem *item = allTracks[i];
-//        [LSDataManager lyricsForSong:item.songName artist:item.artistName completion:^(NSArray *info) {
-//            [self.cachedLyrics addObject:info];
-//        }];
-//    }
-//}
 
 - (void)playNextTrack {
     [self.playerModel playNextTrack];
