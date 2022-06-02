@@ -42,7 +42,7 @@
             [dict setObject:@(duration) forKey:@"duration"];
             if([trackInfo[@"track_spotify_id"] length] != 0) {
                 NSString *URI = [@"spotify:track:" stringByAppendingString:trackInfo[@"track_spotify_id"]];
-                [dict setObject:@"URI" forKey:URI];
+                [dict setObject:URI forKey:@"URI"];
             }
             // sometimes the URL uses http and the app shits itself
             NSURLComponents *components = [NSURLComponents componentsWithURL:[NSURL URLWithString:trackInfo[@"album_coverart_100x100"]] resolvingAgainstBaseURL:YES];

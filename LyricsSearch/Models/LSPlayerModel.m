@@ -145,6 +145,7 @@
 
 - (void)enqueue:(LSTrackItem *)trackItem {
     if([self spotifyConnected]) {
+        if(!trackItem.URI) return;
         [self.appRemote.playerAPI enqueueTrackUri:trackItem.URI callback:nil];
         return;
     }
