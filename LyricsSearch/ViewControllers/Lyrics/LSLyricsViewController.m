@@ -182,17 +182,19 @@
 }
 
 - (void)setElapsedTime:(NSInteger)elapsedTime {
-    [self.tableViewController updateElapsedTime:elapsedTime];
+    [self.tableViewController updateTimestampForTime:elapsedTime];
     [self updateElapsedTimeLabel:elapsedTime];
     if(!self.timeSlider.isHighlighted) [self.timeSlider setValue:elapsedTime animated:NO];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    [self.tableViewController.tableView beginUpdates];
-    [self.tableViewController updateTimestampForTime:[self.playerModel elapsedTime]];
-    [self.tableViewController.tableView setNeedsDisplay];
-    [self.tableViewController.tableView endUpdates];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 }
 
 - (void)updateElapsedTimeLabel:(NSInteger)time {
@@ -211,7 +213,6 @@
             break;
         case UITouchPhaseEnded:
             [self.playerModel resumeFiring];
-            [self.tableViewController updateTimestampForTime:selectedTime];
             [self.playerModel seek:selectedTime];
             break;
         case UITouchPhaseMoved:
@@ -223,6 +224,7 @@
 }
 
 - (void)dismissLyrics {
+    [self.tableViewController.tableView selectRowAtIndexPath:nil animated:YES scrollPosition:UITableViewScrollPositionTop];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

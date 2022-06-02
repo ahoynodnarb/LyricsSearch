@@ -14,7 +14,6 @@
 @property (nonatomic, strong) LSPlayerModel *playerModel;
 - (instancetype)initWithLyrics:(NSArray *)lyrics playerModel:(LSPlayerModel *)playerModel;
 - (void)updateTimestampForTime:(NSInteger)time;
-- (void)updateElapsedTime:(NSInteger)elapsedTime;
 - (void)setPlayingTrack:(LSTrackItem *)track;
 - (void)reloadLyrics;
 @end

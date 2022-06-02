@@ -10,9 +10,7 @@
 #import "LSLyricsTableViewCell.h"
 
 @interface LSLyricsTableViewController ()
-@property (nonatomic, assign) float nextTimestamp;
-@property (nonatomic, assign) NSInteger nextSection;
-@property (nonatomic, assign) NSInteger previousTime;
+
 @end
 
 @implementation LSLyricsTableViewController
@@ -21,7 +19,6 @@
     if(self = [super init]) {
         _lyricsArray = lyrics;
         self.playerModel = playerModel;
-        self.nextTimestamp = [self.lyricsArray[self.nextSection][@"time"][@"total"] floatValue] * 1000;
     }
     return self;
 }
@@ -35,15 +32,8 @@
     [self.tableView registerClass:[LSLyricsTableViewCell class] forCellReuseIdentifier:@"Cell"];
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    [self.tableView selectRowAtIndexPath:nil animated:YES scrollPosition:UITableViewScrollPositionTop];
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    self.nextSection = [indexPath section] + 1;
-    self.nextTimestamp = [self.lyricsArray[self.nextSection][@"time"][@"total"] floatValue] * 1000;
-    NSInteger selectedTimestamp = self.nextSection == 0 ? 0 : [self.lyricsArray[self.nextSection - 1][@"time"][@"total"] floatValue] * 1000;
+    NSInteger selectedTimestamp = [self.lyricsArray[indexPath.section][@"time"][@"total"] floatValue] * 1000;
     [self.playerModel seek:selectedTimestamp];
     [tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
@@ -70,17 +60,25 @@
     return 1;
 }
 
+- (void)scrollToTop {
+    NSIndexPath *top = [NSIndexPath indexPathForRow:0 inSection:0];
+    [self.tableView selectRowAtIndexPath:nil animated:YES scrollPosition:UITableViewScrollPositionTop];
+    [self.tableView scrollToRowAtIndexPath:top atScrollPosition:UITableViewScrollPositionTop animated:YES];
+}
+
 - (void)updateTimestampForTime:(NSInteger)time {
+    NSInteger initialTimestamp = [self.lyricsArray[0][@"time"][@"total"] floatValue] * 1000;
+    if(time < initialTimestamp) {
+        if([self.tableView indexPathForSelectedRow]) [self scrollToTop];
+        return;
+    }
     for(NSInteger i = 0; i < [self.lyricsArray count]; i++) {
         NSInteger next = [self.lyricsArray[i][@"time"][@"total"] floatValue] * 1000;
         if(next >= time) {
-            if(i == self.nextSection) return;
-            self.nextSection = i;
-            self.nextTimestamp = next;
+            NSIndexPath *currentSelectedIndexPath = [self.tableView indexPathForSelectedRow];
+            if(currentSelectedIndexPath && [currentSelectedIndexPath section] == i - 1) return;
             if(i == 0) {
-                NSIndexPath *top = [NSIndexPath indexPathForRow:0 inSection:0];
-                [self.tableView selectRowAtIndexPath:nil animated:YES scrollPosition:UITableViewScrollPositionTop];
-                [self.tableView scrollToRowAtIndexPath:top atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                [self scrollToTop];
                 return;
             }
             NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:i - 1];
@@ -88,33 +86,13 @@
             return;
         }
     }
-    self.nextSection = [self.lyricsArray count] - 1;
-    [self.tableView selectRowAtIndexPath:nil animated:YES scrollPosition:UITableViewScrollPositionTop];
-}
-
-- (void)updateElapsedTime:(NSInteger)elapsedTime {
-    // bad
-    if([self.playerModel paused]) return;
-    if(self.previousTime > elapsedTime) [self updateTimestampForTime:elapsedTime];
-    else if(elapsedTime > self.nextTimestamp) {
-        if(self.nextSection < [self.lyricsArray count] - 1) {
-            NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:self.nextSection];
-            [self.tableView selectRowAtIndexPath:selectedIndexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
-            self.nextSection++;
-            self.nextTimestamp = [self.lyricsArray[self.nextSection][@"time"][@"total"] floatValue] * 1000;
-        }
-        else [self.tableView selectRowAtIndexPath:nil animated:YES scrollPosition:UITableViewScrollPositionTop];
-    }
-    self.previousTime = elapsedTime;
+    [self.tableView selectRowAtIndexPath:nil animated:YES scrollPosition:UITableViewScrollPositionNone];
 }
 
 - (void)reloadLyrics {
     [self.tableView reloadData];
     if([self.lyricsArray count] == 0) return;
-    NSIndexPath *top = [NSIndexPath indexPathForRow:0 inSection:0];
-    [self.tableView scrollToRowAtIndexPath:top atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    self.nextSection = 0;
-    self.nextTimestamp = [self.lyricsArray[self.nextSection][@"time"][@"total"] floatValue] * 1000;
+    [self scrollToTop];
 }
 
 - (void)setPlayingTrack:(LSTrackItem *)track {

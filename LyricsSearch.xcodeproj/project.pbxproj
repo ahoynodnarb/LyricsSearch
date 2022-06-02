@@ -179,10 +179,10 @@
 		084A368D2834420700D118C0 /* Lyrics */ = {
 			isa = PBXGroup;
 			children = (
-				08A400932814F85B00CF6D1C /* LSLyricsTableViewCell.h */,
-				08A400942814F85B00CF6D1C /* LSLyricsTableViewCell.m */,
 				088917932810A9A2003E620A /* LSLyricsViewController.h */,
 				088917942810A9A2003E620A /* LSLyricsViewController.m */,
+				08A400932814F85B00CF6D1C /* LSLyricsTableViewCell.h */,
+				08A400942814F85B00CF6D1C /* LSLyricsTableViewCell.m */,
 				0889236F278BEDD200BBBA41 /* LSLyricsTableViewController.h */,
 				08892370278BEDD200BBBA41 /* LSLyricsTableViewController.m */,
 			);

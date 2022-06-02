@@ -181,17 +181,14 @@
 }
 
 - (void)appRemote:(nonnull SPTAppRemote *)appRemote didDisconnectWithError:(nullable NSError *)error {
-    NSLog(@"disconnected");
     if(self.delegate) [self.delegate disconnectedFromSpotify];
 }
 
 - (void)appRemote:(nonnull SPTAppRemote *)appRemote didFailConnectionAttemptWithError:(nullable NSError *)error {
-    NSLog(@"failed");
     if(self.delegate) [self.delegate disconnectedFromSpotify];
 }
 
 - (void)appRemoteDidEstablishConnection:(nonnull SPTAppRemote *)appRemote {
-    NSLog(@"connected");
     self.appRemote.playerAPI.delegate = self;
     [self.appRemote.playerAPI subscribeToPlayerState:nil];
     if(self.delegate) [self.delegate connectedToSpotify];

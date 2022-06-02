@@ -150,11 +150,9 @@
 }
 
 - (void)sessionManager:(nonnull SPTSessionManager *)manager didFailWithError:(nonnull NSError *)error {
-    NSLog(@"authentication failed");
 }
 
 - (void)sessionManager:(nonnull SPTSessionManager *)manager didInitiateSession:(nonnull SPTSession *)session {
-    NSLog(@"authentication successful");
     dispatch_async(dispatch_get_main_queue(), ^{
         self.playerModel.appRemote.connectionParameters.accessToken = session.accessToken;
         [self.playerModel.appRemote connect];
@@ -199,8 +197,8 @@
 }
 
 - (void)elapsedTimeChanged:(NSInteger)elapsedTime {
-    [self.mediaPlayerView setElapsedTime:elapsedTime];
-    [self.lyricsViewController setElapsedTime:elapsedTime];
+    if(self.presentedViewController) [self.lyricsViewController setElapsedTime:elapsedTime];
+    else [self.mediaPlayerView setElapsedTime:elapsedTime];
 }
 
 - (void)playbackStateChanged:(BOOL)state {
