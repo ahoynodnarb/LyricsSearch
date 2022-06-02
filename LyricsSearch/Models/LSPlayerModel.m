@@ -53,20 +53,16 @@
 - (instancetype)initWithTrackQueue:(LSTrackQueue *)trackQueue {
     if(self = [super init]) {
         self.trackQueue = trackQueue;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pauseFiring) name:UIApplicationDidEnterBackgroundNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resumeFiring) name:UIApplicationWillEnterForegroundNotification object:nil];
     }
     return self;
 }
 
 - (void)pauseFiring {
-    if([self spotifyConnected] || !self.currentItem) return;
     self.backgroundTime = CFAbsoluteTimeGetCurrent();
     [self.timer invalidate];
 }
 
 - (void)resumeFiring {
-    if([self spotifyConnected] || !self.currentItem) return;
     CFTimeInterval offset = CFAbsoluteTimeGetCurrent() - self.backgroundTime;
     NSInteger ms = offset * 1000;
     self.elapsedTime += ms;
@@ -149,7 +145,6 @@
         [self.appRemote.playerAPI enqueueTrackUri:trackItem.URI callback:nil];
         return;
     }
-    NSLog(@"enqueueing");
     [self.trackQueue enqueue:trackItem];
     if(self.delegate) [self.delegate enqueuedTrack:trackItem];
 }

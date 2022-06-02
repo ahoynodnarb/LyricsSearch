@@ -9,6 +9,7 @@
 
 @interface LSQueueTableViewCell : UITableViewCell {
     NSLayoutConstraint *containerLeading;
+    NSLayoutConstraint *slidingTrailing;
 }
 @property (nonatomic, strong) NSString *artist;
 @property (nonatomic, strong) NSString *song;

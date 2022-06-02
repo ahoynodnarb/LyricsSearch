@@ -53,6 +53,7 @@
         if(!success) return;
         NSInteger index = [[self.tableView indexPathForCell:cell] section];
         [self.playerModel removeTrackAtIndex:[self.playerModel currentTrackPosition] + index];
+        [self.tableView reloadData];
     }];
 }
 

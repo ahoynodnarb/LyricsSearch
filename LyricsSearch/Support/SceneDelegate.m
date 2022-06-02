@@ -49,6 +49,7 @@
     ViewController *controller = (ViewController *)self.window.rootViewController;
     LSPlayerModel *playerModel = controller.playerModel;
     if(playerModel.appRemote.connectionParameters.accessToken) [playerModel.appRemote connect];
+    else [playerModel resumeFiring];
 }
 
 
@@ -59,6 +60,7 @@
     ViewController *controller = (ViewController *)self.window.rootViewController;
     LSPlayerModel *playerModel = controller.playerModel;
     if(playerModel.appRemote.connectionParameters.accessToken) [playerModel.appRemote disconnect];
+    else [playerModel pauseFiring];
 }
 
 

@@ -22,6 +22,4 @@
 - (void)setPlaybackState:(BOOL)paused;
 - (void)playbackEnded;
 - (void)trackChanged;
-//- (void)beginObserving;
-//- (void)stopObserving;
 @end

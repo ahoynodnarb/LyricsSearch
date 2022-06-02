@@ -85,14 +85,6 @@
     ]];
 }
 
-- (void)resetSlidingView {
-    [self.slidingView removeFromSuperview];
-    self.slidingView = nil;
-    self.originalTouchLocation = CGPointZero;
-    containerLeading.constant = 0;
-    [self layoutIfNeeded];
-}
-
 - (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)recognizer {
     CGPoint currentTouchPoint = [recognizer translationInView:self];
     return fabs(currentTouchPoint.x) > fabs(currentTouchPoint.y);
@@ -104,8 +96,8 @@
         self.slidingView = [[UIView alloc] init];
         self.slidingView.backgroundColor = [UIColor redColor];
         self.slidingView.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.contentView addSubview:self.slidingView];
-        [self.contentView sendSubviewToBack:self.slidingView];
+        [self addSubview:self.slidingView];
+        [self bringSubviewToFront:self.slidingView];
         UIImageView *slidingImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"AddToQueueIcon"]];
         slidingImageView.translatesAutoresizingMaskIntoConstraints = NO;
         [self.slidingView addSubview:slidingImageView];
@@ -113,7 +105,7 @@
             [self.slidingView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor],
             [self.slidingView.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor],
             [self.slidingView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
-            [self.slidingView.trailingAnchor constraintEqualToAnchor:self.containerView.leadingAnchor],
+            slidingTrailing = [self.slidingView.trailingAnchor constraintEqualToAnchor:self.containerView.leadingAnchor],
             [slidingImageView.heightAnchor constraintEqualToConstant:30],
             [slidingImageView.widthAnchor constraintEqualToAnchor:slidingImageView.heightAnchor],
             [slidingImageView.centerXAnchor constraintEqualToAnchor:self.slidingView.centerXAnchor],
@@ -130,24 +122,19 @@
     }
     else if (recognizer.state == UIGestureRecognizerStateEnded) {
         if(!self.slidingView) return;
-        UIView *testView = [[UIView alloc] init];
-        testView.backgroundColor = [UIColor redColor];
-        testView.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addSubview:testView];
-        [self bringSubviewToFront:testView];
-        [NSLayoutConstraint activateConstraints:@[
-            [testView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
-            [testView.topAnchor constraintEqualToAnchor:self.topAnchor],
-            [testView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
-        ]];
-        [self layoutIfNeeded];
-        [testView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor].active = YES;
-        [UIView animateWithDuration:0.4f delay:0.2f options:UIViewAnimationOptionCurveEaseIn animations:^{
+        slidingTrailing.active = NO;
+        slidingTrailing = [self.slidingView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor];
+        slidingTrailing.active = YES;
+        self.originalTouchLocation = CGPointZero;
+        [UIView animateWithDuration:0.25f delay:0.2f options:UIViewAnimationOptionCurveLinear animations:^{
             [self layoutIfNeeded];
         } completion:^(BOOL finished) {
-            [self resetSlidingView];
-            [testView removeFromSuperview];
             completion(YES);
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.4 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                [self.slidingView removeFromSuperview];
+                self.slidingView = nil;
+                [self layoutIfNeeded];
+            });
         }];
     }
 }
