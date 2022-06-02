@@ -22,7 +22,7 @@
     URLString = [URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSURL *URL = [NSURL URLWithString:URLString];
     NSURLSession *session = [NSURLSession sharedSession];
-    [[session dataTaskWithURL:URL completionHandler:^(NSData *data,NSURLResponse *response, NSError *error) {
+    [[session dataTaskWithURL:URL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         NSInteger statusCode = [dict[@"message"][@"header"][@"status_code"] longValue];
         if(statusCode != 200) {
@@ -33,16 +33,22 @@
         NSMutableArray *info = [[NSMutableArray alloc] init];
         for(NSDictionary *result in allResults) {
             NSDictionary *trackInfo = result[@"track"];
+            NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
             NSString *artistName = trackInfo[@"artist_name"];
+            [dict setObject:artistName forKey:@"artistName"];
             NSString *songName = trackInfo[@"track_name"];
+            [dict setObject:songName forKey:@"songName"];
             NSInteger duration = [trackInfo[@"track_length"] longValue] * 1000;
-            NSString *URI = [@"spotify:track:" stringByAppendingString:trackInfo[@"track_spotify_id"]];
+            [dict setObject:@(duration) forKey:@"duration"];
+            if([trackInfo[@"track_spotify_id"] length] != 0) {
+                NSString *URI = [@"spotify:track:" stringByAppendingString:trackInfo[@"track_spotify_id"]];
+                [dict setObject:@"URI" forKey:URI];
+            }
             // sometimes the URL uses http and the app shits itself
             NSURLComponents *components = [NSURLComponents componentsWithURL:[NSURL URLWithString:trackInfo[@"album_coverart_100x100"]] resolvingAgainstBaseURL:YES];
             components.scheme = @"https";
             NSURL *artURL = components.URL;
-            NSData *artData = [NSData dataWithContentsOfURL:artURL];
-            NSDictionary *dict = @{@"artistName":artistName, @"songName":songName, @"artData":artData, @"duration": @(duration), @"URI": URI};
+            [dict setObject:artURL forKey:@"artURL"];
             [info addObject:dict];
         }
         completion(info);
@@ -77,6 +83,13 @@
         NSString *lyricsJSON = dict[@"message"][@"body"][@"subtitle"][@"subtitle_body"];
         NSData *lyricsData = [lyricsJSON dataUsingEncoding:NSUTF8StringEncoding];
         completion(lyricsData ? [NSJSONSerialization JSONObjectWithData:lyricsData options:0 error:nil] : nil);
+    }] resume];
+}
+
++ (void)imageDataForURL:(NSURL *)URL completion:(void (^)(NSData *data))completion {
+    NSURLSession *session = [NSURLSession sharedSession];
+    [[session dataTaskWithURL:URL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        completion(data);
     }] resume];
 }
 

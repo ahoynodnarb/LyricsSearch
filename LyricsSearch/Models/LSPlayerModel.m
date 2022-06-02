@@ -58,15 +58,18 @@
 }
 
 - (void)pauseFiring {
-    self.backgroundTime = CFAbsoluteTimeGetCurrent();
+    if(![self spotifyConnected]) self.backgroundTime = CFAbsoluteTimeGetCurrent();
     [self.timer invalidate];
 }
 
 - (void)resumeFiring {
-    CFTimeInterval offset = CFAbsoluteTimeGetCurrent() - self.backgroundTime;
-    NSInteger ms = offset * 1000;
-    self.elapsedTime += ms;
-    self.backgroundTime = 0;
+    if(self.paused) return;
+    if(![self spotifyConnected]) {
+        CFTimeInterval offset = CFAbsoluteTimeGetCurrent() - self.backgroundTime;
+        NSInteger ms = offset * 1000;
+        self.elapsedTime += ms;
+        self.backgroundTime = 0;
+    }
     [self.timer invalidate];
     [self beginTimer];
 }

@@ -10,7 +10,7 @@
 #import "LSSearchResultTableViewCell.h"
 
 @interface LSSearchResultTableViewController ()
-
+@property (nonatomic, strong) NSMutableDictionary *cachedData;
 @end
 
 @implementation LSSearchResultTableViewController
@@ -18,6 +18,7 @@
 - (instancetype)initWithSearchTerm:(NSString *)searchTerm {
     if(self = [super init]) {
         self.searchTerm = searchTerm;
+        self.cachedData = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -78,7 +79,7 @@
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView registerClass:[LSSearchResultTableViewCell class] forCellReuseIdentifier:@"Cell"];
-    [self displayMoreResults];
+//    [self displayMoreResults];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -105,18 +106,38 @@
 
 - (LSSearchResultTableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     LSSearchResultTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-    NSDictionary *result = [self.searchResults objectAtIndex:[indexPath section]];
-    NSData *artData = [result objectForKey:@"artData"];
-    cell.artImage = [UIImage imageWithData:artData];
-    cell.song = [result objectForKey:@"songName"];
-    cell.artist = [result objectForKey:@"artistName"];
-    cell.duration = [[result objectForKey:@"duration"] longValue];
-    cell.URI = [result objectForKey:@"URI"];
+    NSDictionary *result = self.searchResults[indexPath.section];
+    cell.song = result[@"songName"];
+    cell.artist = result[@"artistName"];
+    cell.duration = [result[@"duration"] longValue];
+    cell.URI = result[@"URI"];
+    [self loadArtworkForCell:cell atIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
     recognizer.delegate = cell;
     [cell addGestureRecognizer:recognizer];
     return cell;
+}
+
+- (void)loadArtworkForCell:(LSSearchResultTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary *entry = self.cachedData[cell.URI];
+    if(entry) {
+        NSData *imageData = entry[@"imageData"];
+        if(imageData) {
+            UIImage *artworkImage = [UIImage imageWithData:imageData];
+            cell.artImage = artworkImage;
+            return;
+        }
+    }
+    NSDictionary *result = self.searchResults[indexPath.section];
+    NSURL *artworkURL = result[@"artURL"];
+    [LSDataManager imageDataForURL:artworkURL completion:^(NSData *data){
+        if(cell.URI) [self.cachedData setObject:@{@"imageData": data} forKey:cell.URI];
+        UIImage *artworkImage = [UIImage imageWithData:data];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            cell.artImage = artworkImage;
+        });
+    }];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
