@@ -25,10 +25,10 @@
 - (void)setSearchTerm:(NSString *)searchTerm {
     _searchTerm = searchTerm;
     self.searchResults = nil;
+    self.currentPage = 1;
 }
 
 - (void)loadNewPage {
-    self.currentPage = 1;
     [self loadNextPageWithCompletion:^{
         dispatch_async(dispatch_get_main_queue(), ^{
             if([self.searchResults count] == 0) [self showErrorLabelWithMessage:@"No search results found"];
@@ -41,9 +41,11 @@
 }
 
 - (void)loadNextPageWithCompletion:(void(^)(void))completion {
-    [LSDataManager infoForSearchTerm:self.searchTerm page:self.currentPage completion:^(NSArray *info) {    
-        if(!self.searchResults) self.searchResults = info;
-        else self.searchResults = [self.searchResults arrayByAddingObjectsFromArray:info];
+    [LSDataManager infoForSearchTerm:self.searchTerm page:self.currentPage completion:^(NSArray *info) {
+        if([info count] != 0) {
+            if(!self.searchResults) self.searchResults = info;
+            else self.searchResults = [self.searchResults arrayByAddingObjectsFromArray:info];
+        }
         completion();
     }];
     self.currentPage++;
@@ -73,7 +75,6 @@
         [self.errorMessageLabel.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
         [self.errorMessageLabel.topAnchor constraintEqualToAnchor:self.view.topAnchor],
     ]];
-    [self loadNewPage];
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView registerClass:[LSSearchResultTableViewCell class] forCellReuseIdentifier:@"Cell"];
