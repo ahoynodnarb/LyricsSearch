@@ -90,6 +90,14 @@
     return fabs(currentTouchPoint.x) > fabs(currentTouchPoint.y);
 }
 
+- (void)resetSlidingView {
+    slidingTrailing = nil;
+    containerLeading.constant = 0;
+    [self.slidingView removeFromSuperview];
+    self.slidingView = nil;
+    [self layoutIfNeeded];
+}
+
 - (void)animatePan:(UIPanGestureRecognizer *)recognizer completion:(void (^)(BOOL completed))completion {
     if(recognizer.state == UIGestureRecognizerStateBegan) {
         self.originalTouchLocation = [recognizer locationInView:self];
@@ -130,11 +138,7 @@
             [self layoutIfNeeded];
         } completion:^(BOOL finished) {
             completion(YES);
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.4 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                [self.slidingView removeFromSuperview];
-                self.slidingView = nil;
-                [self layoutIfNeeded];
-            });
+            [self resetSlidingView];
         }];
     }
 }

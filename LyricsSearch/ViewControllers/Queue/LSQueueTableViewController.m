@@ -20,15 +20,8 @@
     return self;
 }
 
-- (NSArray *)displayedTracks {
-    NSMutableArray *tracks = [self.nextTracks mutableCopy];
-    if(self.playerModel.currentItem) [tracks insertObject:self.playerModel.currentItem atIndex:0];
-    return [NSArray arrayWithArray:tracks];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.nextTracks = self.playerModel.nextTracks ? [self.playerModel.nextTracks mutableCopy] : [NSMutableArray array];
     self.tableView.editing = YES;
     self.tableView.contentInset = UIEdgeInsetsMake(30.0f, 0.0f, 0.0f, 0.0f);
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -65,7 +58,7 @@
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if(section != 0) {
-        LSTrackItem *item = self.nextTracks[section - 1];
+        LSTrackItem *item = [self.playerModel nextTracks][section - 1];
         UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
         recognizer.delegate = cell;
         [cell addGestureRecognizer:recognizer];
