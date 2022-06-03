@@ -150,6 +150,7 @@
 }
 
 - (void)sessionManager:(nonnull SPTSessionManager *)manager didFailWithError:(nonnull NSError *)error {
+    
 }
 
 - (void)sessionManager:(nonnull SPTSessionManager *)manager didInitiateSession:(nonnull SPTSession *)session {
@@ -198,7 +199,7 @@
 
 - (void)elapsedTimeChanged:(NSInteger)elapsedTime {
     if(self.presentedViewController) [self.lyricsViewController setElapsedTime:elapsedTime];
-    else [self.mediaPlayerView setElapsedTime:elapsedTime];
+    [self.mediaPlayerView setElapsedTime:elapsedTime];
 }
 
 - (void)playbackStateChanged:(BOOL)state {
