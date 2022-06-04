@@ -100,6 +100,7 @@
 }
 
 - (void)beginTimer {
+    if(self.timer || [self.timer isValid]) [self.timer invalidate];
     self.timer = [NSTimer timerWithTimeInterval:0.01 target:self selector:@selector(timerFired) userInfo:nil repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
 }

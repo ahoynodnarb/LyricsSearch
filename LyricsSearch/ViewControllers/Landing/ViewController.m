@@ -87,7 +87,8 @@
     [NSLayoutConstraint activateConstraints:@[
         [self.mediaPlayerView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant:-40],
         [self.mediaPlayerView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
-        [self.mediaPlayerView.widthAnchor constraintEqualToConstant:380],
+        [self.mediaPlayerView.widthAnchor constraintEqualToAnchor:self.view.widthAnchor constant:-20],
+//        [self.mediaPlayerView.widthAnchor constraintEqualToConstant:380],
         [self.mediaPlayerView.heightAnchor constraintEqualToConstant:60],
         [promptContainerView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
         [promptContainerView.bottomAnchor constraintEqualToAnchor:self.view.topAnchor constant:150],
