@@ -74,7 +74,7 @@
     }
     for(NSInteger i = 0; i < [self.lyricsArray count]; i++) {
         NSInteger next = [self.lyricsArray[i][@"time"][@"total"] floatValue] * 1000;
-        if(next >= time) {
+        if(next > time) {
             NSIndexPath *currentSelectedIndexPath = [self.tableView indexPathForSelectedRow];
             if(currentSelectedIndexPath && [currentSelectedIndexPath section] == i - 1) return;
             if(i == 0) {
@@ -87,6 +87,11 @@
         }
     }
     [self.tableView selectRowAtIndexPath:nil animated:YES scrollPosition:UITableViewScrollPositionNone];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self updateTimestampForTime:self.playerModel.elapsedTime];
 }
 
 - (void)reloadLyrics {
