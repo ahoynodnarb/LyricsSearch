@@ -87,6 +87,7 @@
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)recognizer {
+    if(![recognizer isKindOfClass:[UIPanGestureRecognizer class]]) return NO;
     CGPoint currentTouchPoint = [recognizer translationInView:self];
     return fabs(currentTouchPoint.x) > fabs(currentTouchPoint.y);
 }

@@ -82,7 +82,6 @@
 
 - (void)moveTrackAtIndex:(NSInteger)from toIndex:(NSInteger)to {
     if(![self indexInBounds:from] || ![self indexInBounds:to] || from == to) return;
-    if(from < to) to--;
     LSTrackItem *fromTrack = self.allTracks[from];
     [self removeTrackAtIndex:from];
     [self insertTrack:fromTrack atIndex:to];
