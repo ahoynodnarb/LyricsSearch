@@ -142,8 +142,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     LSSearchResultTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    self.playerModel.currentItem = cell.trackItem;
-    LSTrackItem *currentTrack = self.playerModel.currentItem;
+    LSTrackItem *currentTrack = cell.trackItem;
+    [self.playerModel setCurrentItem:currentTrack useSpotify:[self.playerModel spotifyConnected]];
     [self.playerModel.trackPresenter presentTrack:currentTrack];
 }
 

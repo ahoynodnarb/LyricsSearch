@@ -116,11 +116,9 @@
 }
 
 - (void)setCurrentItem:(LSTrackItem *)currentItem useSpotify:(BOOL)useSpotify useCache:(BOOL)useCache {
-    if([self spotifyConnected]) {
-        if(_currentItem && useSpotify) [self.appRemote.playerAPI play:currentItem.URI callback:nil];
-    }
-    else self.trackQueue.currentTrack = currentItem;
     _currentItem = currentItem;
+    if(useSpotify && [self spotifyConnected]) [self.appRemote.playerAPI play:currentItem.URI callback:nil];
+    else self.trackQueue.currentTrack = currentItem;
     [self resetPlayerForTrack:currentItem];
     if(!self.delegate) return;
     if(currentItem) [self.delegate currentTrackChanged:currentItem playingNextTrack:useCache];

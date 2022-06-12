@@ -24,6 +24,8 @@
 @property (nonatomic, weak) id<LSTrackPresenter> trackPresenter;
 @property (nonatomic, weak) id<LSPlayerDelegate> delegate;
 - (instancetype)initWithTrackQueue:(LSTrackQueue *)trackQueue;
+- (void)setCurrentItem:(LSTrackItem *)currentItem useSpotify:(BOOL)useSpotify useCache:(BOOL)useCache;
+- (void)setCurrentItem:(LSTrackItem *)currentItem useSpotify:(BOOL)useSpotify;
 - (void)enqueue:(LSTrackItem *)track;
 - (void)playNextTrack;
 - (void)playPreviousTrack;
