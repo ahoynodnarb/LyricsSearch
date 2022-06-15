@@ -17,7 +17,14 @@
 @implementation LSPlayerModel
 
 - (void)seek:(NSInteger)position {
-    if([self spotifyConnected]) [self.appRemote.playerAPI seekToPosition:position callback:nil];
+    // have to pause and resume firing to prevent weird jitteriness
+    // in UI as a result of slight delay from the Spotify SDK
+    if([self spotifyConnected]) {
+        [self pauseFiring];
+        [self.appRemote.playerAPI seekToPosition:position callback:^(id result, NSError *error){
+            [self resumeFiring];
+        }];
+    }
     self.elapsedTime = position;
 }
 

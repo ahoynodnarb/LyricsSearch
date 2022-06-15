@@ -141,11 +141,15 @@
 }
 
 - (void)setupSpotify {
-    SPTScope scope = SPTUserReadPlaybackStateScope | SPTUserReadCurrentlyPlayingScope | SPTAppRemoteControlScope | SPTStreamingScope;
     self.configuration = [SPTConfiguration configurationWithClientID:CLIENT_ID redirectURL:[NSURL URLWithString:@"lyricssearch://callback"]];
     self.playerModel.appRemote = [[SPTAppRemote alloc] initWithConfiguration:self.configuration logLevel:SPTAppRemoteLogLevelError];
     self.playerModel.appRemote.delegate = self.playerModel;
     self.sessionManager = [SPTSessionManager sessionManagerWithConfiguration:self.configuration delegate:self];
+    [self presentAuthorization];
+}
+
+- (void)presentAuthorization {
+    SPTScope scope = SPTUserReadPlaybackStateScope | SPTUserReadCurrentlyPlayingScope | SPTAppRemoteControlScope | SPTStreamingScope;
     [self.sessionManager initiateSessionWithScope:scope options:SPTDefaultAuthorizationOption];
 }
 

@@ -6,6 +6,7 @@
 //
 
 #import "SceneDelegate.h"
+#import "Constants.h"
 #import "ViewController.h"
 #import "LSPlayerModel.h"
 
@@ -46,9 +47,21 @@
 - (void)sceneWillEnterForeground:(UIScene *)scene {
     // Called as the scene transitions from the background to the foreground.
     // Use this method to undo the changes made on entering the background.
-    ViewController *controller = (ViewController *)self.window.rootViewController;
-    LSPlayerModel *playerModel = controller.playerModel;
-    if(playerModel.appRemote.connectionParameters.accessToken) [playerModel.appRemote connect];
+    ViewController *controller = (ViewController *)[self.window rootViewController];
+    LSPlayerModel *playerModel = [controller playerModel];
+    // bad
+    BOOL __block initialSetup = NO;
+    static dispatch_once_t t;
+    dispatch_once(&t, ^{
+        initialSetup = YES;
+        [controller setupSpotify];
+    });
+    if(initialSetup) return;
+    if(![controller.sessionManager session]) {
+        [controller presentAuthorization];
+        return;
+    }
+    if([playerModel.appRemote.connectionParameters accessToken]) [playerModel.appRemote connect];
     else [playerModel resumeFiring];
 }
 
@@ -57,9 +70,9 @@
     // Called as the scene transitions from the foreground to the background.
     // Use this method to save data, release shared resources, and store enough scene-specific state information
     // to restore the scene back to its current state.
-    ViewController *controller = (ViewController *)self.window.rootViewController;
-    LSPlayerModel *playerModel = controller.playerModel;
-    if(playerModel.appRemote.connectionParameters.accessToken) [playerModel.appRemote disconnect];
+    ViewController *controller = (ViewController *)[self.window rootViewController];
+    LSPlayerModel *playerModel = [controller playerModel];
+    if([playerModel.appRemote.connectionParameters accessToken]) [playerModel.appRemote disconnect];
     else [playerModel pauseFiring];
 }
 

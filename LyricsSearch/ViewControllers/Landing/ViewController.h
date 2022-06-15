@@ -14,5 +14,7 @@
 @property (nonatomic, strong) SPTSessionManager *sessionManager;
 @property (nonatomic, strong) SPTConfiguration *configuration;
 @property (nonatomic, strong) LSPlayerModel *playerModel;
+- (void)presentAuthorization;
+- (void)setupSpotify;
 @end
 
