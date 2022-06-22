@@ -60,16 +60,20 @@
     return 1;
 }
 
-- (void)scrollToTop {
+- (void)scrollToTopAnimated:(BOOL)animated {
     NSIndexPath *top = [NSIndexPath indexPathForRow:0 inSection:0];
-    [self.tableView selectRowAtIndexPath:nil animated:YES scrollPosition:UITableViewScrollPositionTop];
-    [self.tableView scrollToRowAtIndexPath:top atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    [self.tableView selectRowAtIndexPath:nil animated:NO scrollPosition:UITableViewScrollPositionTop];
+    [self.tableView scrollToRowAtIndexPath:top atScrollPosition:UITableViewScrollPositionTop animated:animated];
 }
 
 - (void)updateTimestampForTime:(NSInteger)time {
+    [self updateTimestampForTime:time animateScroll:YES];
+}
+
+- (void)updateTimestampForTime:(NSInteger)time animateScroll:(BOOL)animateScroll {
     NSInteger initialTimestamp = [self.lyricsArray[0][@"time"][@"total"] floatValue] * 1000;
     if(time < initialTimestamp) {
-        if([self.tableView indexPathForSelectedRow]) [self scrollToTop];
+        if([self.tableView indexPathForSelectedRow]) [self scrollToTopAnimated:animateScroll];
         return;
     }
     for(NSInteger i = 0; i < [self.lyricsArray count]; i++) {
@@ -78,26 +82,26 @@
             NSIndexPath *currentSelectedIndexPath = [self.tableView indexPathForSelectedRow];
             if(currentSelectedIndexPath && [currentSelectedIndexPath section] == i - 1) return;
             if(i == 0) {
-                [self scrollToTop];
+                [self scrollToTopAnimated:animateScroll];
                 return;
             }
             NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:i - 1];
-            [self.tableView selectRowAtIndexPath:selectedIndexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
+            [self.tableView selectRowAtIndexPath:selectedIndexPath animated:animateScroll scrollPosition:UITableViewScrollPositionTop];
             return;
         }
     }
-    [self.tableView selectRowAtIndexPath:nil animated:YES scrollPosition:UITableViewScrollPositionNone];
+    [self.tableView selectRowAtIndexPath:nil animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self updateTimestampForTime:self.playerModel.elapsedTime];
+    [self updateTimestampForTime:self.playerModel.elapsedTime animateScroll:NO];
 }
 
 - (void)reloadLyrics {
     [self.tableView reloadData];
     if([self.lyricsArray count] == 0) return;
-    [self scrollToTop];
+    [self scrollToTopAnimated:NO];
 }
 
 - (void)setPlayingTrack:(LSTrackItem *)track {
