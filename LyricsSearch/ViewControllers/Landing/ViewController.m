@@ -142,6 +142,8 @@
 
 - (void)setupSpotify {
     self.configuration = [SPTConfiguration configurationWithClientID:CLIENT_ID redirectURL:[NSURL URLWithString:@"lyricssearch://callback"]];
+    self.configuration.tokenRefreshURL = [NSURL URLWithString:@"https://spotify-lyrics-search-token-sw.herokuapp.com/api/refresh_token"];
+    self.configuration.tokenSwapURL = [NSURL URLWithString:@"https://spotify-lyrics-search-token-sw.herokuapp.com/api/token"];
     self.playerModel.appRemote = [[SPTAppRemote alloc] initWithConfiguration:self.configuration logLevel:SPTAppRemoteLogLevelError];
     self.playerModel.appRemote.delegate = self.playerModel;
     self.sessionManager = [SPTSessionManager sessionManagerWithConfiguration:self.configuration delegate:self];
