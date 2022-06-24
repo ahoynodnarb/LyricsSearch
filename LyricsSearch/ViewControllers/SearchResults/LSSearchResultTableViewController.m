@@ -30,15 +30,7 @@
 }
 
 - (void)loadNewPage {
-    [self loadNextPageWithCompletion:^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if([self.searchResults count] == 0) [self showErrorLabelWithMessage:@"No search results found"];
-            else {
-                self.errorMessageLabel.hidden = YES;
-                [self.tableView reloadData];
-            }
-        });
-    }];
+    [self displayMoreResults];
 }
 
 - (void)loadNextPageWithCompletion:(void(^)(void))completion {
@@ -55,6 +47,8 @@
 - (void)displayMoreResults {
     [self loadNextPageWithCompletion:^{
         dispatch_async(dispatch_get_main_queue(), ^{
+            if([self.searchResults count] == 0) [self showErrorLabelWithMessage:@"No search results found"];
+            else self.errorMessageLabel.hidden = YES;
             [self.tableView reloadData];
         });
     }];
@@ -79,7 +73,6 @@
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView registerClass:[LSSearchResultTableViewCell class] forCellReuseIdentifier:@"Cell"];
-//    [self displayMoreResults];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
