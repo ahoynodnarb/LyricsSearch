@@ -57,12 +57,15 @@
         [controller setupSpotify];
     });
     if(initialSetup) return;
+    if([playerModel.appRemote.connectionParameters accessToken]) {
+        [playerModel.appRemote connect];
+        return;
+    }
     if(![controller.sessionManager session]) {
         [controller presentAuthorization];
         return;
     }
-    if([playerModel.appRemote.connectionParameters accessToken]) [playerModel.appRemote connect];
-    else [playerModel resumeFiring];
+    [playerModel resumeFiring];
 }
 
 
